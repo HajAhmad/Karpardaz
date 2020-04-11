@@ -4,38 +4,81 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion rootProject.ext.min_sdk_version
+    compileSdkVersion rootProject.ext._min_sdk_version
     defaultConfig {
         applicationId "com.s.karpardaz"
-        minSdkVersion rootProject.ext.target_sdk_version
-        targetSdkVersion rootProject.ext.compiled_sdk_version
+        minSdkVersion rootProject.ext._target_sdk_version
+        targetSdkVersion rootProject.ext._compiled_sdk_version
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            debuggable false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            minifyEnabled false
+            applicationIdSuffix '.debug'
+            ext.alwaysUpdateBuildId = false
+        }
     }
 
     dataBinding {
         enabled = true
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${rootProject.ext._app_name}-${defaultConfig.versionName}.apk"
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "androidx.core:core-ktx:$rootProject.ktx_core_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlin_version"
+    implementation "androidx.core:core-ktx:$rootProject.ext._ktx_core_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.ext._kotlin_version"
+    implementation "javax.annotation:javax.annotation-api:$rootProject.ext._javax_annotation_version"
 
-    implementation "androidx.appcompat:appcompat:$rootProject.app_compat_version"
-    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraint_layout_version"
+    implementation "androidx.appcompat:appcompat:$rootProject.ext._app_compat_version"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext._constraint_layout_version"
 
-    testImplementation "junit:junit:$rootProject.junit_version"
-    androidTestImplementation "androidx.test.ext:junit:$rootProject.android_junit_version"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espresso_core_version"
+    /** Usage: For Request Network and Working with Api  **/
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.ext._retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext._retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava:$rootProject.ext._retrofit_version"
+
+    /** Usage: For Reactive Programming **/
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext._rxjava_version"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.ext._rxandroid_version"
+
+    /** Usage: Our Dependency Injection Library  **/
+    implementation "com.google.dagger:dagger:$rootProject.ext._dagger_version"
+    implementation "com.google.dagger:dagger-android:$rootProject.ext._dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.ext._dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.ext._dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.ext._dagger_version"
+
+    implementation "androidx.room:room-runtime:$rootProject.ext._room_library_version"
+    kapt "androidx.room:room-compiler:$rootProject.ext._room_library_version"
+    implementation "androidx.room:room-ktx:$rootProject.ext._room_library_version"
+    implementation "androidx.room:room-rxjava2:$rootProject.ext._room_library_version"
+    testImplementation "androidx.room:room-testing:$rootProject.ext._room_library_version"
+
+    testImplementation "junit:junit:$rootProject.ext._junit_version"
+    androidTestImplementation "androidx.test.ext:junit:$rootProject.ext._android_junit_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.ext._espresso_core_version"
+
 }

@@ -28,17 +28,24 @@ task clean(type: Delete) {
 }
 
 ext {
-    min_sdk_version           = 19
-    target_sdk_version        = 28
-    compiled_sdk_version      = 28
+    _app_name                  = 'karpardaz'
 
-    kotlin_version            = '1.3.71'
-    ktx_core_version          = '1.0.2'
+    _min_sdk_version           = 19
+    _target_sdk_version        = 28
+    _compiled_sdk_version      = 28
 
-    app_compat_version        = '1.1.0'
-    constraint_layout_version = '1.1.3'
-    junit_version             = '4.12'
-    android_junit_version     = '1.1.0'
-    espresso_core_version     = '3.1.1'
+    _kotlin_version            = '1.3.71'
+    _ktx_core_version          = '1.0.2'
+    _javax_annotation_version  = '1.3.2'
+    _app_compat_version        = '1.1.0'
+    _constraint_layout_version = '1.1.3'
+    _retrofit_version          = '2.8.1'
+    _dagger_version            = '2.27'
+    _rxjava_version            = '2.2.19'
+    _rxandroid_version         = '2.0.1'
+    _room_library_version      = '2.2.5'
+    _junit_version             = '4.12'
+    _android_junit_version     = '1.1.0'
+    _espresso_core_version     = '3.1.1'
 
 }

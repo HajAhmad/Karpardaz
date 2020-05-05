@@ -4,16 +4,16 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion rootProject.ext._min_sdk_version
+    compileSdkVersion _compiled_sdk_version
+//    buildToolsVersion _build_tool_version
     defaultConfig {
         applicationId "com.s.karpardaz"
-        minSdkVersion rootProject.ext._target_sdk_version
-        targetSdkVersion rootProject.ext._compiled_sdk_version
+        minSdkVersion rootProject._min_sdk_version
+        targetSdkVersion rootProject._target_sdk_version
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
 
     buildTypes {
         release {
@@ -33,9 +33,13 @@ android {
         enabled = true
     }
 
+    viewBinding {
+        enabled = true
+    }
+
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "${rootProject.ext._app_name}-${defaultConfig.versionName}.apk"
+            outputFileName = "${_app_name}-${defaultConfig.versionName}.apk"
         }
     }
 
@@ -47,38 +51,81 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //TODO: Update all libraries
+    //************************* App Libraries ******************************************************
+    // Kotlin
+    implementation "androidx.core:core-ktx:$_ktx_core_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$_kotlin_version"
 
-    implementation "androidx.core:core-ktx:$rootProject.ext._ktx_core_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.ext._kotlin_version"
-    implementation "javax.annotation:javax.annotation-api:$rootProject.ext._javax_annotation_version"
 
-    implementation "androidx.appcompat:appcompat:$rootProject.ext._app_compat_version"
-    implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext._constraint_layout_version"
+    // JavaX
+    implementation "javax.annotation:javax.annotation-api:$_javax_annotation_version"
 
-    /** Usage: For Request Network and Working with Api  **/
-    implementation "com.squareup.retrofit2:retrofit:$rootProject.ext._retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext._retrofit_version"
-    implementation "com.squareup.retrofit2:adapter-rxjava:$rootProject.ext._retrofit_version"
+    // Android
+    implementation "androidx.appcompat:appcompat:$_app_compat_version"
+//    implementation "androidx.multidex:multidex:$_multidex_version"
+    implementation "androidx.constraintlayout:constraintlayout:$_constraint_layout_version"
+    implementation "com.google.android.material:material:$_material_version"
+    implementation "androidx.annotation:annotation:$_android_x_annotations"
 
-    /** Usage: For Reactive Programming **/
-    implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext._rxjava_version"
-    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.ext._rxandroid_version"
+    // Room
+    implementation "androidx.room:room-runtime:$_room_library_version"
+    kapt "androidx.room:room-compiler:$_room_library_version"
+    implementation "androidx.room:room-ktx:$_room_library_version"
+    implementation "androidx.room:room-rxjava2:$_room_library_version"
+    testImplementation "androidx.room:room-testing:$_room_library_version"
+    androidTestImplementation "androidx.room:room-testing:$_room_library_version"
 
-    /** Usage: Our Dependency Injection Library  **/
-    implementation "com.google.dagger:dagger:$rootProject.ext._dagger_version"
-    implementation "com.google.dagger:dagger-android:$rootProject.ext._dagger_version"
-    implementation "com.google.dagger:dagger-android-support:$rootProject.ext._dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$rootProject.ext._dagger_version"
-    kapt "com.google.dagger:dagger-android-processor:$rootProject.ext._dagger_version"
+    // Arch Components
+    implementation "androidx.lifecycle:lifecycle-extensions:$_arch_lifecycle_version"
+    // checkout this link -> https://developer.android.com/jetpack/androidx/releases/lifecycle?utm_source=android-studio
+    implementation "androidx.lifecycle:lifecycle-common-java8:$_arch_lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-runtime:$_arch_lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$_arch_lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$_arch_lifecycle_version"
 
-    implementation "androidx.room:room-runtime:$rootProject.ext._room_library_version"
-    kapt "androidx.room:room-compiler:$rootProject.ext._room_library_version"
-    implementation "androidx.room:room-ktx:$rootProject.ext._room_library_version"
-    implementation "androidx.room:room-rxjava2:$rootProject.ext._room_library_version"
-    testImplementation "androidx.room:room-testing:$rootProject.ext._room_library_version"
+    //************************* HTTP and Api Libraries *********************************************
+    implementation "com.squareup.retrofit2:retrofit:$_retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$_retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava:$_retrofit_version"
 
-    testImplementation "junit:junit:$rootProject.ext._junit_version"
-    androidTestImplementation "androidx.test.ext:junit:$rootProject.ext._android_junit_version"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.ext._espresso_core_version"
+    //************************* Reactive Programming Libraries *************************************
+    implementation "io.reactivex.rxjava2:rxjava:$_rxjava_version"
+    implementation "io.reactivex.rxjava2:rxandroid:$_rxandroid_version"
 
+    //************************* DI Libraries *************************************
+    implementation "com.google.dagger:dagger:$_dagger_version"
+    implementation "com.google.dagger:dagger-android:$_dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$_dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$_dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$_dagger_version"
+
+    //************************* Test Libraries *****************************************************
+    // Local Unit Test
+    testImplementation "junit:junit:$_junit_version"
+    testImplementation "org.mockito:mockito-core:$_mockito_version"
+    testImplementation "org.hamcrest:hamcrest-all:$_hamcrest_version"
+    testImplementation "android.arch.core:core-testing:$_arch_testing_version"
+
+    // Android Unit Test
+    androidTestImplementation "junit:junit:$_junit_version"
+    androidTestImplementation "org.mockito:mockito-core:$_mockito_version"
+
+    // Support Library - Instrumented testing
+    androidTestImplementation "androidx.test:runner:$_androidx_test_version"
+    androidTestImplementation "androidx.test:rules:$_androidx_test_version"
+
+    // Espresso
+    implementation "androidx.test.espresso:espresso-idling-resource:$_espresso_core_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$_espresso_core_version"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$_espresso_core_version"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$_espresso_core_version"
+    androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:$_espresso_core_version"
+
+    // 'Resolve conflicts between main and test APK' Libraries
+    androidTestImplementation "androidx.annotation:annotation:$_android_x_annotations"
+    androidTestImplementation "androidx.legacy:legacy-support-v4:$_android_x_legacy_support"
+    androidTestImplementation "androidx.recyclerview:recyclerview:$_recycler_view_version"
+    androidTestImplementation "androidx.appcompat:appcompat:$_app_compat_version"
+    androidTestImplementation "com.google.android.material:material:$_material_version"
 }

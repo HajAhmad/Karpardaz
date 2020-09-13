@@ -6,9 +6,12 @@ buildscript {
         jcenter()
         mavenCentral()
     }
+
+    ext._hilt_version = '2.28.3-alpha'
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.71"
+        classpath 'com.android.tools.build:gradle:4.0.1'
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$_hilt_version"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -30,36 +33,31 @@ task clean(type: Delete) {
 ext {
     _app_name                  = 'karpardaz'
 
-    _min_sdk_version           = 21
+    _min_sdk_version           = 19
     _build_tool_version        = '29.0.2'
     _target_sdk_version        = 29
     _compiled_sdk_version      = 29
 
-    _kotlin_version            = '1.3.72'
-    _ktx_core_version          = '1.2.0'
     _javax_annotation_version  = '1.3.2'
-    _app_compat_version        = '1.2.0-beta01'
-    _material_version          = '1.2.0-alpha06'
-//    _multidex_version          = '2.0.1'
-    _constraint_layout_version = '1.1.3'
-//    _cardview_version          = '1.0.0'
+    _app_compat_version        = '1.2.0'
+    _material_version          = '1.3.0-alpha02'
+    _constraint_layout_version = '2.0.1'
     _androidx_core_version     = '1.2.0'
     _retrofit_version          = '2.8.1'
-    _dagger_version            = '2.27'
     _rxjava_version            = '2.2.19'
     _rxandroid_version         = '2.0.1'
     _room_library_version      = '2.2.5'
+    _joda_version              = '2.10.6'
     _junit_version             = '4.12'
     _android_junit_version     = '1.1.0'
     _espresso_core_version     = '3.2.0'
     _androidx_test_version     = '1.1.1'
-    _mockito_version           = '2.8.9'
+    _mockito_version           = '2.19.0'
     _hamcrest_version          = '1.3'
     _arch_testing_version      = '1.1.1'
     _android_x_annotations     = '1.1.0'
     _android_x_legacy_support  = '1.0.0'
     _recycler_view_version     = '1.0.0'
-    _app_compat_version        = '1.0.2'
     _arch_lifecycle_version    = '2.2.0'
 
 }

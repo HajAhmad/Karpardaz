@@ -1,11 +1,9 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion _compiled_sdk_version
-//    buildToolsVersion _build_tool_version
+    buildToolsVersion _build_tool_version
     defaultConfig {
         applicationId "com.s.karpardaz"
         minSdkVersion rootProject._min_sdk_version
@@ -29,13 +27,9 @@ android {
         }
     }
 
-    dataBinding {
-        enabled = true
-    }
+    android.buildFeatures.dataBinding = true
 
-    viewBinding {
-        enabled = true
-    }
+    android.buildFeatures.viewBinding = true
 
     applicationVariants.all { variant ->
         variant.outputs.all {
@@ -52,13 +46,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    //TODO: Update all libraries
     //************************* App Libraries ******************************************************
-    // Kotlin
-    implementation "androidx.core:core-ktx:$_ktx_core_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$_kotlin_version"
-
-
     // JavaX
     implementation "javax.annotation:javax.annotation-api:$_javax_annotation_version"
 
@@ -68,11 +56,11 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$_constraint_layout_version"
     implementation "com.google.android.material:material:$_material_version"
     implementation "androidx.annotation:annotation:$_android_x_annotations"
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
 
     // Room
     implementation "androidx.room:room-runtime:$_room_library_version"
-    kapt "androidx.room:room-compiler:$_room_library_version"
-    implementation "androidx.room:room-ktx:$_room_library_version"
+    annotationProcessor "androidx.room:room-compiler:$_room_library_version"
     implementation "androidx.room:room-rxjava2:$_room_library_version"
     testImplementation "androidx.room:room-testing:$_room_library_version"
     androidTestImplementation "androidx.room:room-testing:$_room_library_version"
@@ -95,11 +83,10 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$_rxandroid_version"
 
     //************************* DI Libraries *************************************
-    implementation "com.google.dagger:dagger:$_dagger_version"
-    implementation "com.google.dagger:dagger-android:$_dagger_version"
-    implementation "com.google.dagger:dagger-android-support:$_dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$_dagger_version"
-    kapt "com.google.dagger:dagger-android-processor:$_dagger_version"
+    implementation "com.google.dagger:hilt-android:$_hilt_version"
+    annotationProcessor "com.google.dagger:hilt-android-compiler:$_hilt_version"
+
+    implementation "joda-time:joda-time:$_joda_version"
 
     //************************* Test Libraries *****************************************************
     // Local Unit Test
@@ -112,21 +99,5 @@ dependencies {
     androidTestImplementation "junit:junit:$_junit_version"
     androidTestImplementation "org.mockito:mockito-core:$_mockito_version"
 
-    // Support Library - Instrumented testing
-    androidTestImplementation "androidx.test:runner:$_androidx_test_version"
-    androidTestImplementation "androidx.test:rules:$_androidx_test_version"
 
-    // Espresso
-    implementation "androidx.test.espresso:espresso-idling-resource:$_espresso_core_version"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$_espresso_core_version"
-    androidTestImplementation "androidx.test.espresso:espresso-contrib:$_espresso_core_version"
-    androidTestImplementation "androidx.test.espresso:espresso-intents:$_espresso_core_version"
-    androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:$_espresso_core_version"
-
-    // 'Resolve conflicts between main and test APK' Libraries
-    androidTestImplementation "androidx.annotation:annotation:$_android_x_annotations"
-    androidTestImplementation "androidx.legacy:legacy-support-v4:$_android_x_legacy_support"
-    androidTestImplementation "androidx.recyclerview:recyclerview:$_recycler_view_version"
-    androidTestImplementation "androidx.appcompat:appcompat:$_app_compat_version"
-    androidTestImplementation "com.google.android.material:material:$_material_version"
 }

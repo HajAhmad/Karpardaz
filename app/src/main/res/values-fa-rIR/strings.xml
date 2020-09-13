@@ -3,4 +3,9 @@
 
     <string name="app_name_display">کارپرداز</string>
 
+    <string name="main_profile_title">پروفایل</string>
+    <string name="main_report_title">گزارشات</string>
+    
+    <string name="main_cash_title">هزینه ها</string>
+
 </resources>

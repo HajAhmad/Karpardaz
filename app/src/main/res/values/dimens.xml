@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="fab_in_card_def_margin">2dp</dimen>
+    <dimen name="full_circle_radius">40dp</dimen>
+    <dimen name="card_elevation_def">10dp</dimen>
+    <dimen name="icon_size_def">24dp</dimen>
+
+    <dimen name="space_vertical">8dp</dimen>
+    <dimen name="space_horizontal">16dp</dimen>
+
+</resources>

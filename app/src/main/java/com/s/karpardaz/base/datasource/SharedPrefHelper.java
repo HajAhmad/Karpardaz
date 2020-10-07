@@ -18,7 +18,7 @@ public final class SharedPrefHelper implements Closeable {
     private SharedPreferences mPref;
 
     @Inject
-    private SharedPrefHelper(SharedPreferences preferences) {
+    SharedPrefHelper(SharedPreferences preferences) {
         mPref = Objects.requireNonNull(preferences);
     }
 

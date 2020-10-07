@@ -51,6 +51,10 @@ public abstract class BaseDialogFragment<L extends BaseInteractionListener, V> e
         mBinding = null;
     }
 
+    protected Context getCtx(){
+        return mContext;
+    }
+
     protected L getListener() {
         Objects.requireNonNull(mListener, "Listener is NOT set in this context.");
         return mListener;

@@ -8,9 +8,15 @@ android {
         applicationId "com.s.karpardaz"
         minSdkVersion rootProject._min_sdk_version
         targetSdkVersion rootProject._target_sdk_version
-        versionCode 1
-        versionName "1.0"
+        versionCode rootProject._version_code
+        versionName rootProject._version_name
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
@@ -47,16 +53,12 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //************************* App Libraries ******************************************************
-    // JavaX
-    implementation "javax.annotation:javax.annotation-api:$_javax_annotation_version"
 
     // Android
     implementation "androidx.appcompat:appcompat:$_app_compat_version"
 //    implementation "androidx.multidex:multidex:$_multidex_version"
     implementation "androidx.constraintlayout:constraintlayout:$_constraint_layout_version"
     implementation "com.google.android.material:material:$_material_version"
-    implementation "androidx.annotation:annotation:$_android_x_annotations"
-    implementation "androidx.recyclerview:recyclerview:1.1.0"
 
     // Room
     implementation "androidx.room:room-runtime:$_room_library_version"
@@ -70,21 +72,18 @@ dependencies {
     // checkout this link -> https://developer.android.com/jetpack/androidx/releases/lifecycle?utm_source=android-studio
     implementation "androidx.lifecycle:lifecycle-common-java8:$_arch_lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-runtime:$_arch_lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-extensions:$_arch_lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$_arch_lifecycle_version"
 
     //************************* HTTP and Api Libraries *********************************************
     implementation "com.squareup.retrofit2:retrofit:$_retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$_retrofit_version"
-    implementation "com.squareup.retrofit2:adapter-rxjava:$_retrofit_version"
-
-    //************************* Reactive Programming Libraries *************************************
-    implementation "io.reactivex.rxjava2:rxjava:$_rxjava_version"
-    implementation "io.reactivex.rxjava2:rxandroid:$_rxandroid_version"
 
     //************************* DI Libraries *************************************
     implementation "com.google.dagger:hilt-android:$_hilt_version"
     annotationProcessor "com.google.dagger:hilt-android-compiler:$_hilt_version"
+
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$_hilt_viewmodel_version"
+    annotationProcessor "androidx.hilt:hilt-compiler:$_hilt_viewmodel_version"
 
     implementation "joda-time:joda-time:$_joda_version"
 

@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:xiff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
 
-    <string name="app_name" translatable="false">Karpardaz</string>
+    <string name="app_name">Karpardaz</string>
 
-    <string name="app_name_display">Karpardaz</string>
+    <string name="app_name_display">کارپرداز</string>
 
-    <string name="main_profile_title">Profile</string>
-    <string name="main_report_title">Reports</string>
+    <string name="main_profile_title">پروفایل</string>
+    <string name="main_report_title">گزارشات</string>
+    <string name="all_stock_title">تنخواه</string>
 
-    <string name="main_cash_title">Costs</string>
+    <string name="main_cash_title">هزینه ها</string>
     <string name="cost_sum_title_coloned">مجموعه هزینه های امروز:</string>
     <string name="last_20_costs_title">۲۰ هزینه آخر</string>
     <string name="profile_title">پروفایل و تنظیمات</string>
+    <string name="all_fund_remaining_title_colonned">باقی مانده تنخواه</string>
+    <string name="all_purchased_time_title">کی خریدی؟</string>
+    <string name="all_title">عنوان</string>
+    <string name="expense_title">چقدر شد؟</string>
+    <string name="cost_detail_stock_title">کم شود از:</string>
+    <string name="dialog_cost_detail_source_dropdown_title">انتخاب تنخواه</string>
+    <string name="all_description_title">ملاحظات</string>
+
 </resources>

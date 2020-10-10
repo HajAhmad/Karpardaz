@@ -3,7 +3,7 @@ package com.s.karpardaz.shared.data.source.remote;
 import androidx.annotation.NonNull;
 
 import com.s.karpardaz.base.NotImplementedException;
-import com.s.karpardaz.shared.data.model.Cost;
+import com.s.karpardaz.shared.data.model.cost.CostEntity;
 import com.s.karpardaz.shared.data.source.CostDataSource;
 
 import javax.inject.Inject;
@@ -37,17 +37,17 @@ public class CostRemoteDataSource implements CostDataSource {
     }
 
     @Override
-    public void insertCost(@NonNull Cost cost, @NonNull InsertCostCallback callback) {
+    public void insertCost(@NonNull CostEntity cost, @NonNull InsertCostCallback callback) {
         throw new NotImplementedException();
     }
 
     @Override
-    public void updateCost(@NonNull Cost cost, @NonNull UpdateCostCallback callback) {
+    public void updateCost(@NonNull CostEntity cost, @NonNull UpdateCostCallback callback) {
         throw new NotImplementedException();
     }
 
     @Override
-    public void deleteCost(@NonNull Cost cost, @NonNull DeleteCostCallback callback) {
+    public void deleteCost(@NonNull CostEntity cost, @NonNull DeleteCostCallback callback) {
         throw new NotImplementedException();
     }
 

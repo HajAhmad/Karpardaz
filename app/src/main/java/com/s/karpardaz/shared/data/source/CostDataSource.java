@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
 import com.s.karpardaz.base.BaseCallback;
-import com.s.karpardaz.shared.data.model.Cost;
+import com.s.karpardaz.shared.data.model.cost.CostEntity;
 
 import java.util.List;
 
@@ -19,22 +19,22 @@ public interface CostDataSource {
 
     void getCostDetail(@NonNull String costId, GetCostCallback callback);
 
-    void insertCost(@NonNull Cost cost, @NonNull InsertCostCallback callback);
+    void insertCost(@NonNull CostEntity cost, @NonNull InsertCostCallback callback);
 
-    void updateCost(@NonNull Cost cost, @NonNull UpdateCostCallback callback);
+    void updateCost(@NonNull CostEntity cost, @NonNull UpdateCostCallback callback);
 
-    void deleteCost(@NonNull Cost cost, @NonNull DeleteCostCallback callback);
+    void deleteCost(@NonNull CostEntity cost, @NonNull DeleteCostCallback callback);
 
     void refreshList();
 
-    interface GetAllCostListCallback extends BaseCallback<LiveData<List<Cost>>> {
+    interface GetAllCostListCallback extends BaseCallback<LiveData<List<CostEntity>>> {
     }
 
-    interface GetCostCallback extends BaseCallback<LiveData<Cost>> {
+    interface GetCostCallback extends BaseCallback<LiveData<CostEntity>> {
     }
 
     interface InsertCostCallback extends BaseCallback<String> {
-        void insertCost(Cost cost);
+        void insertCost(CostEntity cost);
     }
 
     interface UpdateCostCallback extends BaseCallback<String> {

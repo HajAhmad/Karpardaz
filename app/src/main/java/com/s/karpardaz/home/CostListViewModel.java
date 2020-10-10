@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.s.karpardaz.base.mvvm.BaseViewModel;
 import com.s.karpardaz.base.util.AppUtil;
-import com.s.karpardaz.shared.data.model.Cost;
+import com.s.karpardaz.shared.data.model.cost.CostEntity;
 import com.s.karpardaz.shared.data.source.CostDataSource;
 import com.s.karpardaz.shared.data.source.CostRepository;
 
@@ -22,7 +22,7 @@ import static com.s.karpardaz.base.util.AppUtil.strDateToDate;
 
 public class CostListViewModel extends BaseViewModel {
 
-    private LiveData<List<Cost>> costListObservable;
+    private LiveData<List<CostEntity>> costListObservable;
     public final MutableLiveData<String> weekTotalSum;
     private final CostRepository mRepository;
 
@@ -48,7 +48,7 @@ public class CostListViewModel extends BaseViewModel {
             mRepository.getCostByDate(currentDateTime, lastTwentyDaysDateTime,
                     new CostDataSource.GetAllCostListCallback() {
                         @Override
-                        public void onSuccess(LiveData<List<Cost>> result) {
+                        public void onSuccess(LiveData<List<CostEntity>> result) {
                             costListObservable = result;
                         }
 
@@ -62,7 +62,7 @@ public class CostListViewModel extends BaseViewModel {
         }
     }
 
-    public LiveData<List<Cost>> getCostListObservable(){
+    public LiveData<List<CostEntity>> getCostListObservable(){
         return costListObservable;
     }
 

@@ -1,4 +1,4 @@
-package com.s.karpardaz.shared.data.model;
+package com.s.karpardaz.shared.data.model.stock;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
@@ -7,8 +7,8 @@ import com.s.karpardaz.base.BaseModel;
 
 import java.util.Objects;
 
-@Entity
-public class Stock extends BaseModel {
+@Entity(tableName = "Stock")
+public class StockEntity extends BaseModel {
 
     @NonNull
     private String name;
@@ -21,7 +21,7 @@ public class Stock extends BaseModel {
     @NonNull
     private String updatedAt;
 
-    public Stock(long id, @NonNull String uuid, @NonNull String name, @NonNull String currency,
+    public StockEntity(long id, @NonNull String uuid, @NonNull String name, @NonNull String currency,
             @NonNull String currencyMark, @NonNull String createdAt,
             @NonNull String updatedAt) {
         super(id, uuid);
@@ -62,14 +62,14 @@ public class Stock extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        Stock stock = (Stock) o;
-        return id == stock.id &&
-                uuid.equals(stock.uuid) &&
-                name.equals(stock.name) &&
-                currency.equals(stock.currency) &&
-                currencyMark.equals(stock.currencyMark) &&
-                createdAt.equals(stock.createdAt) &&
-                updatedAt.equals(stock.updatedAt);
+        StockEntity EStock = (StockEntity) o;
+        return id == EStock.id &&
+                uuid.equals(EStock.uuid) &&
+                name.equals(EStock.name) &&
+                currency.equals(EStock.currency) &&
+                currencyMark.equals(EStock.currencyMark) &&
+                createdAt.equals(EStock.createdAt) &&
+                updatedAt.equals(EStock.updatedAt);
     }
 
     @Override

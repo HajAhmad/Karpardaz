@@ -1,8 +1,7 @@
-package com.s.karpardaz.shared.data.model;
+package com.s.karpardaz.shared.data.model.cost;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 
 import com.s.karpardaz.base.BaseModel;
 
@@ -10,34 +9,35 @@ import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
-@Entity
-public class Cost extends BaseModel {
+@Entity(tableName = "Cost")
+public class CostEntity extends BaseModel {
 
     @NonNull
-    private String purchasedAt;
+    protected String purchasedAt;
     @NonNull
-    private String subject;
+    protected String subject;
     @NonNull
-    private String amount;
+    protected String amount;
+    @NonNull
+    protected String createdAt;
+    @NonNull
+    protected String updatedAt;
 
-    @NonNull
-    private final String createdAt;
-    @NonNull
-    private String updatedAt;
-
-    public Cost(long id,
+    public CostEntity(long id,
             @NonNull String uuid,
             @NonNull String purchasedAt,
             @NonNull String subject,
             @NonNull String amount,
             @NonNull String createdAt,
-            @NonNull String updatedAt) {
+            @NonNull String updatedAt,
+            boolean isBackedUp) {
         super(id, uuid);
         this.subject = requireNonNull(subject);
         this.amount = requireNonNull(amount);
         this.purchasedAt = requireNonNull(purchasedAt);
         this.createdAt = requireNonNull(createdAt);
         this.updatedAt = requireNonNull(updatedAt);
+        this.isBackedUp = isBackedUp;
     }
 
     @NonNull
@@ -65,10 +65,6 @@ public class Cost extends BaseModel {
         return updatedAt;
     }
 
-    public void setPurchasedAt(@NonNull String purchasedAt) {
-        this.purchasedAt = purchasedAt;
-    }
-
     public void setSubject(@NonNull String subject) {
         this.subject = subject;
     }
@@ -77,8 +73,12 @@ public class Cost extends BaseModel {
         this.amount = amount;
     }
 
-    public void setUpdatedAt(@NonNull String updatedAt) {
-        this.updatedAt = updatedAt;
+    public boolean isBackedUp() {
+        return isBackedUp;
+    }
+
+    public void setBackedUp(boolean backedUp) {
+        isBackedUp = backedUp;
     }
 
     @Override
@@ -86,7 +86,7 @@ public class Cost extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        Cost cost = (Cost) o;
+        CostEntity cost = (CostEntity) o;
         return purchasedAt.equals(cost.purchasedAt) &&
                 subject.equals(cost.subject) &&
                 amount.equals(cost.amount) &&

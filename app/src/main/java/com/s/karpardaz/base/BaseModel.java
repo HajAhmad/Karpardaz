@@ -3,9 +3,6 @@ package com.s.karpardaz.base;
 import androidx.annotation.NonNull;
 import androidx.room.PrimaryKey;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 import java.util.Objects;
 
 
@@ -13,20 +10,33 @@ import static java.util.Objects.requireNonNull;
 
 public abstract class BaseModel {
     @PrimaryKey
-    @SerializedName("id")
-    @Expose
     protected long id;
-    @SerializedName("uuid")
-    @Expose
+    @NonNull
     protected String uuid;
+    protected boolean isBackedUp;
 
     public BaseModel(long id, @NonNull String uuid) {
         this.id = id;
         this.uuid = requireNonNull(uuid);
+
+        isBackedUp = false;
     }
 
     public long getId() {
         return id;
+    }
+
+    @NonNull
+    public String getUuid() {
+        return uuid;
+    }
+
+    public boolean isBackedUp() {
+        return isBackedUp;
+    }
+
+    public void setBackedUp(boolean backedUp) {
+        isBackedUp = backedUp;
     }
 
     @Override
@@ -42,7 +52,6 @@ public abstract class BaseModel {
     public int hashCode() {
         return Objects.hash(id, uuid);
     }
-
 
     @NonNull
     @Override

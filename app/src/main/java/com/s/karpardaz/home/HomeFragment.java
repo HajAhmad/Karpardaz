@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.s.karpardaz.base.BaseBindingFragment;
 import com.s.karpardaz.base.BaseInteractionListener;
-import com.s.karpardaz.shared.data.model.Cost;
+import com.s.karpardaz.shared.data.model.cost.CostEntity;
 import com.s.karpardaz.databinding.FragmentHomeBinding;
 
 import java.util.List;
@@ -56,7 +56,7 @@ public class HomeFragment extends
 
 
     private void initList() {
-        LiveData<List<Cost>> costList = mViewModel.getCostListObservable();
+        LiveData<List<CostEntity>> costList = mViewModel.getCostListObservable();
         HomeCostListAdapter adapter = new HomeCostListAdapter();
     }
 

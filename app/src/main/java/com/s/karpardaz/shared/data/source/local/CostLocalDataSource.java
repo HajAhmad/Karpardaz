@@ -1,18 +1,12 @@
 package com.s.karpardaz.shared.data.source.local;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.s.karpardaz.base.NotImplementedException;
 import com.s.karpardaz.base.datasource.CostDatabase;
-import com.s.karpardaz.shared.data.model.Cost;
-import com.s.karpardaz.shared.data.model.CostDao;
+import com.s.karpardaz.shared.data.model.cost.CostEntity;
+import com.s.karpardaz.shared.data.model.cost.CostDao;
 import com.s.karpardaz.shared.data.source.CostDataSource;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -54,17 +48,17 @@ public class CostLocalDataSource implements CostDataSource {
     }
 
     @Override
-    public void insertCost(@NonNull Cost cost, @NonNull InsertCostCallback callback) {
+    public void insertCost(@NonNull CostEntity cost, @NonNull InsertCostCallback callback) {
 
     }
 
     @Override
-    public void updateCost(@NonNull Cost cost, @NonNull UpdateCostCallback callback) {
+    public void updateCost(@NonNull CostEntity cost, @NonNull UpdateCostCallback callback) {
 
     }
 
     @Override
-    public void deleteCost(@NonNull Cost cost, @NonNull DeleteCostCallback callback) {
+    public void deleteCost(@NonNull CostEntity cost, @NonNull DeleteCostCallback callback) {
 
     }
 

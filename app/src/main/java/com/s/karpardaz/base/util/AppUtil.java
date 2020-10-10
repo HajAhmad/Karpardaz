@@ -1,5 +1,7 @@
 package com.s.karpardaz.base.util;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 
 import java.text.DateFormat;
@@ -34,6 +36,14 @@ public final class AppUtil {
         DateFormat format = new SimpleDateFormat(DEFAULT_DATE_PATTERN, Locale.US);
         format.setTimeZone(DEFAULT_TIME_ZONE);
         return format.parse(source);
+    }
+
+    public static boolean isAnyEmpty(String... args) {
+        for (String str : args) {
+            if (TextUtils.isEmpty(str.trim()))
+                return false;
+        }
+        return true;
     }
 
 }

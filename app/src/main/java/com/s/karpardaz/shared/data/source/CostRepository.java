@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import com.s.karpardaz.base.NotImplementedException;
 import com.s.karpardaz.base.di.scope.LocalDataSource;
 import com.s.karpardaz.base.di.scope.RemoteDataSource;
-import com.s.karpardaz.shared.data.model.Cost;
+import com.s.karpardaz.shared.data.model.cost.CostEntity;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -52,17 +52,17 @@ public class CostRepository implements CostDataSource {
     }
 
     @Override
-    public void insertCost(@NonNull Cost cost, @NonNull InsertCostCallback callback) {
+    public void insertCost(@NonNull CostEntity cost, @NonNull InsertCostCallback callback) {
         mLocalDataSource.insertCost(requireNonNull(cost), requireNonNull(callback));
     }
 
     @Override
-    public void updateCost(@NonNull Cost cost, @NonNull UpdateCostCallback callback) {
+    public void updateCost(@NonNull CostEntity cost, @NonNull UpdateCostCallback callback) {
         mLocalDataSource.updateCost(requireNonNull(cost), requireNonNull(callback));
     }
 
     @Override
-    public void deleteCost(@NonNull Cost cost, @NonNull DeleteCostCallback callback) {
+    public void deleteCost(@NonNull CostEntity cost, @NonNull DeleteCostCallback callback) {
         mLocalDataSource.deleteCost(
                 requireNonNull(cost),
                 requireNonNull(callback)

@@ -1,4 +1,4 @@
-package com.s.karpardaz.shared.data.model;
+package com.s.karpardaz.shared.data.model.stock;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -8,17 +8,17 @@ import androidx.room.Update;
 import com.s.karpardaz.base.datasource.BaseDao;
 
 @Dao
-public interface StockDao extends BaseDao<Stock> {
+public interface StockDao extends BaseDao<StockEntity> {
 
     @Insert
     @Override
-    long insert(Stock obj);
+    long insert(StockEntity obj);
 
     @Update
     @Override
-    int update(Stock obj);
+    int update(StockEntity obj);
 
     @Delete
     @Override
-    int delete(Stock obj);
+    int delete(StockEntity obj);
 }

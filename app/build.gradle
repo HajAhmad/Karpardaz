@@ -86,6 +86,7 @@ dependencies {
     annotationProcessor "androidx.hilt:hilt-compiler:$_hilt_viewmodel_version"
 
     implementation "joda-time:joda-time:$_joda_version"
+    implementation "org.modelmapper:modelmapper:$_model_mapper_version"
 
     //************************* Test Libraries *****************************************************
     // Local Unit Test

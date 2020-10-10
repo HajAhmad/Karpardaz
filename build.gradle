@@ -51,6 +51,7 @@ ext {
     _hilt_viewmodel_version    = '1.0.0-alpha02'
     _room_library_version      = '2.2.5'
     _joda_version              = '2.10.6'
+    _model_mapper_version      = '2.3.8'
     _junit_version             = '4.12'
     _android_junit_version     = '1.1.0'
     _espresso_core_version     = '3.2.0'

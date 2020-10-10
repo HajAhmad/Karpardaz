@@ -30,5 +30,4 @@ public class Cost extends CostEntity {
         this.updatedAt = updatedAt;
     }
 
-
 }

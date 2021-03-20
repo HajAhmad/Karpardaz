@@ -53,12 +53,9 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //************************* App Libraries ******************************************************
-
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 	
     // Android
     implementation "androidx.appcompat:appcompat:$_app_compat_version"
-//    implementation "androidx.multidex:multidex:$_multidex_version"
     implementation "androidx.constraintlayout:constraintlayout:$_constraint_layout_version"
     implementation "com.google.android.material:material:$_material_version"
 
@@ -68,40 +65,15 @@ dependencies {
     testImplementation "androidx.room:room-testing:$_room_library_version"
     androidTestImplementation "androidx.room:room-testing:$_room_library_version"
 
-//    implementation "androidx.lifecycle:lifecycle-common-java8:$_arch_lifecycle_version"
-//    implementation "androidx.lifecycle:lifecycle-runtime:$_arch_lifecycle_version"
-//    implementation "androidx.lifecycle:lifecycle-viewmodel:$_arch_lifecycle_version"
-//    implementation "androidx.lifecycle:lifecycle-livedata:$_arch_lifecycle_version"
-//    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$_arch_lifecycle_version"
-
-    //************************* HTTP and Api Libraries *********************************************
     implementation "com.squareup.retrofit2:retrofit:$_retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$_retrofit_version"
     implementation "com.squareup.okhttp3:okhttp:$_ok_http_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$_ok_http_version"
 
-    //************************* DI Libraries *************************************
     implementation "com.google.dagger:hilt-android:$_hilt_version"
     annotationProcessor "com.google.dagger:hilt-android-compiler:$_hilt_version"
-//
-//    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$_hilt_viewmodel_version"
-//    annotationProcessor "androidx.hilt:hilt-compiler:$_hilt_viewmodel_version"
 
     implementation "joda-time:joda-time:$_joda_version"
-    implementation "org.modelmapper:modelmapper:$_model_mapper_version"
 
     implementation "ir.huri:JalaliCalendar:$_jalali_calendar_version"
-
-    //************************* Test Libraries *****************************************************
-    // Local Unit Test
-//    testImplementation "junit:junit:$_junit_version"
-//    testImplementation "org.mockito:mockito-core:$_mockito_version"
-//    testImplementation "org.hamcrest:hamcrest-all:$_hamcrest_version"
-//    testImplementation "android.arch.core:core-testing:$_arch_testing_version"
-//    testImplementation "androidx.arch.core:core-testing:$_arch_version"
-//
-//    // Android Unit Test
-//    androidTestImplementation "junit:junit:$_junit_version"
-//    androidTestImplementation "org.mockito:mockito-core:$_mockito_version"
-
 }

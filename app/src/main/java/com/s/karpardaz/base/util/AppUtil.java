@@ -1,5 +1,8 @@
 package com.s.karpardaz.base.util;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -10,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.regex.Pattern;
 
 public final class AppUtil {
 
@@ -44,6 +48,19 @@ public final class AppUtil {
                 return false;
         }
         return true;
+    }
+
+    public static boolean isEmailValid(String email) {
+        return Pattern.compile(
+                "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$", Pattern.CASE_INSENSITIVE)
+                .matcher(email)
+                .matches();
+    }
+
+    public static boolean inNetworkAvailable(Context context) {
+        NetworkInfo activeNetworkInfo = ((ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

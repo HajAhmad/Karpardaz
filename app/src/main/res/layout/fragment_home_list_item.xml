@@ -1,54 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:paddingStart="@dimen/space_horizontal"
+    android:paddingEnd="@dimen/space_horizontal">
 
-    <data>
+    <TextView
+        android:id="@+id/home_item_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@{cost.order}"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="۱" />
 
-        <variable
-            name="cost"
-            type="com.s.karpardaz.home.CostHomeItem" />
-    </data>
+    <TextView
+        android:id="@+id/home_item_subject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:text="@{cost.subject}"
+        android:textSize="16sp"
+        app:fontFamily="@font/iran_sans_medium"
+        app:layout_constraintBaseline_toBaselineOf="@+id/home_item_order"
+        app:layout_constraintEnd_toStartOf="@+id/home_item_order"
+        tools:text="بابت خرید نان" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:paddingStart="@dimen/space_horizontal"
-        android:paddingEnd="@dimen/space_horizontal">
-
-        <TextView
-            android:id="@+id/home_item_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{cost.order}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="۱" />
-
-        <TextView
-            android:id="@+id/home_item_subject"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:text="@{cost.subject}"
-            android:textSize="16sp"
-            app:fontFamily="@font/iran_sans_medium"
-            app:layout_constraintBaseline_toBaselineOf="@+id/home_item_number"
-            app:layout_constraintEnd_toStartOf="@+id/home_item_number"
-            tools:text="بابت خرید نان" />
-
-        <TextView
-            android:id="@+id/home_item_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{cost.amount}"
-            app:fontFamily="@font/iran_sans_medium"
-            app:layout_constraintBaseline_toBaselineOf="@+id/home_item_number"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="۱۵۰/۰۰۰" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+    <TextView
+        android:id="@+id/home_item_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@{cost.amount}"
+        app:fontFamily="@font/iran_sans_medium"
+        app:layout_constraintBaseline_toBaselineOf="@+id/home_item_order"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="۱۵۰/۰۰۰" />
+</androidx.constraintlayout.widget.ConstraintLayout>

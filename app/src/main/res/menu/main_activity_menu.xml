@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/main_bottombar_cost_item"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_vertical_align_top_24"
+        android:title="@string/main_cost_title" />
+
+    <item
+        android:id="@+id/main_bottombar_income_item"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_vertical_align_bottom_24"
+        android:title="@string/main_income_title" />
+
+    <item
+        android:id="@+id/main_bottombar_report_item"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_assignment_24"
+        android:title="@string/main_report_title" />
+
+</menu>

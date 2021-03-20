@@ -1,10 +1,18 @@
 package com.s.karpardaz.base.datasource;
 
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Update;
+
 public interface BaseDao<T> {
 
-    long insert(T obj);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    Long insert(T obj);
 
-    int update(T obj);
+    @Update
+    Integer update(T obj);
 
-    int delete(T obj);
+    @Delete
+    Integer delete(T obj);
 }

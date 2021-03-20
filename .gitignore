@@ -64,3 +64,8 @@ lint/tmp/
 
 # Android Profiling
 *.hprof
+/.settings/
+/.vscode/
+/.vscode/settings.json
+/.vscode/tasks.json
+/.project

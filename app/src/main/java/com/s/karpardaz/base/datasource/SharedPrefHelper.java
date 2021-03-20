@@ -8,7 +8,6 @@ import com.s.karpardaz.KarpardazApplication;
 import java.io.Closeable;
 import java.util.Objects;
 
-import javax.inject.Inject;
 
 
 public final class SharedPrefHelper implements Closeable {
@@ -17,9 +16,10 @@ public final class SharedPrefHelper implements Closeable {
     private static final String BASE_URL_KEY = "BASE_URL";
     private SharedPreferences mPref;
 
-    @Inject
-    SharedPrefHelper(SharedPreferences preferences) {
-        mPref = Objects.requireNonNull(preferences);
+
+    SharedPrefHelper() {
+        mPref = KarpardazApplication.getInstance()
+                .getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }
 
     void open() {

@@ -6,19 +6,46 @@
     <string name="app_name_display">کارپرداز</string>
 
     <string name="main_profile_title">پروفایل</string>
-    <string name="main_report_title">گزارشات</string>
+    <string name="main_report_title">گزارش</string>
     <string name="all_stock_title">تنخواه</string>
+    <string name="all_next_title">بعدی</string>
 
-    <string name="main_cash_title">هزینه ها</string>
+    <string name="main_cost_title">هزینه</string>
+    <string name="main_income_title">درآمد</string>
     <string name="cost_sum_title_coloned">مجموعه هزینه های امروز:</string>
     <string name="last_20_costs_title">۲۰ هزینه آخر</string>
     <string name="profile_title">پروفایل و تنظیمات</string>
-    <string name="all_fund_remaining_title_colonned">باقی مانده تنخواه</string>
+    <string name="all_fund_remaining_title_coloned">باقی مانده تنخواه</string>
     <string name="all_purchased_time_title">کی خریدی؟</string>
     <string name="all_title">عنوان</string>
     <string name="expense_title">چقدر شد؟</string>
     <string name="cost_detail_stock_title">کم شود از:</string>
     <string name="dialog_cost_detail_source_dropdown_title">انتخاب تنخواه</string>
     <string name="all_description_title">ملاحظات</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="intro_desc_one_message">"کارپرداز" چیه؟</string>
+    <string name="intro_desc_two_message">یکی از بهترین راه های مدیریت منابع(زمان، هزینه)، ثبت اونه. اینکه دونست، چقدر، کی، و برای چی خرج شد.
+برای پول هم همین موضوع صدق می کنه. همین که هر دفعه تعداد هزینه ها رو ببینین، متوجه می شین که در طول هفته چه مقادیر زیادی رو برای چیز‌هایی کم ارزش هزینه کردین که شما رو از خرید چیز هایی با ارزش تر دور می کنه.
+از طرفی می تونین ببینین که چقدر از موجودی پول شما باقی مونده.
+\nکارپرداز هم دقیقاً برای مدیریت همین موضوع اومده.</string>
+    <string name="all_home_title">خانه</string>
+    <string name="all_login_title_long">ورود به حساب کاربری</string>
+    <string name="all_login_title_short">ورود</string>
+    <string name="all_register_title_short">نام‌نویسی</string>
+    <string name="all_register_title_long">ساخت حساب جدید</string>
+    <string name="all_enter_email_message">ایمیل خود را وارد نمایید</string>
+    <string name="all_enter_password_message">گذرواژه خود را وارد نمایید</string>
+    <string name="layout_login_password_recovery_title">گذرواژه خود را فراموش کرده اید؟</string>
+    <string name="password_recovery_title">تغییر گذرواژه</string>
+    <string name="all_email_title">ایمیل</string>
+    <string name="password_recovery_message">بمنظور تغییر گذرواژه، ابتدا ایمیل خود را در کادر زیر وارد نمایید وارد نمایید.</string>
+    <string name="register_policy_usage_rules_message">انتخاب گزینه <b>نام‌نویسی</b>، به معنای پذیرش <a href="https://google.com">شرایط استفاده</a> و <a href="https://learntodroid.com">قوانین حریم شخصی</a> از جانب شما می باشد.</string>
+    <string name="all_email_or_password_is_empty">ایمیل یا گذرواژه خالی است.</string>
+    <string name="entry_invalid_email_message">ایمیل اشتباه است. ایمیل باید در این قالب باشد: example@domain.com</string>
+    <string name="long_invalid_password_message">گذرواژه باید بیش از 4 کاراکتر باشد.</string>
+    <string name="all_loading_message">در حال بارگذاری</string>
+    <string name="all_check_network_message">لطفاً دسترسی اینترنت خود را بررسی نموده، سپس دوباره تلاش نمایید.</string>
+    <string name="all_check_value_message">مقادیر ورودی را بررسی، و دوباره امتحان نمایید.</string>
 
 </resources>

@@ -22,4 +22,9 @@ public final class SnackbarUtil {
             Snackbar.make(v, textResId, Snackbar.LENGTH_SHORT).show();
     }
 
+    public static void showLongSnackbar(final View v, @StringRes final int textResId) {
+        if (v != null)
+            Snackbar.make(v, textResId, Snackbar.LENGTH_LONG).show();
+    }
+
 }

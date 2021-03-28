@@ -20,6 +20,9 @@ import com.s.karpardaz.base.ui.BaseDialogFragment;
 import com.s.karpardaz.base.ui.BaseInteractionListener;
 import com.s.karpardaz.databinding.FragmentEntryBinding;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class EntryDialogFragment extends BaseDialogFragment<EntryDialogFragment.OnEntryFragmentInteractionListener,
         FragmentEntryBinding> {
 
@@ -66,7 +69,8 @@ public class EntryDialogFragment extends BaseDialogFragment<EntryDialogFragment.
         getBinding().fragmentEntryTab.setTabRippleColorResource(R.color.colorPrimaryLight);
 
         new TabLayoutMediator(getBinding().fragmentEntryTab, getBinding().fragmentEntryPager,
-                (tab, position) -> tab.setText(adapter.getPageTitle(position))).attach();
+                (tab, position) -> tab.setText(adapter.getPageTitle(position)))
+                .attach();
         getBinding().fragmentEntryPager.setCurrentItem(adapter.getItemCount() - 1);
     }
 
@@ -77,8 +81,8 @@ public class EntryDialogFragment extends BaseDialogFragment<EntryDialogFragment.
         public ViewPagerAdapter(@NonNull Fragment fragment) {
             super(fragment);
             fragments = new KTab[]{
-                    new KTab(RegisterFragment.newInstance(), R.string.all_register_title_long),
-                    new KTab(LoginFragment.newInstance(), R.string.all_login_title_long)
+                    new KTab(RegisterFragment.newInstance(), R.string.all_register_title_long, RegisterFragment.TAG),
+                    new KTab(LoginFragment.newInstance(), R.string.all_login_title_long, LoginFragment.TAG)
             };
             context = fragment.getContext();
         }

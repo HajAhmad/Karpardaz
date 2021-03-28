@@ -1,4 +1,4 @@
-package com.s.karpardaz.base.di.remote;
+package com.s.karpardaz.base.di;
 
 import java.net.HttpURLConnection;
 

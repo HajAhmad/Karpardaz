@@ -6,13 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import java.util.Objects;
+import static java.util.Objects.requireNonNull;
 
-public abstract class BaseDialogFragment<L extends BaseInteractionListener, V> extends DialogFragment {
+public abstract class BaseDialogFragment<L extends BaseInteractionListener, V>
+        extends DialogFragment {
 
     private Context mContext;
     @Nullable
@@ -41,26 +43,27 @@ public abstract class BaseDialogFragment<L extends BaseInteractionListener, V> e
     }
 
     public void setInteractionListener(@NonNull L listener) {
-        mListener = Objects.requireNonNull(listener);
+        mListener = requireNonNull(listener);
     }
 
-    private void clearReferences() {
+    @CallSuper
+    protected void clearReferences() {
         mListener = null;
         mContext = null;
         mBinding = null;
     }
 
-    protected Context getCtx(){
+    protected Context getCtx() {
         return mContext;
     }
 
     protected L getListener() {
-        Objects.requireNonNull(mListener, "Listener is NOT set in this context.");
+        requireNonNull(mListener, "Listener has not been set in this context.");
         return mListener;
     }
 
     protected void setBinding(@NonNull V binding) {
-        mBinding = Objects.requireNonNull(binding);
+        mBinding = requireNonNull(binding);
     }
 
     protected V getBinding() {

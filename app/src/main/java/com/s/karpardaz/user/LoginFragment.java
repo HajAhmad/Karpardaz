@@ -11,25 +11,27 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.s.karpardaz.R;
 import com.s.karpardaz.base.ui.BaseBindingFragment;
+import com.s.karpardaz.base.util.view.SnackbarUtil;
 import com.s.karpardaz.databinding.LayoutLoginBinding;
-import com.s.karpardaz.main.MainActivity;
+
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.s.karpardaz.base.util.view.SnackbarUtil.showSnackbar;
 
+@AndroidEntryPoint
 public class LoginFragment extends BaseBindingFragment<OnLoginInteractionListener,
-        LayoutLoginBinding> {
+        LayoutLoginBinding> implements LoginContract.View {
 
-    private UserViewModel mVm;
+    public static final String TAG = LoginFragment.class.getSimpleName();
 
     public static LoginFragment newInstance() {
         return new LoginFragment();
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mVm = MainActivity.obtainUserViewModel(getActivity());
-    }
+    @Inject
+    LoginContract.Presenter mPresenter;
 
     @Nullable
     @Override
@@ -48,28 +50,42 @@ public class LoginFragment extends BaseBindingFragment<OnLoginInteractionListene
     }
 
     private void recoverPassword() {
-        final View rootView = LayoutInflater.from(getCtx())
+        final View dialogView = LayoutInflater.from(getCtx())
                 .inflate(R.layout.layout_password_recovery, null, false);
         new AlertDialog.Builder(getCtx())
-                .setView(rootView).create().show();
+                .setView(dialogView).create().show();
+        dialogView.findViewById(R.id.layout_password_recovery_action).setOnClickListener(v -> {
+            dialogView.findViewById(R.id.layout_password_recovery_input);
+            mPresenter.recoverPassword();
+        });
     }
 
     private void login() {
         if (getBinding().layoutLoginEmailInput.getText() != null &&
                 getBinding().layoutLoginPasswordInput.getText() != null) {
-            if (mVm.isEmailInvalid(getBinding().layoutLoginEmailInput.getText().toString())) {
-                showSnackbar(getBinding().getRoot(), R.string.entry_invalid_email_message);
-            } else if (mVm.isPasswordInvalid(getBinding().layoutLoginPasswordInput.getText().toString())) {
-                showSnackbar(getBinding().getRoot(), R.string.long_invalid_password_message);
-            } else {
-                mVm.login(getBinding().layoutLoginEmailInput.getText().toString(),
-                        getBinding().layoutLoginPasswordInput.getText().toString()
-                );
-            }
+            String email = getBinding().layoutLoginEmailInput.getText().toString();
+            String password = getBinding().layoutLoginPasswordInput.getText().toString();
+            mPresenter.login(email, password);
+
         } else {
             showSnackbar(getBinding().getRoot(), R.string.all_email_or_password_is_empty);
         }
     }
 
+
+    @Override
+    public void showInvalidEmailError() {
+        SnackbarUtil.showSnackbar(getBinding().getRoot(), R.string.all_invalid_user_information_message);
+    }
+
+    @Override
+    public void showInvalidPasswordError() {
+        getBinding().layoutLoginPasswordInput.setText("");
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
 }
 

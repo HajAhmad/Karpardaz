@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import com.s.karpardaz.KarpardazApplication;
 
 import java.io.Closeable;
-import java.util.Objects;
-
 
 
 public final class SharedPrefHelper implements Closeable {

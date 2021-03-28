@@ -1,4 +1,4 @@
-package com.s.karpardaz.base.datasource;
+package com.s.karpardaz.base.data;
 
 import androidx.room.Delete;
 import androidx.room.Insert;

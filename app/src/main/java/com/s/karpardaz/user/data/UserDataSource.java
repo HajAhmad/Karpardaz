@@ -1,16 +1,16 @@
 package com.s.karpardaz.user.data;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
 
 import com.s.karpardaz.base.BaseCallback;
 import com.s.karpardaz.user.model.Login;
 import com.s.karpardaz.user.model.User;
 
+import io.reactivex.rxjava3.core.Maybe;
+
 public interface UserDataSource {
 
-    void getLoggedInUser();
+    Maybe<Login> getLoggedInUser();
 
     void getUser(@NonNull final String uuid);
 
@@ -26,11 +26,16 @@ public interface UserDataSource {
 
     void deleteLogin(@NonNull final Login login);
 
-    void login(@NonNull String email, @NonNull String password);
+    void login(@NonNull final String loginPhrase,
+            @NonNull final LoginCallback loginCallback);
 
-    LiveData<String> register(@Nullable String name,
-            @NonNull String email,
-            @NonNull String password,
-            @NonNull String currentDateTime);
+    void register(@NonNull User user, @NonNull RegisterCallback callback);
 
+    interface RegisterCallback extends BaseCallback<String> {
+        void userExists();
+    }
+
+    interface LoginCallback extends BaseCallback<String> {
+        void informationNotFound();
+    }
 }

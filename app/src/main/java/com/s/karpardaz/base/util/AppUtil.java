@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,6 +15,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
+
+import retrofit2.Response;
 
 public final class AppUtil {
 
@@ -50,17 +53,40 @@ public final class AppUtil {
         return true;
     }
 
-    public static boolean isEmailValid(String email) {
-        return Pattern.compile(
+    public static boolean isEmailInvalid(String email) {
+        return !Pattern.compile(
                 "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$", Pattern.CASE_INSENSITIVE)
                 .matcher(email)
                 .matches();
+    }
+
+    public static boolean isPasswordInvalid(String password){
+        return password.length() < 4;
     }
 
     public static boolean inNetworkAvailable(Context context) {
         NetworkInfo activeNetworkInfo = ((ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+
+    public static Throwable produceNetworkException(Response<?> response) {
+        if (response.errorBody() != null) {
+            try {
+                return new Throwable(String.format(Locale.ENGLISH, "%d: %s.",
+                        response.code(),
+                        response.errorBody().string()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return new Throwable("Not implemented Error.");
+    }
+
+    public static String composeLoginPhrase(String email, String password) {
+        String loginPhrase = email.concat(":").concat(password);
+        return String.valueOf(loginPhrase.hashCode());
     }
 
 }

@@ -10,7 +10,8 @@ android {
         targetSdkVersion rootProject._target_sdk_version
         versionCode rootProject._version_code
         versionName rootProject._version_name
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        testInstrumentationRunner "com.s.karpardaz.HiltTestRunner"
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -53,16 +54,20 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //************************* App Libraries ******************************************************
-	
+
     // Android
     implementation "androidx.appcompat:appcompat:$_app_compat_version"
     implementation "androidx.constraintlayout:constraintlayout:$_constraint_layout_version"
     implementation "com.google.android.material:material:$_material_version"
 
+    implementation "io.reactivex.rxjava3:rxjava:$_rx_java_version"
+    implementation "io.reactivex.rxjava3:rxandroid:$_rx_android_version"
+
     // Room
     implementation "androidx.room:room-runtime:$_room_library_version"
     annotationProcessor "androidx.room:room-compiler:$_room_library_version"
     testImplementation "androidx.room:room-testing:$_room_library_version"
+    implementation "androidx.room:room-rxjava3:$_room_library_version"
     androidTestImplementation "androidx.room:room-testing:$_room_library_version"
 
     implementation "com.squareup.retrofit2:retrofit:$_retrofit_version"
@@ -72,8 +77,19 @@ dependencies {
 
     implementation "com.google.dagger:hilt-android:$_hilt_version"
     annotationProcessor "com.google.dagger:hilt-android-compiler:$_hilt_version"
+    testImplementation "com.google.dagger:hilt-android-testing:$_hilt_version"
+    testAnnotationProcessor "com.google.dagger:hilt-android-compiler:$_hilt_version"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$_hilt_version"
+    androidTestAnnotationProcessor "com.google.dagger:hilt-android-compiler:$_hilt_version"
 
     implementation "joda-time:joda-time:$_joda_version"
 
     implementation "ir.huri:JalaliCalendar:$_jalali_calendar_version"
+
+    testImplementation "junit:junit:$_junit_version"
+    androidTestImplementation "junit:junit:$_junit_version"
+    androidTestImplementation "androidx.test.ext:junit:1.1.2"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$_espresso_core_version"
+
+    
 }

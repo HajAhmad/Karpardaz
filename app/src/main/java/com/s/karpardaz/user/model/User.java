@@ -24,7 +24,7 @@ public class User extends BaseEntity {
     }
 
     @Ignore
-    public User(String name, String email, String password, String createdAt, String updatedAt) {
+    public User(String name, String email, String password, String createdAt) {
         this(0, "", name, email, password, createdAt, null);
     }
 
@@ -32,11 +32,9 @@ public class User extends BaseEntity {
         return email;
     }
 
-
     public String getName() {
         return name;
     }
-
 
     public String getPassword() {
         return password;

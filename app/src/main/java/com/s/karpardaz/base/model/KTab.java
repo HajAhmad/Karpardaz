@@ -7,10 +7,16 @@ public class KTab {
     private final Fragment fragment;
     @StringRes
     private final int titleResId;
+    private final String tag;
 
-    public KTab(Fragment fragment, @StringRes int titleResId) {
+    public KTab(Fragment fragment, @StringRes int titleResId, String tag) {
         this.fragment = fragment;
         this.titleResId = titleResId;
+        this.tag = tag;
+    }
+
+    public String getTag() {
+        return tag;
     }
 
     public Fragment getFragment() {

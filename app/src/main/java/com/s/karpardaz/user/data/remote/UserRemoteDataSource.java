@@ -1,22 +1,25 @@
 package com.s.karpardaz.user.data.remote;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.s.karpardaz.base.BaseCallback;
+import com.s.karpardaz.base.NotImplementedException;
 import com.s.karpardaz.user.data.UserDataSource;
 import com.s.karpardaz.user.model.Login;
 import com.s.karpardaz.user.model.User;
 
+import java.net.HttpURLConnection;
+
+import javax.inject.Inject;
+
+import io.reactivex.rxjava3.core.Maybe;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.internal.EverythingIsNonNull;
 
-import static com.s.karpardaz.base.di.remote.NetworkUtil.isAuthenticationError;
-import static com.s.karpardaz.base.di.remote.NetworkUtil.isResponseValid;
+import static com.s.karpardaz.base.di.NetworkUtil.isResponseValid;
+import static com.s.karpardaz.base.util.AppUtil.produceNetworkException;
 import static java.util.Objects.requireNonNull;
 
 @EverythingIsNonNull
@@ -24,13 +27,14 @@ public class UserRemoteDataSource implements UserDataSource {
 
     private final UserService mUserService;
 
-    public UserRemoteDataSource(@NonNull UserService service) {
+    @Inject
+    UserRemoteDataSource(@NonNull UserService service) {
         mUserService = requireNonNull(service);
     }
 
     @Override
-    public void getLoggedInUser() {
-
+    public Maybe<Login> getLoggedInUser() {
+        throw new NotImplementedException();
     }
 
     @Override
@@ -50,7 +54,7 @@ public class UserRemoteDataSource implements UserDataSource {
 
     @Override
     public void insertUser(@NonNull User user, @NonNull BaseCallback<String> callback) {
-
+        throw new NotImplementedException();
     }
 
     @Override
@@ -70,33 +74,46 @@ public class UserRemoteDataSource implements UserDataSource {
     }
 
     @Override
-    public void login(@NonNull String email, @NonNull String password) {
+    public void login(@NonNull String loginPhrase, @NonNull LoginCallback callback) {
+        requireNonNull(loginPhrase);
+        requireNonNull(callback);
 
-    }
-
-    @Override
-    public LiveData<String> register(@Nullable String name, @NonNull String email, @NonNull String password,
-            @NonNull String currentDateTime) {
-        final MutableLiveData<String> liveData = new MutableLiveData<>();
-        mUserService.register(new User(0, "", name, email, password,
-                currentDateTime, currentDateTime)).enqueue(new Callback<String>() {
+        mUserService.login(loginPhrase).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-
-                if (isAuthenticationError(response.code())){
-                } else if (isResponseValid(response)){
-
-                }
+                if (isResponseValid(response)) callback.onSuccess(response.body());
+                else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND)
+                    callback.informationNotFound();
+                else
+                    callback.onFailure(new Throwable("خطای ناشناخته:".concat(String.valueOf(response.code()))));
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
+                callback.onFailure(t);
             }
         });
-        return null;
     }
 
+    @Override
+    public void register(@NonNull User user, @NonNull RegisterCallback callback) {
+        requireNonNull(user);
+        requireNonNull(callback);
+        mUserService.register(user).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (isResponseValid(response))
+                    callback.onSuccess(response.body());
+                else
+                    callback.onFailure(produceNetworkException(response));
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
 
 
 }

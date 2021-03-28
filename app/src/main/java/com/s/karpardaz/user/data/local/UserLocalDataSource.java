@@ -1,8 +1,6 @@
 package com.s.karpardaz.user.data.local;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
 
 import com.s.karpardaz.base.BaseCallback;
 import com.s.karpardaz.base.NotImplementedException;
@@ -11,40 +9,31 @@ import com.s.karpardaz.user.data.UserDataSource;
 import com.s.karpardaz.user.model.Login;
 import com.s.karpardaz.user.model.User;
 
+import javax.inject.Inject;
+
+import io.reactivex.rxjava3.core.Maybe;
+
 import static java.util.Objects.requireNonNull;
 
 public class UserLocalDataSource implements UserDataSource {
 
-    private static volatile UserLocalDataSource sInstance;
-
-    private final AppExecutors mExecutor;
-
     private final UserDao mUserDao;
     private final LoginDao mLoginDao;
 
-    private UserLocalDataSource(@NonNull UserDao userDao, @NonNull LoginDao loginDao,
+    private final AppExecutors mExecutor;
+
+    @Inject
+    UserLocalDataSource(@NonNull UserDao userDao, @NonNull LoginDao loginDao,
             @NonNull AppExecutors executors) {
-        this.mUserDao = requireNonNull(userDao);
+        mUserDao = requireNonNull(userDao);
         mLoginDao = requireNonNull(loginDao);
         mExecutor = requireNonNull(executors);
     }
 
-    public static UserLocalDataSource getInstance(@NonNull UserDao userDao,
-            @NonNull LoginDao loginDao,
-            @NonNull AppExecutors executors) {
-        if (sInstance == null) {
-            synchronized (UserLocalDataSource.class) {
-                if (sInstance == null) {
-                    sInstance = new UserLocalDataSource(userDao, loginDao, executors);
-                }
-            }
-        }
-        return sInstance;
-    }
 
     @Override
-    public void getLoggedInUser() {
-        mLoginDao.get();
+    public Maybe<Login> getLoggedInUser() {
+        return mLoginDao.get();
     }
 
     @Override
@@ -73,14 +62,17 @@ public class UserLocalDataSource implements UserDataSource {
                 callback.onSuccess(uuid);
                 return;
             }
-            callback.onFailure();
+            callback.onFailure(new Throwable("Data Not Saved."));
         });
     }
 
     @Override
     public void insertLogin(@NonNull Login login,
             @NonNull BaseCallback<String> callback) {
-        mLoginDao.insert(login);
+        //TODO: handle login insertion properly
+        mExecutor.getDiskIo().execute(() -> {
+            mLoginDao.insert(login);
+        });
     }
 
     @Override
@@ -94,15 +86,14 @@ public class UserLocalDataSource implements UserDataSource {
     }
 
     @Override
-    public void login(@NonNull String email, @NonNull String password) {
+    public void login(@NonNull String loginPhrase,
+            @NonNull LoginCallback loginCallback) {
 
     }
 
     @Override
-    public LiveData<String> register(@Nullable String name,
-            @NonNull String email,
-            @NonNull String password,
-            @NonNull String currentDateTime) {
+    public void register(@NonNull User user, @NonNull RegisterCallback callback) {
         throw new NotImplementedException();
     }
+
 }

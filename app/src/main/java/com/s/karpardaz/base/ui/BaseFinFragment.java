@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.s.karpardaz.databinding.FragmentFinListBinding;
 
-public abstract class BaseFinFragment<L extends OnFinFragmentInteractionListener> extends
+public abstract class BaseFinFragment<L> extends
         BaseBindingFragment<L, FragmentFinListBinding> {
 
 

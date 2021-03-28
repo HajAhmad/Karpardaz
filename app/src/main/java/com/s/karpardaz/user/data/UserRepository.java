@@ -1,42 +1,34 @@
 package com.s.karpardaz.user.data;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
 
 import com.s.karpardaz.base.BaseCallback;
+import com.s.karpardaz.base.di.scope.Local;
+import com.s.karpardaz.base.di.scope.Remote;
 import com.s.karpardaz.user.model.Login;
 import com.s.karpardaz.user.model.User;
 
-import java.util.Objects;
+import javax.inject.Inject;
+
+import io.reactivex.rxjava3.core.Maybe;
+
+import static java.util.Objects.requireNonNull;
 
 public class UserRepository implements UserDataSource {
 
     private final UserDataSource mLocalDataSource;
     private final UserDataSource mRemoteDataSource;
 
-    private UserRepository(@NonNull UserDataSource localDataSource,
-            @NonNull UserDataSource remoteDataSource) {
-        this.mLocalDataSource = Objects.requireNonNull(localDataSource);
-        this.mRemoteDataSource = Objects.requireNonNull(remoteDataSource);
-    }
-
-    private volatile static UserRepository sInstance;
-
-    public static UserRepository getInstance(UserDataSource localDataSource,
-            UserDataSource remoteDataSource) {
-        if (sInstance == null) {
-            synchronized (UserRepository.class) {
-                if (sInstance == null)
-                    sInstance = new UserRepository(localDataSource, remoteDataSource);
-            }
-        }
-        return sInstance;
+    @Inject
+    public UserRepository(@NonNull @Local UserDataSource localDataSource,
+            @NonNull @Remote UserDataSource remoteDataSource) {
+        this.mLocalDataSource = requireNonNull(localDataSource);
+        this.mRemoteDataSource = requireNonNull(remoteDataSource);
     }
 
     @Override
-    public void getLoggedInUser() {
-        mLocalDataSource.getLoggedInUser();
+    public Maybe<Login> getLoggedInUser() {
+        return mLocalDataSource.getLoggedInUser();
     }
 
     @Override
@@ -60,9 +52,10 @@ public class UserRepository implements UserDataSource {
     }
 
     @Override
-    public void insertLogin(@NonNull Login login,
-            @NonNull BaseCallback<String> callback) {
-
+    public void insertLogin(@NonNull Login login, @NonNull BaseCallback<String> callback) {
+        requireNonNull(login);
+        requireNonNull(callback);
+        mLocalDataSource.insertLogin(login, callback);
     }
 
     @Override
@@ -76,16 +69,17 @@ public class UserRepository implements UserDataSource {
     }
 
     @Override
-    public void login(@NonNull String email, @NonNull String password) {
+    public void login(@NonNull String loginPhrase,
+            @NonNull LoginCallback loginCallback) {
+        requireNonNull(loginPhrase);
+        requireNonNull(loginCallback);
 
+        mRemoteDataSource.login(loginPhrase, loginCallback);
     }
 
     @Override
-    public LiveData<String> register(@Nullable String name,
-            @NonNull String email,
-            @NonNull String password,
-            @NonNull String currentDateTime) {
-        mRemoteDataSource.register(name, email, password, currentDateTime);
-        return null;
+    public void register(@NonNull User user, @NonNull RegisterCallback callback) {
+        mRemoteDataSource.register(requireNonNull(user), requireNonNull(callback));
     }
+
 }

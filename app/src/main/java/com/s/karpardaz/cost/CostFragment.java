@@ -1,7 +1,6 @@
 package com.s.karpardaz.cost;
 
 import com.s.karpardaz.base.ui.BaseFinFragment;
-import com.s.karpardaz.base.ui.OnFinFragmentInteractionListener;
 
 public class CostFragment extends BaseFinFragment<CostFragment.OnCostListFragmentInteractionListener> {
 
@@ -11,8 +10,8 @@ public class CostFragment extends BaseFinFragment<CostFragment.OnCostListFragmen
         return new CostFragment();
     }
 
-    public interface OnCostListFragmentInteractionListener extends OnFinFragmentInteractionListener {
-        
+    public interface OnCostListFragmentInteractionListener {
+        void openAddCostDialog();
     }
 
 }

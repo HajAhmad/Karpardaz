@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Objects;
 
+import static com.s.karpardaz.base.util.view.SnackbarUtil.showSnackbar;
+
 
 public abstract class BaseActivity<V> extends AppCompatActivity {
 
@@ -24,7 +26,11 @@ public abstract class BaseActivity<V> extends AppCompatActivity {
         clearReferences();
     }
 
-    private void clearReferences(){
+    protected void SnackbarMessage(String value) {
+        showSnackbar(getBinding().getRoot(), value);
+    }
+
+    protected void clearReferences(){
         mBinding = null;
     }
 

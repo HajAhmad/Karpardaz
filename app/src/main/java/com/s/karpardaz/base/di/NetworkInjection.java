@@ -1,4 +1,4 @@
-package com.s.karpardaz.base.di.remote;
+package com.s.karpardaz.base.di;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -11,9 +11,9 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public final class NetworkInjection {
+public abstract class NetworkInjection {
 
-    private static final String BASE_URL = "";
+    private static final String BASE_URL = "https://localhost:5001/api/";
     private static final int TIMEOUT_IN_SECONDS = 30;
 
     private NetworkInjection() {}
@@ -28,7 +28,8 @@ public final class NetworkInjection {
         return new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
     }
 
-    private static OkHttpClient providesOkHttpClient(HttpLoggingInterceptor httpLoggingInterceptor) {
+    private static OkHttpClient providesOkHttpClient(
+            HttpLoggingInterceptor httpLoggingInterceptor) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
                 .readTimeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)

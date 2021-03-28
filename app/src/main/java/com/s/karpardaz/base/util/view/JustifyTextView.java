@@ -1,4 +1,4 @@
-package com.s.karpardaz.base.util;
+package com.s.karpardaz.base.util.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

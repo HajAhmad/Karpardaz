@@ -40,4 +40,13 @@ public class Login {
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
+
+    @Override
+    public String toString() {
+        return "Login{" +
+                "id=" + id +
+                ", userId='" + userId + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                '}';
+    }
 }

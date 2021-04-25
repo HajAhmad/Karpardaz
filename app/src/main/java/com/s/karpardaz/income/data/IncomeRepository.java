@@ -10,10 +10,10 @@ import java.util.Objects;
 
 public class IncomeRepository implements IncomeDataSource {
 
-    private final IncomeDataSource mLocalDataSource;
+    private final IncomeDao mDao;
 
-    public IncomeRepository(@NonNull IncomeLocalDataSource localDataSource) {
-        mLocalDataSource = Objects.requireNonNull(localDataSource);
+    public IncomeRepository(@NonNull IncomeDao dao) {
+        mDao= Objects.requireNonNull(dao);
     }
 
     @Override

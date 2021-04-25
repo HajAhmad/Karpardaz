@@ -6,8 +6,4 @@ public interface BasePresenterContract<V> {
 
     void dropView();
 
-    default void start() {
-        throw new NotImplementedException();
-    }
-
 }

@@ -10,8 +10,8 @@ import androidx.annotation.Nullable;
 
 import com.s.karpardaz.databinding.FragmentFinListBinding;
 
-public abstract class BaseFinFragment<L> extends
-        BaseBindingFragment<L, FragmentFinListBinding> {
+public abstract class BaseFinFragment<L extends BaseInteractionListener> extends
+    BaseFragment<L, FragmentFinListBinding> {
 
 
     @Override
@@ -23,7 +23,7 @@ public abstract class BaseFinFragment<L> extends
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+        @Nullable Bundle savedInstanceState) {
         setBinding(FragmentFinListBinding.inflate(inflater, container, false));
         return getBinding().getRoot();
     }
@@ -41,7 +41,6 @@ public abstract class BaseFinFragment<L> extends
     }
 
     private void initList() {
-        getBinding().fragmentCostListAddAction.setOnClickListener(v -> getListener().openAddFinDialog(this));
     }
 
     private void setTodayTotalCost() {

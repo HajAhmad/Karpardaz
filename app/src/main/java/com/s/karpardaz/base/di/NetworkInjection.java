@@ -11,9 +11,10 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.s.karpardaz.base.util.AppConstants.API_URL;
+
 public abstract class NetworkInjection {
 
-    private static final String BASE_URL = "https://localhost:5001/api/";
     private static final int TIMEOUT_IN_SECONDS = 30;
 
     private NetworkInjection() {}
@@ -51,7 +52,7 @@ public abstract class NetworkInjection {
             synchronized (NetworkInjection.class) {
                 if (sRetrofit == null) {
                     sRetrofit = new Retrofit.Builder()
-                            .baseUrl(BASE_URL)
+                            .baseUrl(API_URL)
                             .addConverterFactory(GsonConverterFactory.create(gson))
                             .client(httpClient)
                             .build();

@@ -4,33 +4,37 @@ import androidx.annotation.NonNull;
 
 import com.s.karpardaz.base.BasePresenter;
 import com.s.karpardaz.base.util.AppConstants;
-import com.s.karpardaz.user.data.UserDataSource;
-
-import java.util.Objects;
+import com.s.karpardaz.user.data.LoginDataSource;
 
 import javax.inject.Inject;
+
+import static java.util.Objects.requireNonNull;
 
 public class MainPresenter extends BasePresenter<MainContract.View>
         implements MainContract.Presenter {
 
     public static final String TAG = MainPresenter.class.getSimpleName();
 
-    private final UserDataSource mUserRepository;
+    private final LoginDataSource mLoginRepository;
 
     @Inject
-    public MainPresenter(@NonNull UserDataSource repository) {
-        mUserRepository = Objects.requireNonNull(repository);
+    public MainPresenter(@NonNull LoginDataSource repository) {
+        mLoginRepository = requireNonNull(repository);
     }
 
     @Override
     public void isUserAvailable() {
-        addMaybe(mUserRepository.getLoggedInUser(),
+        getView().showProgress();
+        addMaybe(mLoginRepository.getLoggedInUser(),
                 user -> {
                     AppConstants.sActiveUserId = user.getUserId();
                     getView().proceed();
+                    getView().hideProgress();
                 },
-                () -> getView().showEntranceDialog());
-
+                () -> {
+                    getView().showEntranceDialog();
+                    getView().hideProgress();
+                });
     }
 
 }

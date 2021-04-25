@@ -23,6 +23,7 @@ public final class AppUtil {
     public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss.SSS";
     public static final TimeZone DEFAULT_TIME_ZONE;
     public static final Locale DEFAULT_LOCALE;
+    private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 
     static {
         DEFAULT_TIME_ZONE = TimeZone.getTimeZone("GMT");
@@ -54,8 +55,9 @@ public final class AppUtil {
     }
 
     public static boolean isEmailInvalid(String email) {
-        return !Pattern.compile(
-                "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$", Pattern.CASE_INSENSITIVE)
+        if (TextUtils.isEmpty(email.trim()))
+            return true;
+        return !Pattern.compile(EMAIL_REGEX)
                 .matcher(email)
                 .matches();
     }

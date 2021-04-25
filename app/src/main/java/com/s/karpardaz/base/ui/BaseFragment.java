@@ -6,21 +6,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
+import androidx.viewbinding.ViewBinding;
+
+import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
+public abstract class BaseFragment<L extends BaseInteractionListener, V extends ViewBinding> extends Fragment
+    implements Progress {
 
-public abstract class BaseFragment<L> extends Fragment implements Progress {
-
-    private View mRootView;
     private Context mContext;
     @Nullable
     private L mListener;
+    private V mBinding;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -28,46 +29,23 @@ public abstract class BaseFragment<L> extends Fragment implements Progress {
         mContext = context;
     }
 
-    @LayoutRes
-    protected abstract int getLayout();
-
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(getLayout(), container, false);
-    }
+    public abstract View onCreateView(@NonNull LayoutInflater inflater,
+        @Nullable ViewGroup container,
+        @Nullable Bundle savedInstanceState);
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        mRootView = view;
+    public final void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        onViewCreated(savedInstanceState);
     }
+
+    protected abstract void onViewCreated(@Nullable Bundle savedInstanceState);
 
     @Override
     public void onStop() {
         super.onStop();
         clearReferences();
-    }
-
-    @Override
-    public void showProgress(@Nullable String message) {
-        ProgressDialog.getInstance(mContext).setMessage(message).show();
-    }
-
-    @Override
-    public void showProgress(@StringRes int stringResId) {
-        ProgressDialog.getInstance(mContext).setMessage(stringResId).show();
-    }
-
-    @Override
-    public void hideProgress() {
-        ProgressDialog.getInstance(mContext).dismiss();
-    }
-
-    protected View getRootView() {
-        return mRootView;
     }
 
     protected Context getCtx() {
@@ -78,15 +56,43 @@ public abstract class BaseFragment<L> extends Fragment implements Progress {
         mListener = listener;
     }
 
-    protected void clearReferences() {
-        mListener = null;
-        mContext = null;
-        mRootView = null;
-    }
-
     @NonNull
     protected L getListener() {
         return requireNonNull(mListener, "Listener is NOT set in this context.");
+    }
+
+    protected void setBinding(@NonNull V binding) {
+        mBinding = Objects.requireNonNull(binding);
+    }
+
+    @NonNull
+    protected V getBinding() {
+        return mBinding;
+    }
+
+    protected View getRoot() {
+        return mBinding.getRoot();
+    }
+
+    protected void clearReferences() {
+        mListener = null;
+        mContext = null;
+        mBinding = null;
+    }
+
+    @Override
+    public void showProgress(int stringResId) {
+        mListener.showProgress(stringResId);
+    }
+
+    @Override
+    public void showProgress(@NonNull String message) {
+        mListener.showProgress(message);
+    }
+
+    @Override
+    public void hideProgress() {
+        mListener.hideProgress();
     }
 
 }

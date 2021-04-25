@@ -6,8 +6,8 @@ import com.s.karpardaz.base.datasource.KarpardazDatabase;
 import com.s.karpardaz.cost.data.CostDao;
 import com.s.karpardaz.income.data.IncomeDao;
 import com.s.karpardaz.stock.data.StockDao;
-import com.s.karpardaz.user.data.local.LoginDao;
-import com.s.karpardaz.user.data.local.UserDao;
+import com.s.karpardaz.user.data.LoginDao;
+import com.s.karpardaz.user.data.UserDao;
 
 import javax.inject.Singleton;
 

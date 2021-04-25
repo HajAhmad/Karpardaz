@@ -1,24 +1,20 @@
 package com.s.karpardaz.base.ui;
 
-import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewbinding.ViewBinding;
 
 import java.util.Objects;
 
-import static com.s.karpardaz.base.util.view.SnackbarUtil.showSnackbar;
 
-
-public abstract class BaseActivity<V> extends AppCompatActivity {
+public abstract class BaseActivity<V extends ViewBinding> extends AppCompatActivity implements
+    Progress {
 
     private V mBinding;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onDestroy() {
@@ -26,20 +22,45 @@ public abstract class BaseActivity<V> extends AppCompatActivity {
         clearReferences();
     }
 
-    protected void SnackbarMessage(String value) {
-        showSnackbar(getBinding().getRoot(), value);
+    @Override
+    public void showProgress(int stringResId) {
+        showProgress(getString(stringResId));
     }
 
-    protected void clearReferences(){
+    @Override
+    public void showProgress(@NonNull String message) {
+        if (mProgressDialog == null)
+            mProgressDialog = new ProgressDialog(this);
+
+        mProgressDialog.setMessage(message);
+
+        if (!mProgressDialog.isShowing())
+            mProgressDialog.show();
+    }
+
+    @Override
+    public void hideProgress() {
+        if (mProgressDialog != null && mProgressDialog.isShowing())
+            mProgressDialog.dismiss();
+        mProgressDialog = null;
+    }
+
+    protected void clearReferences() {
         mBinding = null;
+        mProgressDialog = null;
     }
 
     protected void setBinding(@NonNull V binding) {
         mBinding = Objects.requireNonNull(binding);
     }
 
+    protected View getRoot() {
+        return mBinding.getRoot();
+    }
+
     protected V getBinding() {
         return mBinding;
     }
+
 }
 

@@ -5,74 +5,85 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.s.karpardaz.KarpardazApplication;
 import com.s.karpardaz.base.BaseCallback;
 import com.s.karpardaz.base.BasePresenter;
 import com.s.karpardaz.base.util.AppUtil;
+import com.s.karpardaz.user.data.LoginDataSource;
 import com.s.karpardaz.user.data.UserDataSource;
 import com.s.karpardaz.user.model.Login;
 import com.s.karpardaz.user.model.User;
-
-import java.util.Objects;
 
 import javax.inject.Inject;
 
 import static com.s.karpardaz.base.util.AppUtil.composeLoginPhrase;
 import static com.s.karpardaz.base.util.AppUtil.getCurrentDateTimeUTC;
+import static java.util.Objects.requireNonNull;
 
 public class RegisterPresenter extends BasePresenter<RegisterContract.View> implements
-        RegisterContract.Presenter {
+    RegisterContract.Presenter {
 
-    private final UserDataSource mRepository;
+    private final UserDataSource mUserRepository;
+    private final LoginDataSource mLoginRepository;
 
     @Inject
-    RegisterPresenter(@NonNull UserDataSource repository) {
-        mRepository = Objects.requireNonNull(repository);
+    RegisterPresenter(@NonNull UserDataSource repository,
+        @NonNull LoginDataSource loginRepository) {
+        mUserRepository = requireNonNull(repository);
+        mLoginRepository = requireNonNull(loginRepository);
     }
 
     @Override
     public void register(@Nullable String name, String email, String password) {
         if (AppUtil.isEmailInvalid(email)) {
+            String s = "qf2efknel";
             getView().showInvalidEmailError();
         } else if (AppUtil.isPasswordInvalid(password)) {
             getView().showInvalidPasswordError();
         } else {
-
-            if (AppUtil.inNetworkAvailable(KarpardazApplication.getInstance())) {
+//            if (AppUtil.inNetworkAvailable(KarpardazApplication.getInstance())) {
                 if (TextUtils.isEmpty(name))
                     name = email.split("@")[0];
+
                 password = composeLoginPhrase(email, password);
-                User user = new User(name, email, password, getCurrentDateTimeUTC());
-                mRepository.register(user, new UserDataSource.RegisterCallback() {
+
+                User user = new User(name, email, password,
+                    getCurrentDateTimeUTC());
+
+                getView().showProgress();
+                mUserRepository.register(user, new UserDataSource.RegisterCallback() {
                     @Override
                     public void onSuccess(String result) {
-                        mRepository.insertLogin(new Login(result, getCurrentDateTimeUTC()),
-                                new BaseCallback<String>() {
-                                    @Override
-                                    public void onSuccess(String result) {
-                                        getView().proceed();
-                                    }
+                        mLoginRepository.insertLogin(new Login(result, getCurrentDateTimeUTC()),
+                            new BaseCallback<Void>() {
+                                @Override
+                                public void onSuccess(Void result) {
+                                    getView().proceed();
+                                    getView().hideProgress();
+                                }
 
-                                    @Override
-                                    public void onFailure(Throwable t) {
-                                        getView().showThrowable(t);
-                                    }
-                                });
+                                @Override
+                                public void onFailure(Throwable t) {
+                                    getView().showThrowable(t);
+                                    getView().hideProgress();
+                                }
+                            });
                     }
 
                     @Override
                     public void userExists() {
                         getView().emailFound();
+                        getView().hideProgress();
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
                         getView().showThrowable(t);
+                        getView().hideProgress();
                     }
                 });
-            } else {
-                getView().networkUnavailable();
-            }
+//            } else {
+//                getView().networkUnavailable();
+//            }
         }
     }
 

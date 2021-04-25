@@ -1,4 +1,4 @@
-package com.s.karpardaz.user.data.local;
+package com.s.karpardaz.user.data;
 
 import androidx.room.Dao;
 import androidx.room.Query;

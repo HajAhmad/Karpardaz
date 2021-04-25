@@ -9,8 +9,8 @@ import com.s.karpardaz.income.data.IncomeDao;
 import com.s.karpardaz.income.model.Income;
 import com.s.karpardaz.stock.data.StockDao;
 import com.s.karpardaz.stock.model.Stock;
-import com.s.karpardaz.user.data.local.LoginDao;
-import com.s.karpardaz.user.data.local.UserDao;
+import com.s.karpardaz.user.data.LoginDao;
+import com.s.karpardaz.user.data.UserDao;
 import com.s.karpardaz.user.model.Login;
 import com.s.karpardaz.user.model.User;
 

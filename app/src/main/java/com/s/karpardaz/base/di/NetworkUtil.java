@@ -14,8 +14,13 @@ public final class NetworkUtil {
         return httpCode == HttpURLConnection.HTTP_INTERNAL_ERROR;
     }
 
-    public static boolean isResponseValid(Response<?> response){
+    public static boolean isResponseSuccessful(Response<?> response){
         return response != null &&
                 response.isSuccessful();
     }
+
+    public static Throwable produceUnknownException(int responseCode){
+        return new Throwable("خطای ناشناخته:".concat(String.valueOf(responseCode)));
+    }
+
 }

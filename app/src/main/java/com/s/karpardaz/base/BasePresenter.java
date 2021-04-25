@@ -98,7 +98,7 @@ public class BasePresenter<V> implements BasePresenterContract<V> {
     private static class ViewNotAttachedException extends RuntimeException {
         ViewNotAttachedException() {
             super("you should call Presenter.attachView(view) before" +
-                    " requesting data to the presenter.");
+                    " requesting data from the presenter.");
         }
     }
 }

@@ -43,6 +43,7 @@
     <string name="register_policy_usage_rules_message">انتخاب گزینه <b>نام‌نویسی</b>، به معنای پذیرش <a href="https://google.com">شرایط استفاده</a> و <a href="https://learntodroid.com">قوانین حریم شخصی</a> از جانب شما می باشد.</string>
     <string name="all_email_or_password_is_empty">ایمیل یا گذرواژه خالی است.</string>
     <string name="entry_invalid_email_message">ایمیل اشتباه است. ایمیل باید در این قالب باشد: example@domain.com</string>
+    <string name="entry_invalid_password_message">گذرواژه اشتباه است.</string>
     <string name="long_invalid_password_message">گذرواژه باید بیش از 4 کاراکتر باشد.</string>
     <string name="all_loading_message">لطفاً منتظر بمانید.</string>
     <string name="all_check_network_message">لطفاً دسترسی اینترنت خود را بررسی نموده، سپس دوباره تلاش نمایید.</string>
@@ -50,5 +51,6 @@
     <string name="register_email_found_error_message">ایمیلی مشابه در سیستم ثبت شده است.</string>
     <string name="all_invalid_user_information_message">ایمیل یا گذرواژه اشتباه است.</string>
     <string name="recover_password_progress_message">در حال ارسال ایمیل بازستانی گذرواژه.</string>
+    <string name="password_recovery_success_message">ایمیل بازیابی برای شما ارسال شد. لطفاً ایمیل خود را بررسی نمایید.</string>
 
 </resources>

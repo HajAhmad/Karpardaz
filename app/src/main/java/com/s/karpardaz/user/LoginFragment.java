@@ -10,21 +10,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.s.karpardaz.R;
-import com.s.karpardaz.base.ui.BaseBindingFragment;
-import com.s.karpardaz.base.util.view.SnackbarUtil;
+import com.s.karpardaz.base.ui.BaseFragment;
 import com.s.karpardaz.databinding.LayoutLoginBinding;
+import com.s.karpardaz.databinding.LayoutPasswordRecoveryBinding;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static com.s.karpardaz.base.util.view.SnackbarUtil.showSnackbar;
-
 @AndroidEntryPoint
-public class LoginFragment extends BaseBindingFragment<OnLoginInteractionListener,
-        LayoutLoginBinding> implements LoginContract.View {
+public class LoginFragment extends BaseFragment<OnLoginInteractionListener, LayoutLoginBinding>
+    implements LoginContract.View {
 
     public static final String TAG = LoginFragment.class.getSimpleName();
+    private AlertDialog mPasswordRecoveryDialog;
 
     public static LoginFragment newInstance() {
         return new LoginFragment();
@@ -36,8 +35,8 @@ public class LoginFragment extends BaseBindingFragment<OnLoginInteractionListene
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
-            @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+        @Nullable ViewGroup container,
+        @Nullable Bundle savedInstanceState) {
         setBinding(LayoutLoginBinding.inflate(inflater, container, false));
         return getBinding().getRoot();
     }
@@ -49,43 +48,75 @@ public class LoginFragment extends BaseBindingFragment<OnLoginInteractionListene
 
     }
 
+    @Override
+    protected void clearReferences() {
+        super.clearReferences();
+        mPresenter.dropView();
+        mPresenter = null;
+    }
+
     private void recoverPassword() {
-        final View dialogView = LayoutInflater.from(getCtx())
-                .inflate(R.layout.layout_password_recovery, null, false);
-        new AlertDialog.Builder(getCtx())
-                .setView(dialogView).create().show();
-        dialogView.findViewById(R.id.layout_password_recovery_action).setOnClickListener(v -> {
-            dialogView.findViewById(R.id.layout_password_recovery_input);
-            mPresenter.recoverPassword();
+        LayoutPasswordRecoveryBinding binding = LayoutPasswordRecoveryBinding
+            .inflate(LayoutInflater.from(getCtx()), null, false);
+        mPasswordRecoveryDialog = new AlertDialog.Builder(getCtx())
+            .setView(binding.getRoot())
+            .create();
+        mPasswordRecoveryDialog.show();
+        binding.layoutPasswordRecoveryAction.findViewById(R.id.layout_password_recovery_action).setOnClickListener(v -> {
+            if (binding.layoutPasswordRecoveryInput.getText() != null)
+                mPresenter.recoverPassword(binding.layoutPasswordRecoveryInput.getText().toString());
+            else
+                showMessage(R.string.all_enter_email_message);
         });
     }
 
     private void login() {
         if (getBinding().layoutLoginEmailInput.getText() != null &&
-                getBinding().layoutLoginPasswordInput.getText() != null) {
+            getBinding().layoutLoginPasswordInput.getText() != null) {
             String email = getBinding().layoutLoginEmailInput.getText().toString();
             String password = getBinding().layoutLoginPasswordInput.getText().toString();
             mPresenter.login(email, password);
 
         } else {
-            showSnackbar(getBinding().getRoot(), R.string.all_email_or_password_is_empty);
+            showMessage(R.string.all_email_or_password_is_empty);
         }
     }
 
-
     @Override
     public void showInvalidEmailError() {
-        SnackbarUtil.showSnackbar(getBinding().getRoot(), R.string.all_invalid_user_information_message);
+        showMessage(R.string.all_invalid_user_information_message);
     }
 
     @Override
     public void showInvalidPasswordError() {
-        getBinding().layoutLoginPasswordInput.setText("");
+        getBinding().layoutLoginPasswordInput.setText(R.string.entry_invalid_password_message);
     }
 
     @Override
-    public void showProgress() {
-
+    public void proceed() {
+        getListener().proceed();
     }
+
+    @Override
+    public void showInfoNotFoundError() {
+        showMessage(R.string.all_invalid_user_information_message);
+    }
+
+    @Override
+    public void showMessage(int stringResId) {
+        getListener().showMessage(stringResId);
+    }
+
+    @Override
+    public void showMessage(String message) {
+        getListener().showMessage(message);
+    }
+
+    @Override
+    public void showPasswordRecoverySucceed() {
+        showMessage(R.string.password_recovery_success_message);
+        mPasswordRecoveryDialog.dismiss();
+    }
+
 }
 

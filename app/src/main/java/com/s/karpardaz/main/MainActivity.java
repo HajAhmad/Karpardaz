@@ -1,12 +1,15 @@
 package com.s.karpardaz.main;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 
 import com.s.karpardaz.R;
 import com.s.karpardaz.base.ui.BaseActivity;
+import com.s.karpardaz.base.util.AppConstants;
 import com.s.karpardaz.cost.CostFragment;
 import com.s.karpardaz.databinding.ActivityMainBinding;
 import com.s.karpardaz.income.IncomeFragment;
@@ -17,11 +20,13 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 import ir.huri.jcal.JalaliCalendar;
 
+import static com.s.karpardaz.base.util.view.SnackbarUtil.showSnackbar;
+
 @AndroidEntryPoint
 public class MainActivity extends BaseActivity<ActivityMainBinding> implements MainContract.View,
-        CostFragment.OnCostListFragmentInteractionListener,
-        IncomeFragment.OnIncomeFragmentInteractionListener,
-        EntryDialogFragment.OnEntryFragmentInteractionListener {
+    CostFragment.OnCostListFragmentInteractionListener,
+    IncomeFragment.OnIncomeFragmentInteractionListener,
+    EntryDialogFragment.OnEntryFragmentInteractionListener {
 
     @Inject
     MainContract.Presenter mPresenter;
@@ -31,7 +36,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
         super.onCreate(savedInstanceState);
         mPresenter.takeView(this);
         setBinding(ActivityMainBinding.inflate(getLayoutInflater()));
-        setContentView(getBinding().getRoot());
+        setContentView(getRoot());
+
+        getBinding().mainToolbar.setVisibility(View.INVISIBLE);
 
         mPresenter.isUserAvailable();
 
@@ -44,37 +51,20 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
         mPresenter = null;
     }
 
-    private void openProfileFragment() {
-        Toast.makeText(this, "Not Implemented!", Toast.LENGTH_SHORT).show();
-    }
-
-    private void openReportFragment() {
-        Toast.makeText(this, "Not Implemented!", Toast.LENGTH_SHORT).show();
-    }
-
-    private void openCostFragment() {
-        CostFragment fragment = CostFragment.newInstance();
-        fragment.setInteractionListener(this);
-        getSupportFragmentManager().beginTransaction().add(
-                fragment, CostFragment.TAG
-        ).commit();
-    }
-
-    private void openIncomeFragment() {
-        IncomeFragment fragment = IncomeFragment.newInstance();
-        fragment.setInteractionListener(this);
-        getSupportFragmentManager().beginTransaction().add(
-                fragment, IncomeFragment.TAG
-        ).commit();
-    }
-
-
     @Override
     public void proceed() {
+        DialogFragment entryFragment = (DialogFragment)
+            getSupportFragmentManager().findFragmentByTag(EntryDialogFragment.TAG);
+        if (entryFragment != null)
+            entryFragment.dismiss();
+
+        showMessage("PROCEEDED. USER ID = " + AppConstants.sActiveUserId);
+
+        getBinding().mainToolbar.setVisibility(View.VISIBLE);
         getBinding().mainActivityBottombar.setSelectedItemId(R.id.main_bottombar_cost_item);
 
         getBinding().mainTodayDate
-                .setText(new JalaliCalendar().getDayOfWeekDayMonthString());
+            .setText(new JalaliCalendar().getDayOfWeekDayMonthString());
 
         findViewById(R.id.main_action_profile).setOnClickListener(v -> openProfileFragment());
 
@@ -94,9 +84,35 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
         });
     }
 
+
+    private void openProfileFragment() {
+        Toast.makeText(this, "Not Implemented!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void openReportFragment() {
+        Toast.makeText(this, "Not Implemented!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void openCostFragment() {
+        CostFragment fragment = CostFragment.newInstance();
+        fragment.setInteractionListener(this);
+        getSupportFragmentManager().beginTransaction().add(
+            fragment, CostFragment.TAG
+        ).commit();
+    }
+
+    private void openIncomeFragment() {
+        IncomeFragment fragment = IncomeFragment.newInstance();
+        fragment.setInteractionListener(this);
+        getSupportFragmentManager().beginTransaction().add(
+            fragment, IncomeFragment.TAG
+        ).commit();
+    }
+
     @Override
     public void showEntranceDialog() {
-        EntryDialogFragment.newInstance().show(getSupportFragmentManager(), EntryDialogFragment.TAG);
+        EntryDialogFragment.newInstance().show(getSupportFragmentManager(),
+            EntryDialogFragment.TAG);
     }
 
     @Override
@@ -110,5 +126,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
     }
 
 
+    @Override
+    public void showMessage(String message) {
+        showSnackbar(getRoot(), message);
+    }
+
+    @Override
+    public void showMessage(int stringRes) {
+        showSnackbar(getRoot(), stringRes);
+    }
 
 }

@@ -3,33 +3,34 @@ package com.s.karpardaz.base.datasource;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.s.karpardaz.KarpardazApplication;
-
 import java.io.Closeable;
 
+import javax.inject.Inject;
 
-public final class SharedPrefHelper implements Closeable {
+import dagger.hilt.android.qualifiers.ApplicationContext;
 
-    public static final String PREF_NAME = "karpardaz";
+import static android.content.Context.MODE_PRIVATE;
+import static java.util.Objects.requireNonNull;
+
+public final class SharedPrefHelper implements SharedPrefDataSource, Closeable {
+
+    private static final String PREF_NAME = "karpardaz";
     private static final String BASE_URL_KEY = "BASE_URL";
     private SharedPreferences mPref;
 
-
-    SharedPrefHelper() {
-        mPref = KarpardazApplication.getInstance()
-                .getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+    @Inject
+    SharedPrefHelper(@ApplicationContext Context context) {
+        open(requireNonNull(context));
     }
 
-    void open() {
-        mPref = KarpardazApplication.getInstance()
-                .getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+    void open(Context context) {
+        mPref = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
     }
 
     @Override
     public synchronized void close() {
         mPref = null;
     }
-
 
 }
 

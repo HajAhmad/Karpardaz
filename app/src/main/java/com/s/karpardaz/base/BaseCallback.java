@@ -4,7 +4,7 @@ public interface BaseCallback<T> {
 
     void onSuccess(T result);
 
-    default void onFailure(Throwable t){
+    default void onFailure(Throwable t) {
         throw new NotImplementedException();
-    };
+    }
 }

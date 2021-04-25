@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.s.karpardaz.R;
-import com.s.karpardaz.base.ui.BaseBindingFragment;
+import com.s.karpardaz.base.ui.BaseFragment;
 import com.s.karpardaz.base.util.view.SnackbarUtil;
 import com.s.karpardaz.databinding.FragmentRegisterBinding;
 
@@ -23,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import static com.s.karpardaz.base.util.view.SnackbarUtil.showSnackbar;
 
 @AndroidEntryPoint
-public class RegisterFragment extends BaseBindingFragment<OnRegisterInteractionListener, FragmentRegisterBinding>
+public class RegisterFragment extends BaseFragment<OnRegisterInteractionListener, FragmentRegisterBinding>
         implements RegisterContract.View {
 
     public static final String TAG = RegisterFragment.class.getSimpleName();
@@ -64,9 +64,9 @@ public class RegisterFragment extends BaseBindingFragment<OnRegisterInteractionL
         if (getBinding().fragmentRegisterEmailInput.getText() != null &&
                 getBinding().fragmentRegisterPasswordInput.getText() != null) {
 
-            mPresenter.register(getBinding().fragmentRegisterEmailInput.getText().toString(),
-                    getBinding().fragmentRegisterPasswordInput.getText().toString(),
-                    getBinding().fragmentRegisterNameInput.getText().toString());
+            mPresenter.register(getBinding().fragmentRegisterNameInput.getText().toString(),
+                    getBinding().fragmentRegisterEmailInput.getText().toString(),
+                    getBinding().fragmentRegisterPasswordInput.getText().toString());
         } else {
             showSnackbar(getBinding().getRoot(), R.string.all_check_value_message);
         }

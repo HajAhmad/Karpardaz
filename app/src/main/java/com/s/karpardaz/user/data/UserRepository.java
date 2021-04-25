@@ -3,37 +3,38 @@ package com.s.karpardaz.user.data;
 import androidx.annotation.NonNull;
 
 import com.s.karpardaz.base.BaseCallback;
-import com.s.karpardaz.base.di.scope.Local;
-import com.s.karpardaz.base.di.scope.Remote;
-import com.s.karpardaz.user.model.Login;
+import com.s.karpardaz.base.concurrent.AppExecutors;
 import com.s.karpardaz.user.model.User;
 
 import javax.inject.Inject;
 
-import io.reactivex.rxjava3.core.Maybe;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+import static com.s.karpardaz.base.di.NetworkUtil.isResponseSuccessful;
+import static com.s.karpardaz.base.util.AppUtil.produceNetworkException;
 import static java.util.Objects.requireNonNull;
 
 public class UserRepository implements UserDataSource {
 
-    private final UserDataSource mLocalDataSource;
-    private final UserDataSource mRemoteDataSource;
+    private final UserDao mUserDao;
+    private final AppExecutors mExecutor;
+
+    private final UserService mUserService;
 
     @Inject
-    public UserRepository(@NonNull @Local UserDataSource localDataSource,
-            @NonNull @Remote UserDataSource remoteDataSource) {
-        this.mLocalDataSource = requireNonNull(localDataSource);
-        this.mRemoteDataSource = requireNonNull(remoteDataSource);
-    }
+    public UserRepository(@NonNull UserDao userDao, @NonNull AppExecutors executors,
+        @NonNull UserService service) {
+        mUserDao = requireNonNull(userDao);
+        mExecutor = requireNonNull(executors);
 
-    @Override
-    public Maybe<Login> getLoggedInUser() {
-        return mLocalDataSource.getLoggedInUser();
+        mUserService = requireNonNull(service);
     }
 
     @Override
     public void getUser(@NonNull String uuid) {
-
+        mUserDao.get(uuid);
     }
 
     @Override
@@ -43,43 +44,46 @@ public class UserRepository implements UserDataSource {
 
     @Override
     public void getUser(@NonNull String email, @NonNull String password) {
-
+        mUserDao.get(email, password);
     }
 
     @Override
     public void insertUser(@NonNull User user, @NonNull BaseCallback<String> callback) {
-
+        mExecutor.getDiskIo().execute(() -> {
+            long insertedUserId = mUserDao.insert(user);
+            if (insertedUserId > -1) {
+                String uuid = mUserDao.getInsertedId(insertedUserId);
+                callback.onSuccess(uuid);
+                return;
+            }
+            callback.onFailure(new Throwable("Data Not Saved."));
+        });
     }
 
-    @Override
-    public void insertLogin(@NonNull Login login, @NonNull BaseCallback<String> callback) {
-        requireNonNull(login);
-        requireNonNull(callback);
-        mLocalDataSource.insertLogin(login, callback);
-    }
 
     @Override
     public void deleteUser(@NonNull User user) {
-
-    }
-
-    @Override
-    public void deleteLogin(@NonNull Login login) {
-
-    }
-
-    @Override
-    public void login(@NonNull String loginPhrase,
-            @NonNull LoginCallback loginCallback) {
-        requireNonNull(loginPhrase);
-        requireNonNull(loginCallback);
-
-        mRemoteDataSource.login(loginPhrase, loginCallback);
+        mUserDao.delete(user);
     }
 
     @Override
     public void register(@NonNull User user, @NonNull RegisterCallback callback) {
-        mRemoteDataSource.register(requireNonNull(user), requireNonNull(callback));
+        requireNonNull(user);
+        requireNonNull(callback);
+        mUserService.register(user).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (isResponseSuccessful(response))
+                    callback.onSuccess(response.body());
+                else
+                    callback.onFailure(produceNetworkException(response));
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                callback.onFailure(t);
+            }
+        });
     }
 
 }

@@ -3,13 +3,12 @@ package com.s.karpardaz.user;
 import androidx.annotation.NonNull;
 
 import com.s.karpardaz.base.di.NetworkInjection;
-import com.s.karpardaz.base.di.scope.Local;
-import com.s.karpardaz.base.di.scope.Remote;
+import com.s.karpardaz.user.data.LoginDataSource;
+import com.s.karpardaz.user.data.LoginRepository;
 import com.s.karpardaz.user.data.UserDataSource;
 import com.s.karpardaz.user.data.UserRepository;
-import com.s.karpardaz.user.data.local.UserLocalDataSource;
-import com.s.karpardaz.user.data.remote.UserRemoteDataSource;
-import com.s.karpardaz.user.data.remote.UserService;
+import com.s.karpardaz.user.data.LoginService;
+import com.s.karpardaz.user.data.UserService;
 
 import dagger.Binds;
 import dagger.Module;
@@ -25,13 +24,8 @@ public abstract class UserModule {
     @Binds
     public abstract UserDataSource bindRepository(@NonNull UserRepository repository);
 
-    @Local
     @Binds
-    public abstract UserDataSource bindLocalDataSource(@NonNull UserLocalDataSource dataSource);
-
-    @Remote
-    @Binds
-    public abstract UserDataSource bindRemoteDataSource(@NonNull UserRemoteDataSource dataSource);
+    public abstract LoginDataSource bindLoginRepository(@NonNull LoginRepository repository);
 
     @Binds
     public abstract RegisterContract.Presenter bindRegisterPresenter(
@@ -43,6 +37,11 @@ public abstract class UserModule {
     @Provides
     public static UserService provideUserService() {
         return NetworkInjection.provideService(UserService.class);
+    }
+
+    @Provides
+    public static LoginService provideLoginService(){
+        return NetworkInjection.provideService(LoginService.class);
     }
 
 }

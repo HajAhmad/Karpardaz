@@ -3,9 +3,11 @@ package com.s.karpardaz.user;
 import androidx.annotation.NonNull;
 
 import com.s.karpardaz.R;
+import com.s.karpardaz.base.BaseCallback;
 import com.s.karpardaz.base.BasePresenter;
+import com.s.karpardaz.base.util.AppConstants;
 import com.s.karpardaz.base.util.AppUtil;
-import com.s.karpardaz.user.data.UserDataSource;
+import com.s.karpardaz.user.data.LoginDataSource;
 import com.s.karpardaz.user.model.Login;
 
 import java.util.Objects;
@@ -17,10 +19,10 @@ import static com.s.karpardaz.base.util.AppUtil.getCurrentDateTimeUTC;
 
 public class LoginPresenter extends BasePresenter<LoginContract.View> implements LoginContract.Presenter {
 
-    private final UserDataSource mRepository;
+    private final LoginDataSource mRepository;
 
     @Inject
-    LoginPresenter(@NonNull UserDataSource repository) {
+    LoginPresenter(@NonNull LoginDataSource repository) {
         mRepository = Objects.requireNonNull(repository);
     }
 
@@ -32,33 +34,53 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             getView().showInvalidEmailError();
         } else {
             getView().showProgress();
-            mRepository.login(composeLoginPhrase(email, password), new UserDataSource.LoginCallback() {
+            String loginPhrase = composeLoginPhrase(email, password);
+            mRepository.login(loginPhrase, new LoginDataSource.LoginCallback() {
                 @Override
                 public void informationNotFound() {
-                    //TODO
+                    getView().showInfoNotFoundError();
+                    getView().hideProgress();
                 }
 
                 @Override
                 public void onSuccess(String userId) {
-                    //TODO
                     mRepository.insertLogin(new Login(userId, getCurrentDateTimeUTC()),
-                            result -> {
-
-                            });
+                        result -> {
+                            AppConstants.sActiveUserId = userId;
+                            getView().proceed();
+                            getView().hideProgress();
+                        });
                 }
 
                 @Override
                 public void onFailure(Throwable t) {
-                    //TODO
+                    getView().showMessage(t.getMessage());
+                    getView().hideProgress();
                 }
             });
         }
     }
 
     @Override
-    public void recoverPassword() {
-        getView().showProgress(R.string.recover_password_progress_message);
+    public void recoverPassword(String email) {
+        if (AppUtil.isEmailInvalid(email)) {
+            getView().showInvalidEmailError();
+        } else {
+            getView().showProgress(R.string.recover_password_progress_message);
+            mRepository.RequestPasswordChange(email, new BaseCallback<Void>() {
+                @Override
+                public void onSuccess(Void result) {
+                    getView().hideProgress();
+                    getView().showPasswordRecoverySucceed();
+                }
 
+                @Override
+                public void onFailure(Throwable t) {
+                    getView().showMessage(t.getMessage());
+                    getView().hideProgress();
+                }
+            });
+        }
     }
 
 

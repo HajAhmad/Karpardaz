@@ -1,6 +1,6 @@
 package com.s.karpardaz.base.ui;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import com.s.karpardaz.R;
@@ -13,7 +13,7 @@ public interface Progress {
 
     void showProgress(@StringRes int stringResId);
 
-    void showProgress(@Nullable String message);
+    void showProgress(@NonNull String message);
 
     void hideProgress();
 }

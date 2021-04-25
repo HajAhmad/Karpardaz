@@ -10,10 +10,10 @@ import java.util.Objects;
 
 public class CostRepository implements CostDataSource {
 
-    private final CostDataSource mLocalDataSource;
+    private final CostDao mDao;
 
-    public CostRepository(@NonNull CostDataSource localDataSource) {
-        mLocalDataSource = Objects.requireNonNull(localDataSource);
+    public CostRepository(@NonNull CostDao dao) {
+        mDao = Objects.requireNonNull(dao);
     }
 
     @Override

@@ -41,7 +41,7 @@ public class EntryDialogFragment extends BaseDialogFragment<EntryDialogFragment.
     @Override
     public void onStart() {
         super.onStart();
-        final Dialog dialog = getDialog();
+        Dialog dialog = getDialog();
         if (dialog != null) {
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT);
@@ -64,7 +64,7 @@ public class EntryDialogFragment extends BaseDialogFragment<EntryDialogFragment.
     }
 
     private void initPager() {
-        final ViewPagerAdapter adapter = new ViewPagerAdapter(this);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(this);
         getBinding().fragmentEntryPager.setAdapter(adapter);
         getBinding().fragmentEntryTab.setTabRippleColorResource(R.color.colorPrimaryLight);
 

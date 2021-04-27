@@ -12,7 +12,6 @@ import androidx.appcompat.app.AlertDialog;
 import com.s.karpardaz.R;
 import com.s.karpardaz.base.ui.BaseFragment;
 import com.s.karpardaz.databinding.LayoutLoginBinding;
-import com.s.karpardaz.databinding.LayoutPasswordRecoveryBinding;
 
 import javax.inject.Inject;
 
@@ -20,7 +19,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class LoginFragment extends BaseFragment<OnLoginInteractionListener, LayoutLoginBinding>
-    implements LoginContract.View {
+    implements LoginContract.View,
+    RecoveryPasswordFragment.OnRecoveryPasswordInteractionListener {
 
     public static final String TAG = LoginFragment.class.getSimpleName();
     private AlertDialog mPasswordRecoveryDialog;
@@ -56,18 +56,9 @@ public class LoginFragment extends BaseFragment<OnLoginInteractionListener, Layo
     }
 
     private void recoverPassword() {
-        LayoutPasswordRecoveryBinding binding = LayoutPasswordRecoveryBinding
-            .inflate(LayoutInflater.from(getCtx()), null, false);
-        mPasswordRecoveryDialog = new AlertDialog.Builder(getCtx())
-            .setView(binding.getRoot())
-            .create();
-        mPasswordRecoveryDialog.show();
-        binding.layoutPasswordRecoveryAction.findViewById(R.id.layout_password_recovery_action).setOnClickListener(v -> {
-            if (binding.layoutPasswordRecoveryInput.getText() != null)
-                mPresenter.recoverPassword(binding.layoutPasswordRecoveryInput.getText().toString());
-            else
-                showMessage(R.string.all_enter_email_message);
-        });
+        RecoveryPasswordFragment fragment = RecoveryPasswordFragment.newInstance();
+        fragment.setInteractionListener(this);
+
     }
 
     private void login() {

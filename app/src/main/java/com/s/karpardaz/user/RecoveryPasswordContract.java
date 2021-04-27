@@ -5,19 +5,17 @@ import androidx.annotation.StringRes;
 import com.s.karpardaz.base.BasePresenterContract;
 import com.s.karpardaz.base.BaseViewContract;
 
-public interface LoginContract {
-
+public interface RecoveryPasswordContract {
     interface View extends BaseViewContract<Presenter> {
-        void proceed();
-        void showInfoNotFoundError();
-        void showMessage(@StringRes int stringResId);
-        void showMessage(String message);
+        void initEmailView();
+        void initCodeView();
         void showInvalidPasswordError();
         void showInvalidEmailError();
+        void showMessage(@StringRes int stringResId);
+        void showMessage(String message);
     }
 
     interface Presenter extends BasePresenterContract<View> {
-        void login(String email, String password);
+        void recoverPassword(String email);
     }
-
 }

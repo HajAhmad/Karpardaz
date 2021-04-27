@@ -15,6 +15,7 @@ import com.s.karpardaz.user.model.User;
 
 import javax.inject.Inject;
 
+import static com.s.karpardaz.KarpardazApplication.getInstance;
 import static com.s.karpardaz.base.util.AppUtil.composeLoginPhrase;
 import static com.s.karpardaz.base.util.AppUtil.getCurrentDateTimeUTC;
 import static java.util.Objects.requireNonNull;
@@ -35,12 +36,11 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
     @Override
     public void register(@Nullable String name, String email, String password) {
         if (AppUtil.isEmailInvalid(email)) {
-            String s = "qf2efknel";
             getView().showInvalidEmailError();
         } else if (AppUtil.isPasswordInvalid(password)) {
             getView().showInvalidPasswordError();
         } else {
-//            if (AppUtil.inNetworkAvailable(KarpardazApplication.getInstance())) {
+            if (AppUtil.inNetworkAvailable(getInstance())) {
                 if (TextUtils.isEmpty(name))
                     name = email.split("@")[0];
 
@@ -81,9 +81,9 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
                         getView().hideProgress();
                     }
                 });
-//            } else {
-//                getView().networkUnavailable();
-//            }
+            } else {
+                getView().networkUnavailable();
+            }
         }
     }
 

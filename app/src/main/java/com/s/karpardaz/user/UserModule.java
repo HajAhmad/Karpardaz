@@ -34,6 +34,10 @@ public abstract class UserModule {
     @Binds
     public abstract LoginContract.Presenter bindLoginPresenter(@NonNull LoginPresenter presenter);
 
+    @Binds
+    public abstract RecoveryPasswordContract.Presenter bindRecoveryPasswordPresenter(@NonNull
+        RecoveryPasswordPresenter presenter);
+
     @Provides
     public static UserService provideUserService() {
         return NetworkInjection.provideService(UserService.class);

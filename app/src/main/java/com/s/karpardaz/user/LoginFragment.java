@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 
 import com.s.karpardaz.R;
 import com.s.karpardaz.base.ui.BaseFragment;
@@ -23,7 +22,6 @@ public class LoginFragment extends BaseFragment<OnLoginInteractionListener, Layo
     RecoveryPasswordFragment.OnRecoveryPasswordInteractionListener {
 
     public static final String TAG = LoginFragment.class.getSimpleName();
-    private AlertDialog mPasswordRecoveryDialog;
 
     public static LoginFragment newInstance() {
         return new LoginFragment();
@@ -101,12 +99,6 @@ public class LoginFragment extends BaseFragment<OnLoginInteractionListener, Layo
     @Override
     public void showMessage(String message) {
         getListener().showMessage(message);
-    }
-
-    @Override
-    public void showPasswordRecoverySucceed() {
-        showMessage(R.string.password_recovery_success_message);
-        mPasswordRecoveryDialog.dismiss();
     }
 
 }

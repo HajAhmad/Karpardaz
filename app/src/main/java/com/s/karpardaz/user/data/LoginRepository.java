@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.s.karpardaz.base.BaseCallback;
 import com.s.karpardaz.base.concurrent.AppExecutors;
+import com.s.karpardaz.base.model.BaseResponse;
 import com.s.karpardaz.user.model.Login;
 
 import java.net.HttpURLConnection;
@@ -20,6 +21,7 @@ import retrofit2.internal.EverythingIsNonNull;
 
 import static com.s.karpardaz.base.di.NetworkUtil.isResponseSuccessful;
 import static com.s.karpardaz.base.di.NetworkUtil.produceUnknownException;
+import static com.s.karpardaz.base.util.AppUtil.isAnyEmpty;
 import static java.util.Objects.requireNonNull;
 
 @EverythingIsNonNull
@@ -85,23 +87,51 @@ public class LoginRepository implements LoginDataSource {
     }
 
     @Override
-    public void RequestPasswordChange(@NonNull String email, @NonNull BaseCallback<Void> callback) {
+    public void RequestPasswordChange(@NonNull String email,
+        @NonNull BaseCallback<String> callback) {
         if (TextUtils.isEmpty(email)) throw new NullPointerException();
         requireNonNull(callback);
 
-        mService.RequestPasswordChange(email).enqueue(new Callback<Void>() {
+        mService.RequestPasswordChange(email).enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 if (isResponseSuccessful(response)) callback.onSuccess(null);
                 else callback.onFailure(produceUnknownException(response.code()));
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 callback.onFailure(t);
             }
         });
 
+    }
+
+    @Override
+    public void sendRecoveryCode(@NonNull String recoveryToken, @NonNull String verificationCode,
+        @NonNull SendRecoveryCodeCallback callback) {
+        if (isAnyEmpty(recoveryToken, verificationCode)) throw new NullPointerException();
+        requireNonNull(callback);
+
+        mService.sendRecoveryCode(recoveryToken, verificationCode).enqueue(
+            new Callback<BaseResponse<String>>() {
+                @Override
+                public void onResponse(Call<BaseResponse<String>> call,
+                    Response<BaseResponse<String>> response) {
+                    if (isResponseSuccessful(response))
+                        callback.onSuccess(response.body());
+                    else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND)
+                        callback.notFound();
+                    else if (response.code() == HttpURLConnection.HTTP_BAD_REQUEST)
+                        callback.codeExpired();
+                    else callback.onFailure(produceUnknownException(response.code()));
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse<String>> call, Throwable t) {
+                    callback.onFailure(t);
+                }
+            });
     }
 
 }

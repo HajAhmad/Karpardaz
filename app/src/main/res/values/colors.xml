@@ -8,7 +8,8 @@
     <color name="colorHint">#FF808080</color>
     <color name="main_add_color_container_background">#FFFFFF</color>
     <color name="main_bottom_sheet_background">#FFFFFF</color>
-
+    <color name="colorError">@android:color/holo_red_dark</color>
+    <color name="colorLink">@android:color/holo_blue_light</color>
     <color name="intro_background_color">#FFFFFF</color>
     <color name="intro_dot_active_color">@color/colorPrimary</color>
     <color name="intro_dot_inactive_color">#4D4CB5A6</color>

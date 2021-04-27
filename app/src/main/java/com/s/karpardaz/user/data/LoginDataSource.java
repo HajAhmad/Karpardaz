@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.s.karpardaz.base.BaseCallback;
 import com.s.karpardaz.base.NotImplementedException;
+import com.s.karpardaz.base.model.BaseResponse;
 import com.s.karpardaz.user.model.Login;
 
 import io.reactivex.rxjava3.core.Maybe;
@@ -22,7 +23,14 @@ public interface LoginDataSource {
     default void login(@NonNull String loginPhrase, @NonNull LoginCallback loginCallback) {
         throw new NotImplementedException();
     }
-    void RequestPasswordChange(@NonNull String email, @NonNull BaseCallback<Void> callback);
+    void RequestPasswordChange(@NonNull String email, @NonNull BaseCallback<String> callback);
+    void sendRecoveryCode(@NonNull String sRecoveryToken, @NonNull String verificationCode,
+        @NonNull SendRecoveryCodeCallback callback);
+
+    interface SendRecoveryCodeCallback extends BaseCallback<BaseResponse<String>> {
+        void notFound();
+        void codeExpired();
+    }
 
     interface LoginCallback extends BaseCallback<String> {
         void informationNotFound();

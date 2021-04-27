@@ -50,12 +50,13 @@
     <string name="all_check_value_message">مقادیر ورودی را بررسی، و دوباره امتحان نمایید.</string>
     <string name="register_email_found_error_message">ایمیلی مشابه در سیستم ثبت شده است.</string>
     <string name="all_invalid_user_information_message">ایمیل یا گذرواژه اشتباه است.</string>
-    <string name="recover_password_progress_message">در حال ارسال ایمیل بازستانی گذرواژه.</string>
+    <string name="recover_password_progress_message">در حال ارسال ایمیل بازیابی گذرواژه.</string>
     <string name="password_recovery_success_message">کد بازیابی به ایمیل شما ارسال شد.</string>
     <string name="password_recovery_remaining_time">مدت زمان باقی مانده:</string>
     <string name="password_recovery_enter_four_digit_code">کد 4 رقمی را وارد نمایید.</string>
     <string name="password_recovery_enter_password_message">گذرواژه جدید را وارد نمایید.</string>
     <string name="password_recovery_enter_password_again_hint">گذرواژه خود را دوباره وارد نمایید.</string>
     <string name="all_confirm_title">تایید</string>
+    <string name="recovery_code_expired_message">اعتبار کد ارسال شده به پایان رسید. کد را دریافت نکردید؟ برای دریافت دوباره کد ضربه بزنید.</string>
 
 </resources>

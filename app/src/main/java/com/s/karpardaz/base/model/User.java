@@ -1,19 +1,25 @@
-package com.s.karpardaz.user.model;
+package com.s.karpardaz.base.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.Index;
 
-import com.s.karpardaz.base.model.BaseEntity;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "User", indices = {@Index(value = {"id", "uuid"}, unique = true)})
 public class User extends BaseEntity {
 
+    @SerializedName("Name")
+    @Expose
     private String name;
+    @SerializedName("Email")
+    @Expose
     private String email;
+    @SerializedName("Password")
+    @Expose
     private String password;
-
 
     public User(long id, @NonNull String uuid, String name, String email, String password,
             String createdAt, String updatedAt) {

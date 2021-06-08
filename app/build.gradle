@@ -30,6 +30,7 @@ android {
         }
 
         debug {
+            resValue("string", "PORT_NUMBER", "8080")
             minifyEnabled false
             applicationIdSuffix '.debug'
             ext.alwaysUpdateBuildId = false
@@ -91,5 +92,9 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:1.1.2"
     androidTestImplementation "androidx.test.espresso:espresso-core:$_espresso_core_version"
 
-    
+
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+
+
+
 }

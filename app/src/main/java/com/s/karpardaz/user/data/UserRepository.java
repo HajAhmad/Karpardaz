@@ -3,19 +3,22 @@ package com.s.karpardaz.user.data;
 import androidx.annotation.NonNull;
 
 import com.s.karpardaz.base.BaseCallback;
+import com.s.karpardaz.base.NotImplementedException;
 import com.s.karpardaz.base.concurrent.AppExecutors;
-import com.s.karpardaz.user.model.User;
+import com.s.karpardaz.base.model.User;
 
 import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.internal.EverythingIsNonNull;
 
 import static com.s.karpardaz.base.di.NetworkUtil.isResponseSuccessful;
 import static com.s.karpardaz.base.util.AppUtil.produceNetworkException;
 import static java.util.Objects.requireNonNull;
 
+@EverythingIsNonNull
 public class UserRepository implements UserDataSource {
 
     private final UserDao mUserDao;
@@ -34,17 +37,17 @@ public class UserRepository implements UserDataSource {
 
     @Override
     public void getUser(@NonNull String uuid) {
-        mUserDao.get(uuid);
+        throw new NotImplementedException();
     }
 
     @Override
     public void getUser(@NonNull Long id) {
-
+        throw new NotImplementedException();
     }
 
     @Override
     public void getUser(@NonNull String email, @NonNull String password) {
-        mUserDao.get(email, password);
+        throw new NotImplementedException();
     }
 
     @Override
@@ -63,7 +66,7 @@ public class UserRepository implements UserDataSource {
 
     @Override
     public void deleteUser(@NonNull User user) {
-        mUserDao.delete(user);
+        throw new NotImplementedException();
     }
 
     @Override

@@ -4,7 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Query;
 
 import com.s.karpardaz.base.data.BaseDao;
-import com.s.karpardaz.user.model.User;
+import com.s.karpardaz.base.model.User;
 
 @Dao
 public interface UserDao extends BaseDao<User> {

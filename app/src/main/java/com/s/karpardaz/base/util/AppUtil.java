@@ -37,7 +37,8 @@ public final class AppUtil {
     public static String getCurrentDateTimeUTC() {
         DateFormat format = new SimpleDateFormat(DEFAULT_DATE_PATTERN, Locale.US);
         format.setTimeZone(DEFAULT_TIME_ZONE);
-        return format.format(new Date());
+        final String currentDateTime = format.format(new Date());
+        return currentDateTime.replace(" ", "T");
     }
 
     public static Date strDateToDate(String source) throws ParseException {

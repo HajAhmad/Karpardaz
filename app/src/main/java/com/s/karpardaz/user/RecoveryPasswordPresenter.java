@@ -90,24 +90,28 @@ public class RecoveryPasswordPresenter extends BasePresenter<RecoveryPasswordCon
     @Override
     public void sendRecoveryCode(String verificationCode) {
         if (isAnyEmpty(verificationCode)) {
-            getView().showInvalidCodeError();
+            getView().showMessage(R.string.recovery_code_invalid_message);
         } else {
             getView().showProgress();
             mRepository.sendRecoveryCode(sRecoveryToken, verificationCode,
                 new LoginDataSource.SendRecoveryCodeCallback() {
                     @Override
                     public void notFound() {
-
+                        getView().hideProgress();
+                        getView().codeNotFound();
                     }
 
                     @Override
                     public void codeExpired() {
-
+                        getView().hideProgress();
+                        getView().codeExpired();
                     }
 
                     @Override
                     public void onSuccess(BaseResponse<String> result) {
-
+                        getView().hideProgress();
+                        getView().initChangePassword();
+                        sRecoveryToken = result.getBody();
                     }
                 });
         }
@@ -121,6 +125,48 @@ public class RecoveryPasswordPresenter extends BasePresenter<RecoveryPasswordCon
     @Override
     public void disableSendCodeAction() {
         getView().disableSendCodeAction();
+    }
+
+    @Override
+    public void enableResetPasswordAction() {
+        getView().enableResetPasswordAction();
+    }
+
+    @Override
+    public void disableResetPasswordAction() {
+        getView().disableResetPasswordAction();
+    }
+
+    @Override
+    public void resetPassword(String password) {
+        if (isAnyEmpty(password) || password.length() < 4) {
+            getView().showInvalidPasswordError();
+        } else {
+            getView().showProgress();
+            final String loginPhrase = AppUtil.composeLoginPhrase(sUserEmail, password);
+            mRepository.resetPassword(sRecoveryToken, loginPhrase,
+                new LoginDataSource.ResetPasswordCallback() {
+                    @Override
+                    public void notFound() {
+                        getView().showMessage(R.string.info_not_found);
+                        getView().hideProgress();
+                    }
+
+                    @Override
+                    public void onSuccess(Void result) {
+                        getView().hideProgress();
+                        getView().showMessage("گذرواژه با موفقیت تغییر داده شد.");
+                        getView().dismissDialog();
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        getView().hideProgress();
+                        if (t != null)
+                            getView().showMessage(t.getMessage());
+                    }
+                });
+        }
     }
 
 

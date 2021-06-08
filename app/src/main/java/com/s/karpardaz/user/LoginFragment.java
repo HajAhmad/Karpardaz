@@ -18,8 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class LoginFragment extends BaseFragment<OnLoginInteractionListener, LayoutLoginBinding>
-    implements LoginContract.View,
-    RecoveryPasswordFragment.OnRecoveryPasswordInteractionListener {
+    implements LoginContract.View {
 
     public static final String TAG = LoginFragment.class.getSimpleName();
 
@@ -29,6 +28,12 @@ public class LoginFragment extends BaseFragment<OnLoginInteractionListener, Layo
 
     @Inject
     LoginContract.Presenter mPresenter;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPresenter.takeView(this);
+    }
 
     @Nullable
     @Override
@@ -41,7 +46,7 @@ public class LoginFragment extends BaseFragment<OnLoginInteractionListener, Layo
 
     @Override
     public void onViewCreated(@Nullable Bundle savedInstanceState) {
-        getBinding().layoutLoginPasswordRecoveryAction.setOnClickListener(v -> recoverPassword());
+        getBinding().layoutLoginPasswordRecoveryAction.setOnClickListener(v -> getListener().openRecoverPassword());
         getBinding().layoutLoginLoginAction.setOnClickListener(v -> login());
 
     }
@@ -51,12 +56,6 @@ public class LoginFragment extends BaseFragment<OnLoginInteractionListener, Layo
         super.clearReferences();
         mPresenter.dropView();
         mPresenter = null;
-    }
-
-    private void recoverPassword() {
-        RecoveryPasswordFragment fragment = RecoveryPasswordFragment.newInstance();
-        fragment.setInteractionListener(this);
-
     }
 
     private void login() {

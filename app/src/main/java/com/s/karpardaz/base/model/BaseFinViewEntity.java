@@ -2,23 +2,44 @@ package com.s.karpardaz.base.model;
 
 import androidx.annotation.NonNull;
 
-public abstract class BaseFinViewEntity extends BaseModel {
+public abstract class BaseFinViewEntity extends BaseViewItem {
 
     private int order;
     private String purchasedAt;
     private String subject;
     private String amount;
+    private String createdAt;
+    private String updatedAt;
 
     public BaseFinViewEntity(int order, @NonNull String uuid, @NonNull String purchasedAt,
-            @NonNull String subject,
-            @NonNull String amount,
-            @NonNull String createdAt,
-            @NonNull String updatedAt) {
-        super(uuid, createdAt, updatedAt);
+        @NonNull String subject,
+        @NonNull String amount,
+        @NonNull String createdAt,
+        @NonNull String updatedAt) {
+
+        super(uuid);
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.order = order;
         this.purchasedAt = purchasedAt;
         this.subject = subject;
         this.amount = amount;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public int getOrder() {

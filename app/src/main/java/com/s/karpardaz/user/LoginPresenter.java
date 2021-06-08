@@ -6,7 +6,7 @@ import com.s.karpardaz.base.BasePresenter;
 import com.s.karpardaz.base.util.AppConstants;
 import com.s.karpardaz.base.util.AppUtil;
 import com.s.karpardaz.user.data.LoginDataSource;
-import com.s.karpardaz.user.model.Login;
+import com.s.karpardaz.base.model.Login;
 
 import java.util.Objects;
 

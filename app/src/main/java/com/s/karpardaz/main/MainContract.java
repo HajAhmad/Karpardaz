@@ -8,10 +8,12 @@ public interface MainContract {
     interface View extends BaseViewContract<Presenter> {
         void proceed();
         void showEntranceDialog();
+        void returnToLoginPage();
     }
 
     interface Presenter extends BasePresenterContract<View> {
         void isUserAvailable();
+        void logout();
     }
 
 }

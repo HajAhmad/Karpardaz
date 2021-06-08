@@ -13,14 +13,12 @@ import androidx.core.content.ContextCompat;
 
 import com.s.karpardaz.R;
 import com.s.karpardaz.base.ui.BaseFragment;
-import com.s.karpardaz.base.util.view.SnackbarUtil;
+import com.s.karpardaz.base.util.view.AlertUtil;
 import com.s.karpardaz.databinding.FragmentRegisterBinding;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
-
-import static com.s.karpardaz.base.util.view.SnackbarUtil.showSnackbar;
 
 @AndroidEntryPoint
 public class RegisterFragment extends BaseFragment<OnRegisterInteractionListener, FragmentRegisterBinding>
@@ -68,7 +66,7 @@ public class RegisterFragment extends BaseFragment<OnRegisterInteractionListener
                     getBinding().fragmentRegisterEmailInput.getText().toString(),
                     getBinding().fragmentRegisterPasswordInput.getText().toString());
         } else {
-            showSnackbar(getBinding().getRoot(), R.string.all_check_value_message);
+            AlertUtil.showToast(getBinding().getRoot(), R.string.all_check_value_message);
         }
 
     }
@@ -82,17 +80,17 @@ public class RegisterFragment extends BaseFragment<OnRegisterInteractionListener
 
     @Override
     public void showInvalidPasswordError() {
-        showSnackbar(getBinding().getRoot(), R.string.long_invalid_password_message);
+        AlertUtil.showToast(getBinding().getRoot(), R.string.long_invalid_password_message);
     }
 
     @Override
     public void showInvalidEmailError() {
-        SnackbarUtil.showLongSnackbar(getBinding().getRoot(), R.string.entry_invalid_email_message);
+        AlertUtil.showLongToast(getBinding().getRoot(), R.string.entry_invalid_email_message);
     }
 
     @Override
     public void emailFound() {
-        showSnackbar(getBinding().getRoot(), R.string.register_email_found_error_message);
+        AlertUtil.showToast(getBinding().getRoot(), R.string.register_email_found_error_message);
     }
 
     @Override
@@ -102,7 +100,7 @@ public class RegisterFragment extends BaseFragment<OnRegisterInteractionListener
 
     @Override
     public void networkUnavailable() {
-        showSnackbar(getBinding().getRoot(), R.string.all_check_network_message);
+        AlertUtil.showToast(getBinding().getRoot(), R.string.all_check_network_message);
     }
 
     @Override

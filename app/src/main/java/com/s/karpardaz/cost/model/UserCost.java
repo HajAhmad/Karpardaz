@@ -3,7 +3,7 @@ package com.s.karpardaz.cost.model;
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
-import com.s.karpardaz.user.model.User;
+import com.s.karpardaz.base.model.User;
 
 import java.util.List;
 

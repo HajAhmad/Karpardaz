@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.viewbinding.ViewBinding;
 
@@ -19,7 +20,7 @@ public abstract class BaseFragment<L extends BaseInteractionListener, V extends 
     implements Progress {
 
     private Context mContext;
-    @Nullable
+
     private L mListener;
     private V mBinding;
 
@@ -78,6 +79,14 @@ public abstract class BaseFragment<L extends BaseInteractionListener, V extends 
         mListener = null;
         mContext = null;
         mBinding = null;
+    }
+
+    public void showMessage(@StringRes int stringResId) {
+        getListener().showMessage(stringResId);
+    }
+
+    public void showMessage(String message) {
+        getListener().showMessage(message);
     }
 
     @Override

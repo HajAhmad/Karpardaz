@@ -14,19 +14,21 @@ import com.s.karpardaz.cost.CostFragment;
 import com.s.karpardaz.databinding.ActivityMainBinding;
 import com.s.karpardaz.income.IncomeFragment;
 import com.s.karpardaz.user.EntryDialogFragment;
+import com.s.karpardaz.user.ProfileFragment;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import ir.huri.jcal.JalaliCalendar;
 
-import static com.s.karpardaz.base.util.view.SnackbarUtil.showSnackbar;
+import static com.s.karpardaz.base.util.view.AlertUtil.showToast;
 
 @AndroidEntryPoint
 public class MainActivity extends BaseActivity<ActivityMainBinding> implements MainContract.View,
     CostFragment.OnCostListFragmentInteractionListener,
     IncomeFragment.OnIncomeFragmentInteractionListener,
-    EntryDialogFragment.OnEntryFragmentInteractionListener {
+    EntryDialogFragment.OnEntryFragmentInteractionListener,
+    ProfileFragment.OnProfileInteractionListener {
 
     @Inject
     MainContract.Presenter mPresenter;
@@ -86,7 +88,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
 
 
     private void openProfileFragment() {
-        Toast.makeText(this, "Not Implemented!", Toast.LENGTH_SHORT).show();
+        ProfileFragment profileFragment = ProfileFragment.newInstance();
+        profileFragment.setInteractionListener(this);
+        profileFragment.show(getSupportFragmentManager(), ProfileFragment.TAG);
     }
 
     private void openReportFragment() {
@@ -111,8 +115,19 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
 
     @Override
     public void showEntranceDialog() {
-        EntryDialogFragment.newInstance().show(getSupportFragmentManager(),
+        final EntryDialogFragment entryDialog = EntryDialogFragment.newInstance();
+        entryDialog.setInteractionListener(this);
+        entryDialog.show(getSupportFragmentManager(),
             EntryDialogFragment.TAG);
+    }
+
+    @Override
+    public void returnToLoginPage() {
+        ProfileFragment fragment = (ProfileFragment) getSupportFragmentManager().findFragmentByTag(ProfileFragment.TAG);
+        if (fragment != null)
+            fragment.dismiss();
+        showMessage(R.string.logout_message);
+        showEntranceDialog();
     }
 
     @Override
@@ -128,12 +143,16 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
 
     @Override
     public void showMessage(String message) {
-        showSnackbar(getRoot(), message);
+        showToast(getRoot(), message);
     }
 
     @Override
     public void showMessage(int stringRes) {
-        showSnackbar(getRoot(), stringRes);
+        showToast(getRoot(), stringRes);
     }
 
+    @Override
+    public void logout() {
+        mPresenter.logout();
+    }
 }

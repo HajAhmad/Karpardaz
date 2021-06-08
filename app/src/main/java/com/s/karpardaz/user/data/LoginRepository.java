@@ -7,13 +7,13 @@ import androidx.annotation.NonNull;
 import com.s.karpardaz.base.BaseCallback;
 import com.s.karpardaz.base.concurrent.AppExecutors;
 import com.s.karpardaz.base.model.BaseResponse;
-import com.s.karpardaz.user.model.Login;
+import com.s.karpardaz.base.model.Login;
 
 import java.net.HttpURLConnection;
 
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
-import io.reactivex.rxjava3.core.Maybe;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,8 +41,18 @@ public class LoginRepository implements LoginDataSource {
     }
 
     @Override
-    public Maybe<Login> getLoggedInUser() {
-        return mDao.get();
+    public void getLoggedInUser(@Nonnull GetLoggedInUserCallback callback) {
+        requireNonNull(callback);
+        mExecutor.getDiskIo().execute(() -> {
+            Login login = mDao.get();
+            mExecutor.getMainThread().execute(() -> {
+                if (login == null) {
+                    callback.notFound();
+                } else {
+                    callback.onSuccess(login);
+                }
+            });
+        });
     }
 
     @Override
@@ -51,17 +61,13 @@ public class LoginRepository implements LoginDataSource {
         requireNonNull(callback);
         mExecutor.getDiskIo().execute(() -> {
             long insertedLoginId = mDao.insert(login);
-            if (insertedLoginId > 0)
-                callback.onSuccess(null);
-            else
-                callback.onFailure(new Throwable("Could not get login Info."));
+            mExecutor.getMainThread().execute(() -> {
+                if (insertedLoginId > 0)
+                    callback.onSuccess();
+                else
+                    callback.onFailure(new Throwable("Could not get login Info."));
+            });
         });
-    }
-
-    @Override
-    public void deleteLogin(@NonNull Login login) {
-        requireNonNull(login);
-        mDao.delete(login);
     }
 
     @Override
@@ -75,7 +81,7 @@ public class LoginRepository implements LoginDataSource {
                 else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND)
                     loginCallback.informationNotFound();
                 else
-                    loginCallback.onFailure(produceUnknownException(response.code()));
+                    onFailure(call, produceUnknownException(response.code(), response.errorBody()));
             }
 
             @Override
@@ -96,7 +102,8 @@ public class LoginRepository implements LoginDataSource {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (isResponseSuccessful(response)) callback.onSuccess(null);
-                else callback.onFailure(produceUnknownException(response.code()));
+                else
+                    onFailure(call, produceUnknownException(response.code(), response.errorBody()));
             }
 
             @Override
@@ -124,7 +131,8 @@ public class LoginRepository implements LoginDataSource {
                         callback.notFound();
                     else if (response.code() == HttpURLConnection.HTTP_BAD_REQUEST)
                         callback.codeExpired();
-                    else callback.onFailure(produceUnknownException(response.code()));
+                    else onFailure(call,
+                            produceUnknownException(response.code(), response.errorBody()));
                 }
 
                 @Override
@@ -132,6 +140,40 @@ public class LoginRepository implements LoginDataSource {
                     callback.onFailure(t);
                 }
             });
+    }
+
+    @Override
+    public void resetPassword(@NonNull String recoveryToken, @NonNull String loginPhrase,
+        @NonNull ResetPasswordCallback callback) {
+        if (isAnyEmpty(recoveryToken, loginPhrase)) throw new NullPointerException();
+        requireNonNull(callback);
+
+        mService.resetPassword(recoveryToken, loginPhrase).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (isResponseSuccessful(response))
+                    callback.onSuccess(null);
+                else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND ||
+                    response.code() == HttpURLConnection.HTTP_NOT_ACCEPTABLE ||
+                    response.code() == HttpURLConnection.HTTP_BAD_REQUEST)
+                    callback.notFound();
+                else onFailure(call, produceUnknownException(
+                        response.code(), response.errorBody()));
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void clearLoginInfo(@NonNull BaseCallback<Void> callback) {
+        mExecutor.getDiskIo().execute(() -> {
+            mDao.clearTable();
+            mExecutor.getMainThread().execute(callback::onSuccess);
+        });
     }
 
 }

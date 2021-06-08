@@ -3,8 +3,6 @@ package com.s.karpardaz.user;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +10,16 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.s.karpardaz.R;
-import com.s.karpardaz.base.NotImplementedException;
-import com.s.karpardaz.base.ui.BaseFragment;
+import com.s.karpardaz.base.KTextWatcher;
+import com.s.karpardaz.base.ui.BaseDialogFragment;
 import com.s.karpardaz.base.ui.BaseInteractionListener;
 import com.s.karpardaz.databinding.LayoutPasswordRecoveryBinding;
 import com.s.karpardaz.databinding.LayoutPasswordRecoveryStepOneBinding;
+import com.s.karpardaz.databinding.LayoutPasswordRecoveryStepThreeBinding;
 import com.s.karpardaz.databinding.LayoutPasswordRecoveryStepTwoBinding;
 
 import java.util.ArrayList;
@@ -31,14 +31,22 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class RecoveryPasswordFragment extends BaseFragment<RecoveryPasswordFragment.OnRecoveryPasswordInteractionListener,
+public class RecoveryPasswordFragment extends BaseDialogFragment<RecoveryPasswordFragment.OnRecoveryPasswordInteractionListener,
     LayoutPasswordRecoveryBinding> implements RecoveryPasswordContract.View {
+
+    public static final String TAG = RecoveryPasswordFragment.class.getSimpleName();
 
     @Inject
     RecoveryPasswordContract.Presenter mPresenter;
 
-    private ViewPagerAdapter mAdapter;
-    private LayoutPasswordRecoveryStepTwoBinding stepTwoBinding;
+    public static final int EMAIL_VIEW_POSITION = 0;
+    public static final int CODE_VIEW_POSITION = 1;
+    public static final int CHANGE_PASSWORD_VIEW_POSITION = 2;
+
+    private LayoutPasswordRecoveryStepOneBinding mEmailViewBinding;
+    private LayoutPasswordRecoveryStepTwoBinding mCodeViewBinding;
+    private LayoutPasswordRecoveryStepThreeBinding mChangePasswordBinding;
+
     private CountDownTimer recoveryCodeRemainingCounter;
 
     public static RecoveryPasswordFragment newInstance() {
@@ -46,8 +54,19 @@ public class RecoveryPasswordFragment extends BaseFragment<RecoveryPasswordFragm
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (getDialog() != null) {
+            getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+            getDialog().getWindow().setWindowAnimations(R.style.AppTheme_Slide);
+        }
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_FullScreenDialog);
         mPresenter.takeView(this);
     }
 
@@ -62,68 +81,73 @@ public class RecoveryPasswordFragment extends BaseFragment<RecoveryPasswordFragm
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onViewCreated(@Nullable Bundle savedInstanceState) {
-        mAdapter = new ViewPagerAdapter();
+        mEmailViewBinding = LayoutPasswordRecoveryStepOneBinding.inflate(
+            LayoutInflater.from(getCtx()), null, false);
+        mCodeViewBinding = LayoutPasswordRecoveryStepTwoBinding.inflate(
+            LayoutInflater.from(getCtx()), null, false);
+        mChangePasswordBinding = LayoutPasswordRecoveryStepThreeBinding.inflate(
+            LayoutInflater.from(getCtx()), null, false);
+
+        ViewPagerAdapter adapter = new ViewPagerAdapter();
+        adapter.addView(EMAIL_VIEW_POSITION, mEmailViewBinding.getRoot());
+        adapter.addView(CODE_VIEW_POSITION, mCodeViewBinding.getRoot());
+        adapter.addView(CHANGE_PASSWORD_VIEW_POSITION, mChangePasswordBinding.getRoot());
+
         getBinding().layoutLoginPasswordRecoveryPager.setOnTouchListener((v, event) -> false);
-        getBinding().layoutLoginPasswordRecoveryPager.setAdapter(mAdapter);
+        getBinding().layoutLoginPasswordRecoveryPager.setAdapter(adapter);
 
         mPresenter.start();
     }
 
     @Override
     public void initEmailView() {
-        LayoutPasswordRecoveryStepOneBinding binding = LayoutPasswordRecoveryStepOneBinding.inflate(
-            LayoutInflater.from(getCtx()), null, false
-        );
-        binding.layoutPasswordRecoveryAction.setOnClickListener(v -> {
-            if (binding.layoutPasswordRecoveryInput.getText() != null)
+        mEmailViewBinding.layoutPasswordRecoveryAction.setOnClickListener(v -> {
+            if (mEmailViewBinding.layoutPasswordRecoveryInput.getText() != null)
                 mPresenter.requestRecoveryCode(
-                    binding.layoutPasswordRecoveryInput.getText().toString());
+                    mEmailViewBinding.layoutPasswordRecoveryInput.getText().toString());
             else
                 getListener().showMessage(R.string.all_enter_email_message);
         });
-        mAdapter.addView(binding.getRoot());
-        getBinding().layoutLoginPasswordRecoveryPager.setCurrentItem(0);
+        getBinding().layoutLoginPasswordRecoveryPager.setCurrentItem(EMAIL_VIEW_POSITION);
     }
 
 
     @Override
     public void initCodeView() {
-        stepTwoBinding = LayoutPasswordRecoveryStepTwoBinding.inflate(
-            LayoutInflater.from(getCtx()), null, false
-        );
+        mCodeViewBinding.layoutPasswordRecoveryInput.addTextChangedListener((KTextWatcher) (s, count) -> {
+            if (s.length() == 4) mPresenter.enableSendCodeAction();
+            else mPresenter.disableSendCodeAction();
+        });
+
+        mCodeViewBinding.layoutPasswordRecoveryAction.setOnClickListener(v ->
+            mPresenter.sendRecoveryCode(mCodeViewBinding.layoutPasswordRecoveryInput.getText().toString()));
+
+
+        getBinding().layoutLoginPasswordRecoveryPager.setCurrentItem(CODE_VIEW_POSITION);
 
         mPresenter.startRecoveryCodeCountDownTimer();
         mPresenter.disableSendCodeAction();
-        stepTwoBinding.layoutPasswordRecoveryInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+    }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() == 4) mPresenter.enableSendCodeAction();
-                else mPresenter.disableSendCodeAction();
-            }
+    @Override
+    public void initChangePassword() {
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
+        mChangePasswordBinding.layoutPasswordRecoveryInput.addTextChangedListener((KTextWatcher) (s, count) -> {
+            if (count > 4) mPresenter.enableResetPasswordAction();
+            else mPresenter.disableResetPasswordAction();
         });
+        mChangePasswordBinding.layoutPasswordRecoveryAction.setOnClickListener(v ->
+            mPresenter.resetPassword(mChangePasswordBinding.layoutPasswordRecoveryInput.getText().toString()));
 
-        stepTwoBinding.layoutPasswordRecoveryAction.setOnClickListener(v -> {
-            mPresenter.sendRecoveryCode(stepTwoBinding.layoutPasswordRecoveryInput.getText().toString());
+        getBinding().layoutLoginPasswordRecoveryPager.setCurrentItem(CHANGE_PASSWORD_VIEW_POSITION);
 
-            recoveryCodeRemainingCounter.cancel();
-        });
-
-        mAdapter.addView(stepTwoBinding.getRoot());
-        getBinding().layoutLoginPasswordRecoveryPager.setCurrentItem(1);
+        mPresenter.disableResetPasswordAction();
     }
 
     @Override
     public void startRecoveryCodeCountDownTimer() {
-        stepTwoBinding.layoutPasswordRecoveryRemainingTime.setClickable(false);
-        stepTwoBinding.layoutPasswordRecoveryRemainingTime.setFocusable(false);
+        mCodeViewBinding.layoutPasswordRecoveryRemainingTime.setClickable(false);
+        mCodeViewBinding.layoutPasswordRecoveryRemainingTime.setFocusable(false);
 
         recoveryCodeRemainingCounter = new CountDownTimer(TimeUnit.MINUTES.toMillis(2),
             TimeUnit.SECONDS.toMillis(1)) {
@@ -132,7 +156,7 @@ public class RecoveryPasswordFragment extends BaseFragment<RecoveryPasswordFragm
                 long minutes = TimeUnit.MINUTES.convert(millisUntilFinished, TimeUnit.MILLISECONDS);
                 long seconds = TimeUnit.SECONDS.convert(millisUntilFinished, TimeUnit.MILLISECONDS);
 
-                stepTwoBinding.layoutPasswordRecoveryRemainingTime.setText(
+                mCodeViewBinding.layoutPasswordRecoveryRemainingTime.setText(
                     String.format("%d:%d", minutes, seconds));
             }
 
@@ -141,55 +165,90 @@ public class RecoveryPasswordFragment extends BaseFragment<RecoveryPasswordFragm
                 mPresenter.initResendCode();
             }
         };
+
         recoveryCodeRemainingCounter.start();
     }
 
     @Override
+    public void stopTimer() {
+        if (recoveryCodeRemainingCounter != null)
+            recoveryCodeRemainingCounter.cancel();
+    }
+
+    @Override
     public void initResendCode() {
-        stepTwoBinding.layoutPasswordRecoveryRemainingTime.setText(
+        mCodeViewBinding.layoutPasswordRecoveryRemainingTime.setText(
             R.string.recovery_code_expired_message);
-        stepTwoBinding.layoutPasswordRecoveryRemainingTime.setTextColor(
+        mCodeViewBinding.layoutPasswordRecoveryRemainingTime.setTextColor(
             ContextCompat.getColor(getCtx(), R.color.colorLink));
-        stepTwoBinding.layoutPasswordRecoveryAction.setOnClickListener(v ->
+        mCodeViewBinding.layoutPasswordRecoveryAction.setOnClickListener(v ->
             mPresenter.resendPasswordRecoveryCode());
-        stepTwoBinding.layoutPasswordRecoveryAction.setFocusable(true);
+        mCodeViewBinding.layoutPasswordRecoveryAction.setFocusable(true);
     }
 
     @Override
     public void enableSendCodeAction() {
-        stepTwoBinding.layoutPasswordRecoveryAction.setEnabled(true);
-        stepTwoBinding.layoutPasswordRecoveryAction.setTextColor(ContextCompat.getColor(getCtx(), R.color.colorPrimary));
+        mCodeViewBinding.layoutPasswordRecoveryAction.setEnabled(true);
+        mCodeViewBinding.layoutPasswordRecoveryAction.setTextColor(
+            ContextCompat.getColor(getCtx(), R.color.colorPrimary));
     }
 
     @Override
     public void disableSendCodeAction() {
-        stepTwoBinding.layoutPasswordRecoveryAction.setEnabled(false);
-        stepTwoBinding.layoutPasswordRecoveryAction.setTextColor(ContextCompat.getColor(getCtx(), R.color.colorHint));
+        mCodeViewBinding.layoutPasswordRecoveryAction.setEnabled(false);
+        mCodeViewBinding.layoutPasswordRecoveryAction.setTextColor(
+            ContextCompat.getColor(getCtx(), R.color.colorHint));
     }
 
     @Override
-    public void showInvalidCodeError() {
-        throw new NotImplementedException();
+    public void codeNotFound() {
+        showMessage(R.string.verification_code_not_found);
+        mCodeViewBinding.layoutPasswordRecoveryInput.setText("");
+    }
+
+    @Override
+    public void codeExpired() {
+        showMessage(R.string.verification_code_expired);
+        mCodeViewBinding.layoutPasswordRecoveryInput.setText("");
+    }
+
+    @Override
+    public void disableResetPasswordAction() {
+        mChangePasswordBinding.layoutPasswordRecoveryAction.setEnabled(false);
+        mChangePasswordBinding.layoutPasswordRecoveryAction.setTextColor(
+            ContextCompat.getColor(getCtx(), R.color.colorHint)
+        );
+    }
+
+    @Override
+    public void enableResetPasswordAction() {
+        mChangePasswordBinding.layoutPasswordRecoveryAction.setEnabled(true);
+        mChangePasswordBinding.layoutPasswordRecoveryAction.setTextColor(
+            ContextCompat.getColor(getCtx(), R.color.colorPrimary)
+        );
+    }
+
+    @Override
+    public void dismissDialog() {
+
     }
 
     @Override
     public void showInvalidPasswordError() {
-
+        showMessage(R.string.long_invalid_password_message);
     }
 
     @Override
     public void showInvalidEmailError() {
-
+        showMessage(R.string.entry_invalid_email_message);
     }
 
     @Override
-    public void showMessage(int stringResId) {
-
-    }
-
-    @Override
-    public void showMessage(String message) {
-
+    protected void clearReferences() {
+        super.clearReferences();
+        if (recoveryCodeRemainingCounter != null) recoveryCodeRemainingCounter.cancel();
+        mPresenter.dropView();
+        mPresenter = null;
     }
 
     private static class ViewPagerAdapter extends PagerAdapter {
@@ -197,13 +256,15 @@ public class RecoveryPasswordFragment extends BaseFragment<RecoveryPasswordFragm
 
         ViewPagerAdapter() {
             views = new ArrayList<>(3);
+            notifyDataSetChanged();
         }
 
-        void addView(View view) {
-            if (views.size() == 3)
-                throw new ArrayIndexOutOfBoundsException();
+        void addView(int position, View view) {
+            if (position > 2)
+                throw new IndexOutOfBoundsException();
 
-            views.add(view);
+            views.add(position, view);
+            notifyDataSetChanged();
         }
 
         @Override
@@ -214,6 +275,7 @@ public class RecoveryPasswordFragment extends BaseFragment<RecoveryPasswordFragm
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
+            container.addView(views.get(position));
             return views.get(position);
         }
 
@@ -230,6 +292,6 @@ public class RecoveryPasswordFragment extends BaseFragment<RecoveryPasswordFragm
     }
 
     public interface OnRecoveryPasswordInteractionListener extends BaseInteractionListener {
-        void showMessage(int messageResId);
+
     }
 }

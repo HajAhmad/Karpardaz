@@ -1,4 +1,4 @@
-package com.s.karpardaz.user.model;
+package com.s.karpardaz.base.model;
 
 import androidx.annotation.NonNull;
 

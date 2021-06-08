@@ -4,4 +4,5 @@ import com.s.karpardaz.base.ui.BaseInteractionListener;
 
 public interface OnLoginInteractionListener extends BaseInteractionListener {
     void proceed();
+    void openRecoverPassword();
 }

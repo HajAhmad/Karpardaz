@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/layout_profile_list_item_root"
+    android:layout_height="48dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:contentPaddingBottom="@dimen/dimen_twelve"
+    app:contentPaddingLeft="@dimen/dimen_sixteen"
+    app:contentPaddingRight="@dimen/dimen_sixteen"
+    app:contentPaddingTop="@dimen/dimen_twelve">
+
+    <TextView
+        android:id="@+id/layout_profile_list_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|start"
+        tools:text="عنوان" />
+</androidx.cardview.widget.CardView>

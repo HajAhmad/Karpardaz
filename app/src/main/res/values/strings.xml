@@ -58,5 +58,11 @@
     <string name="password_recovery_enter_password_again_hint">گذرواژه خود را دوباره وارد نمایید.</string>
     <string name="all_confirm_title">تایید</string>
     <string name="recovery_code_expired_message">اعتبار کد ارسال شده به پایان رسید. کد را دریافت نکردید؟ برای دریافت دوباره کد ضربه بزنید.</string>
+    <string name="verification_code_not_found">کد ارسالی یافت نشد.</string>
+    <string name="verification_code_expired">اعتبار کد به اتمام رسیده. لطفاً دوباره اقدام به دریافت کد نمایید.</string>
+    <string name="recovery_code_invalid_message">کد اشتباه است. کد باید 4 رقم باشد.</string>
+    <string name="info_not_found">اطلاعات یافت نشدند.</string>
+    <string name="exit_title">خروج</string>
+    <string name="logout_message">خارج شدید.</string>
 
 </resources>

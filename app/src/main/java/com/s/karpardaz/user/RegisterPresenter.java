@@ -7,11 +7,12 @@ import androidx.annotation.Nullable;
 
 import com.s.karpardaz.base.BaseCallback;
 import com.s.karpardaz.base.BasePresenter;
+import com.s.karpardaz.base.util.AppConstants;
 import com.s.karpardaz.base.util.AppUtil;
 import com.s.karpardaz.user.data.LoginDataSource;
 import com.s.karpardaz.user.data.UserDataSource;
-import com.s.karpardaz.user.model.Login;
-import com.s.karpardaz.user.model.User;
+import com.s.karpardaz.base.model.Login;
+import com.s.karpardaz.base.model.User;
 
 import javax.inject.Inject;
 
@@ -45,19 +46,18 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
                     name = email.split("@")[0];
 
                 password = composeLoginPhrase(email, password);
-
-                User user = new User(name, email, password,
-                    getCurrentDateTimeUTC());
+                User user = new User(name, email, password, getCurrentDateTimeUTC());
 
                 getView().showProgress();
                 mUserRepository.register(user, new UserDataSource.RegisterCallback() {
                     @Override
-                    public void onSuccess(String result) {
-                        mLoginRepository.insertLogin(new Login(result, getCurrentDateTimeUTC()),
+                    public void onSuccess(String userId) {
+                        mLoginRepository.insertLogin(new Login(userId, getCurrentDateTimeUTC()),
                             new BaseCallback<Void>() {
                                 @Override
                                 public void onSuccess(Void result) {
                                     getView().proceed();
+                                    AppConstants.sActiveUserId = userId;
                                     getView().hideProgress();
                                 }
 

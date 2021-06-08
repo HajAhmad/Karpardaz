@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.s.karpardaz.base.BaseCallback;
 import com.s.karpardaz.base.NotImplementedException;
-import com.s.karpardaz.user.model.User;
+import com.s.karpardaz.base.model.User;
 
 public interface UserDataSource {
 

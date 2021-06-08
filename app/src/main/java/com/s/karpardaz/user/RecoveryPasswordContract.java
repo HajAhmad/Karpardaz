@@ -14,10 +14,16 @@ public interface RecoveryPasswordContract {
         void showMessage(@StringRes int stringResId);
         void showMessage(String message);
         void startRecoveryCodeCountDownTimer();
+        void stopTimer();
         void initResendCode();
         void enableSendCodeAction();
         void disableSendCodeAction();
-        void showInvalidCodeError();
+        void initChangePassword();
+        void codeNotFound();
+        void codeExpired();
+        void disableResetPasswordAction();
+        void enableResetPasswordAction();
+        void dismissDialog();
     }
 
     interface Presenter extends BasePresenterContract<View> {
@@ -28,5 +34,8 @@ public interface RecoveryPasswordContract {
         void sendRecoveryCode(String verificationCode);
         void enableSendCodeAction();
         void disableSendCodeAction();
+        void enableResetPasswordAction();
+        void disableResetPasswordAction();
+        void resetPassword(String password);
     }
 }

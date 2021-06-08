@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.s.karpardaz.base.model.BaseModel;
+import com.s.karpardaz.base.model.BaseViewItem;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,7 +18,7 @@ import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
-public abstract class BaseListAdapter<VH extends RecyclerView.ViewHolder, T extends BaseModel, Listener>
+public abstract class BaseListAdapter<VH extends RecyclerView.ViewHolder, T extends BaseViewItem, Listener>
         extends RecyclerView.Adapter<VH> {
 
     private List<T> mList;
@@ -87,9 +87,9 @@ public abstract class BaseListAdapter<VH extends RecyclerView.ViewHolder, T exte
         notifyItemRangeRemoved(0, currentSize);
     }
 
-    public int getItemPositionById(String uuid) {
+    public int getItemPositionById(String id) {
         for (int i = 0; i < mList.size(); i++)
-            if (Objects.equals(uuid, mList.get(i).getUuid()))
+            if (Objects.equals(id, mList.get(i).getId()))
                 return i;
 
         return -1;

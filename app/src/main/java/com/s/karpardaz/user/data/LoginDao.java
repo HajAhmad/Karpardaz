@@ -4,7 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Query;
 
 import com.s.karpardaz.base.data.BaseDao;
-import com.s.karpardaz.user.model.Login;
+import com.s.karpardaz.base.model.Login;
 
 import io.reactivex.rxjava3.core.Maybe;
 
@@ -12,7 +12,7 @@ import io.reactivex.rxjava3.core.Maybe;
 public interface LoginDao extends BaseDao<Login> {
 
     @Query("select * from Login Limit 1")
-    Maybe<Login> get();
+    Login get();
 
     @Query("delete from login")
     void clearTable();

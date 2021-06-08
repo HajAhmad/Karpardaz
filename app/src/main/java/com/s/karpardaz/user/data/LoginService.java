@@ -3,7 +3,9 @@ package com.s.karpardaz.user.data;
 import com.s.karpardaz.base.model.BaseResponse;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface LoginService {
@@ -17,4 +19,7 @@ public interface LoginService {
     @GET("users/CheckRecoveryCode")
     Call<BaseResponse<String>> sendRecoveryCode(@Query("token") String recoveryToken,
         @Query("verificationCode") String verificationCode);
+
+    @PUT("users/ResetPassword")
+    Call<Void> resetPassword(@Query("token") String recoveryToken, @Body String loginPhrase);
 }

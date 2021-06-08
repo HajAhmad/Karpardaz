@@ -5,35 +5,44 @@ import androidx.annotation.NonNull;
 import com.s.karpardaz.base.BaseCallback;
 import com.s.karpardaz.base.NotImplementedException;
 import com.s.karpardaz.base.model.BaseResponse;
-import com.s.karpardaz.user.model.Login;
+import com.s.karpardaz.base.model.Login;
 
-import io.reactivex.rxjava3.core.Maybe;
+import javax.annotation.Nonnull;
 
 public interface LoginDataSource {
 
-    default Maybe<Login> getLoggedInUser() {
+    default void getLoggedInUser(@Nonnull GetLoggedInUserCallback callback) {
         throw new NotImplementedException();
     }
     default void insertLogin(@NonNull Login login, @NonNull BaseCallback<Void> callback) {
         throw new NotImplementedException();
     }
-    default void deleteLogin(@NonNull Login login) {
-        throw new NotImplementedException();
-    }
+
     default void login(@NonNull String loginPhrase, @NonNull LoginCallback loginCallback) {
         throw new NotImplementedException();
     }
     void RequestPasswordChange(@NonNull String email, @NonNull BaseCallback<String> callback);
     void sendRecoveryCode(@NonNull String sRecoveryToken, @NonNull String verificationCode,
         @NonNull SendRecoveryCodeCallback callback);
+    void resetPassword(@NonNull String recoveryToken, @NonNull String loginPhrase, @NonNull ResetPasswordCallback callback);
+    void clearLoginInfo(@NonNull BaseCallback<Void> callback);
 
     interface SendRecoveryCodeCallback extends BaseCallback<BaseResponse<String>> {
         void notFound();
         void codeExpired();
     }
 
+    interface GetLoggedInUserCallback extends BaseCallback<Login>{
+        void notFound();
+    }
+
     interface LoginCallback extends BaseCallback<String> {
         void informationNotFound();
+    }
+
+    interface ResetPasswordCallback extends BaseCallback<Void>{
+
+        void notFound();
     }
 
 }

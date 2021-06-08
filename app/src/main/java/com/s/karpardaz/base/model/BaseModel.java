@@ -4,14 +4,23 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Objects;
 
 public abstract class BaseModel {
 
     @NonNull
+    @SerializedName("Id")
+    @Expose
     protected final String uuid;
 
+    @SerializedName("CreatedAt")
+    @Expose
     private String createdAt;
+    @SerializedName("UpdatedAt")
+    @Expose
     private String updatedAt;
 
     public BaseModel(@NonNull String uuid) {

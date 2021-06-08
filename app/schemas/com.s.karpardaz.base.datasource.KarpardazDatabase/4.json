@@ -206,7 +206,7 @@
       },
       {
         "tableName": "User",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uuid` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `email` TEXT, `name` TEXT, `password` TEXT, `createdAt` TEXT, `updatedAt` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uuid` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `email` TEXT, `password` TEXT, `createdAt` TEXT, `updatedAt` TEXT)",
         "fields": [
           {
             "fieldPath": "uuid",
@@ -221,14 +221,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "email",
-            "columnName": "email",
+            "fieldPath": "name",
+            "columnName": "name",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "name",
-            "columnName": "name",
+            "fieldPath": "email",
+            "columnName": "email",
             "affinity": "TEXT",
             "notNull": false
           },

@@ -3,7 +3,7 @@ package com.s.karpardaz.income.data;
 import androidx.room.Dao;
 import androidx.room.Query;
 
-import com.s.karpardaz.base.data.BaseDao;
+import com.s.karpardaz.base.dao.BaseDao;
 import com.s.karpardaz.income.model.Income;
 
 import java.util.List;

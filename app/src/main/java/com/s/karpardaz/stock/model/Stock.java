@@ -17,7 +17,7 @@ public class Stock extends BaseEntity {
     @NonNull
     private String currencyMark;
 
-    protected Stock(long id, @NonNull String uuid, @NonNull String name,
+    public Stock(long id, @NonNull String uuid, @NonNull String name,
             @NonNull String currency, @NonNull String currencyMark, @NonNull String createdAt,
             @NonNull String updatedAt) {
         super(id, uuid, createdAt, updatedAt);

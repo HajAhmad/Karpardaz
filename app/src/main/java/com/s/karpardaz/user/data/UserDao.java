@@ -3,7 +3,7 @@ package com.s.karpardaz.user.data;
 import androidx.room.Dao;
 import androidx.room.Query;
 
-import com.s.karpardaz.base.data.BaseDao;
+import com.s.karpardaz.base.dao.BaseDao;
 import com.s.karpardaz.base.model.User;
 
 @Dao

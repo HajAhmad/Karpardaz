@@ -6,13 +6,11 @@ import com.s.karpardaz.base.BasePresenter;
 import com.s.karpardaz.base.util.AppConstants;
 import com.s.karpardaz.base.util.AppUtil;
 import com.s.karpardaz.user.data.LoginDataSource;
-import com.s.karpardaz.base.model.Login;
 
 import java.util.Objects;
 
 import javax.inject.Inject;
 
-import static com.s.karpardaz.base.util.AppUtil.composeLoginPhrase;
 import static com.s.karpardaz.base.util.AppUtil.getCurrentDateTimeUTC;
 
 public class LoginPresenter extends BasePresenter<LoginContract.View> implements LoginContract.Presenter {
@@ -32,8 +30,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             getView().showInvalidEmailError();
         } else {
             getView().showProgress();
-            String loginPhrase = composeLoginPhrase(email, password);
-            mRepository.login(loginPhrase, new LoginDataSource.LoginCallback() {
+            mRepository.login(email, password, getCurrentDateTimeUTC(), new LoginDataSource.LoginCallback() {
                 @Override
                 public void informationNotFound() {
                     getView().showInfoNotFoundError();
@@ -41,24 +38,14 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                 }
 
                 @Override
-                public void onSuccess(String userId) {
-                    mRepository.insertLogin(new Login(userId, getCurrentDateTimeUTC()),
-                        result -> {
-                            AppConstants.sActiveUserId = userId;
-                            getView().proceed();
-                            getView().hideProgress();
-                        });
-                }
-
-                @Override
-                public void onFailure(Throwable t) {
-                    getView().showMessage(t.getMessage());
+                public void onSuccess(String result) {
+                    AppConstants.sActiveUserId = result;
+                    getView().proceed();
                     getView().hideProgress();
                 }
             });
         }
     }
-
 
 
 }

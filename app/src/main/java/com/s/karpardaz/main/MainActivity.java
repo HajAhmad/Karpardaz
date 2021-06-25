@@ -13,6 +13,7 @@ import com.s.karpardaz.base.util.AppConstants;
 import com.s.karpardaz.cost.CostFragment;
 import com.s.karpardaz.databinding.ActivityMainBinding;
 import com.s.karpardaz.income.IncomeFragment;
+import com.s.karpardaz.stock.StockFragment;
 import com.s.karpardaz.user.EntryDialogFragment;
 import com.s.karpardaz.user.ProfileFragment;
 
@@ -28,7 +29,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
     CostFragment.OnCostListFragmentInteractionListener,
     IncomeFragment.OnIncomeFragmentInteractionListener,
     EntryDialogFragment.OnEntryFragmentInteractionListener,
-    ProfileFragment.OnProfileInteractionListener {
+    ProfileFragment.OnProfileInteractionListener, StockFragment.OnStockFragmentInteractionListener {
 
     @Inject
     MainContract.Presenter mPresenter;
@@ -41,8 +42,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
         setContentView(getRoot());
 
         getBinding().mainToolbar.setVisibility(View.INVISIBLE);
+        getBinding().mainActivityBottombar.setSelectedItemId(R.id.main_bottombar_cost_item);
 
-        mPresenter.isUserAvailable();
+        mPresenter.start();
 
     }
 
@@ -60,19 +62,24 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
         if (entryFragment != null)
             entryFragment.dismiss();
 
+        initViews();
+    }
+
+    private void initViews() {
         showMessage("PROCEEDED. USER ID = " + AppConstants.sActiveUserId);
 
         getBinding().mainToolbar.setVisibility(View.VISIBLE);
         getBinding().mainActivityBottombar.setSelectedItemId(R.id.main_bottombar_cost_item);
-
-        getBinding().mainTodayDate
-            .setText(new JalaliCalendar().getDayOfWeekDayMonthString());
+        getBinding().mainTodayDate.setText(new JalaliCalendar().getDayOfWeekDayMonthString());
 
         findViewById(R.id.main_action_profile).setOnClickListener(v -> openProfileFragment());
 
         getBinding().mainActivityBottombar.setOnNavigationItemSelectedListener(item -> {
             int itemId = item.getItemId();
-            if (itemId == R.id.main_bottombar_cost_item) {
+            if (itemId == R.id.main_bottombar_stock_item) {
+                openStockFragment();
+                return true;
+            } else if (itemId == R.id.main_bottombar_cost_item) {
                 openCostFragment();
                 return true;
             } else if (itemId == R.id.main_bottombar_income_item) {
@@ -84,8 +91,17 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
             }
             return false;
         });
+
+        mPresenter.checkForStocks();
     }
 
+    private void openStockFragment() {
+        StockFragment fragment = StockFragment.newInstance();
+        fragment.setInteractionListener(this);
+        getSupportFragmentManager().beginTransaction()
+            .replace(R.id.main_fragment_container, fragment)
+            .commit();
+    }
 
     private void openProfileFragment() {
         ProfileFragment profileFragment = ProfileFragment.newInstance();
@@ -128,6 +144,20 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
             fragment.dismiss();
         showMessage(R.string.logout_message);
         showEntranceDialog();
+    }
+
+    @Override
+    public void showInsertStock() {
+        int menuItemCount = getBinding().mainActivityBottombar.getMenu().size();
+        for (int i = 1; i < menuItemCount; i++)
+            getBinding().mainActivityBottombar.getMenu().getItem(i).setEnabled(false);
+
+        getBinding().mainActivityBottombar.setSelectedItemId(R.id.main_bottombar_stock_item);
+    }
+
+    @Override
+    public void showCostFragment() {
+
     }
 
     @Override

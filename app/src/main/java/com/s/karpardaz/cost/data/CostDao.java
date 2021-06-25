@@ -3,7 +3,7 @@ package com.s.karpardaz.cost.data;
 import androidx.room.Dao;
 import androidx.room.Query;
 
-import com.s.karpardaz.base.data.BaseDao;
+import com.s.karpardaz.base.dao.BaseDao;
 import com.s.karpardaz.cost.model.Cost;
 
 import java.util.List;

@@ -8,7 +8,12 @@ public interface BaseCallback<T> {
 
     void onSuccess(T result);
 
+    default void onFailure() {
+        onFailure(new Throwable());
+    }
+
     default void onFailure(Throwable t) {
         throw new NotImplementedException();
     }
+
 }

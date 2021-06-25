@@ -64,5 +64,8 @@
     <string name="info_not_found">اطلاعات یافت نشدند.</string>
     <string name="exit_title">خروج</string>
     <string name="logout_message">خارج شدید.</string>
+    <string name="all_stocks_title">تنخواه ها</string>
+    <string name="all_default_title">پیشفرض</string>
+    <string name="stock_add_new">افزودن تنخواه جدید</string>
 
 </resources>

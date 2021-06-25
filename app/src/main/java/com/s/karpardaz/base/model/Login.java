@@ -1,6 +1,7 @@
 package com.s.karpardaz.base.model;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "Login")
@@ -11,10 +12,15 @@ public class Login {
     private String userId;
     private String createdAt;
 
-    public Login(String userId, String createdAt) {
-        this.id = 0;
+    public Login(long id, String userId, String createdAt) {
+        this.id = id;
         this.userId = userId;
         this.createdAt = createdAt;
+    }
+
+    @Ignore
+    public Login(String userId, String createdAt) {
+        this(0, userId, createdAt);
     }
 
     public long getId() {
@@ -44,9 +50,9 @@ public class Login {
     @Override
     public String toString() {
         return "Login{" +
-                "id=" + id +
-                ", userId='" + userId + '\'' +
-                ", createdAt='" + createdAt + '\'' +
-                '}';
+            "id=" + id +
+            ", userId='" + userId + '\'' +
+            ", createdAt='" + createdAt + '\'' +
+            '}';
     }
 }

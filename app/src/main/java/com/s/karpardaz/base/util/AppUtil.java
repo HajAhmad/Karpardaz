@@ -87,9 +87,4 @@ public final class AppUtil {
         return new Throwable("Not implemented Error.");
     }
 
-    public static String composeLoginPhrase(String email, String password) {
-        String loginPhrase = email.concat(":").concat(password);
-        return String.valueOf(loginPhrase.hashCode());
-    }
-
 }

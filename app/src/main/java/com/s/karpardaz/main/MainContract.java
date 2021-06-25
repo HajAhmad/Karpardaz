@@ -9,11 +9,13 @@ public interface MainContract {
         void proceed();
         void showEntranceDialog();
         void returnToLoginPage();
+        void showInsertStock();
+        void showCostFragment();
     }
 
     interface Presenter extends BasePresenterContract<View> {
-        void isUserAvailable();
         void logout();
+        void checkForStocks();
     }
 
 }

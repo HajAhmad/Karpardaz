@@ -26,7 +26,7 @@ import static com.s.karpardaz.base.datasource.KarpardazDatabase.DB_VERSION;
         version = DB_VERSION)
 public abstract class KarpardazDatabase extends RoomDatabase {
 
-    static final int DB_VERSION = 4;
+    static final int DB_VERSION = 5;
     public static final String DB_NAME = "cost.db";
 
     public abstract CostDao costDao();

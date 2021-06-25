@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class RegisterFragment extends BaseFragment<OnRegisterInteractionListener, FragmentRegisterBinding>
-        implements RegisterContract.View {
+    implements RegisterContract.View {
 
     public static final String TAG = RegisterFragment.class.getSimpleName();
 
@@ -42,8 +42,8 @@ public class RegisterFragment extends BaseFragment<OnRegisterInteractionListener
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
-            @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+        @Nullable ViewGroup container,
+        @Nullable Bundle savedInstanceState) {
         setBinding(FragmentRegisterBinding.inflate(inflater, container, false));
         return getBinding().getRoot();
     }
@@ -51,7 +51,7 @@ public class RegisterFragment extends BaseFragment<OnRegisterInteractionListener
     @Override
     public void onViewCreated(@Nullable Bundle savedInstanceState) {
         getBinding().fragmentRegisterPolicyUsageRulesText.setLinkTextColor(
-                ContextCompat.getColor(getCtx(), R.color.colorPrimary));
+            ContextCompat.getColor(getCtx(), R.color.colorPrimary));
         getBinding().fragmentRegisterPolicyUsageRulesText.setMovementMethod(LinkMovementMethod.getInstance());
 
         getBinding().fragmentRegisterRegisterAction.setOnClickListener(v -> register());
@@ -60,11 +60,11 @@ public class RegisterFragment extends BaseFragment<OnRegisterInteractionListener
 
     private void register() {
         if (getBinding().fragmentRegisterEmailInput.getText() != null &&
-                getBinding().fragmentRegisterPasswordInput.getText() != null) {
+            getBinding().fragmentRegisterPasswordInput.getText() != null) {
 
             mPresenter.register(getBinding().fragmentRegisterNameInput.getText().toString(),
-                    getBinding().fragmentRegisterEmailInput.getText().toString(),
-                    getBinding().fragmentRegisterPasswordInput.getText().toString());
+                getBinding().fragmentRegisterEmailInput.getText().toString(),
+                getBinding().fragmentRegisterPasswordInput.getText().toString());
         } else {
             AlertUtil.showToast(getBinding().getRoot(), R.string.all_check_value_message);
         }
@@ -107,4 +107,10 @@ public class RegisterFragment extends BaseFragment<OnRegisterInteractionListener
     public void proceed() {
         getListener().proceed();
     }
+
+    @Override
+    public void notFound() {
+        AlertUtil.showToast(getBinding().getRoot(), R.string.info_not_found);
+    }
+
 }

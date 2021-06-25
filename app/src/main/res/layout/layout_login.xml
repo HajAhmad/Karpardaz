@@ -42,18 +42,18 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/layout_login_password_recovery_action"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_sixteen"
-        android:textColor="@color/textColorHint"
-        android:paddingVertical="@dimen/dimen_two"
-        android:paddingHorizontal="@dimen/dimen_eight"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="?attr/selectableItemBackground"
-        android:text="@string/layout_login_password_recovery_title"/>
+    <!--<TextView-->
+    <!--    android:id="@+id/layout_login_password_recovery_action"-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:layout_marginTop="@dimen/dimen_sixteen"-->
+    <!--    android:textColor="@color/textColorHint"-->
+    <!--    android:paddingVertical="@dimen/dimen_two"-->
+    <!--    android:paddingHorizontal="@dimen/dimen_eight"-->
+    <!--    android:clickable="true"-->
+    <!--    android:focusable="true"-->
+    <!--    android:background="?attr/selectableItemBackground"-->
+    <!--    android:text="@string/layout_login_password_recovery_title"/>-->
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/layout_login_login_action"

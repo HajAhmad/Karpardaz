@@ -3,10 +3,8 @@ package com.s.karpardaz.user.data;
 import androidx.room.Dao;
 import androidx.room.Query;
 
-import com.s.karpardaz.base.data.BaseDao;
+import com.s.karpardaz.base.dao.BaseDao;
 import com.s.karpardaz.base.model.Login;
-
-import io.reactivex.rxjava3.core.Maybe;
 
 @Dao
 public interface LoginDao extends BaseDao<Login> {
@@ -14,7 +12,7 @@ public interface LoginDao extends BaseDao<Login> {
     @Query("select * from Login Limit 1")
     Login get();
 
-    @Query("delete from login")
+    @Query("delete from Login")
     void clearTable();
 
 

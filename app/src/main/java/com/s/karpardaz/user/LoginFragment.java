@@ -46,7 +46,7 @@ public class LoginFragment extends BaseFragment<OnLoginInteractionListener, Layo
 
     @Override
     public void onViewCreated(@Nullable Bundle savedInstanceState) {
-        getBinding().layoutLoginPasswordRecoveryAction.setOnClickListener(v -> getListener().openRecoverPassword());
+//        getBinding().layoutLoginPasswordRecoveryAction.setOnClickListener(v -> getListener().openRecoverPassword());
         getBinding().layoutLoginLoginAction.setOnClickListener(v -> login());
 
     }

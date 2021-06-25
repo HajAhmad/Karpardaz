@@ -11,6 +11,7 @@ public interface RegisterContract {
         void showThrowable(Throwable t);
         void networkUnavailable();
         void proceed();
+        void notFound();
     }
 
     interface Presenter extends BasePresenterContract<View> {

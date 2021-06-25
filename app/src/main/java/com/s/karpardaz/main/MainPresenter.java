@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.s.karpardaz.base.BasePresenter;
 import com.s.karpardaz.base.model.Login;
 import com.s.karpardaz.base.util.AppConstants;
+import com.s.karpardaz.stock.data.StockDataSource;
 import com.s.karpardaz.user.data.LoginDataSource;
 
 import javax.inject.Inject;
@@ -18,17 +19,19 @@ public class MainPresenter extends BasePresenter<MainContract.View>
 
     public static final String TAG = MainPresenter.class.getSimpleName();
 
-    private final LoginDataSource mLoginRepository;
+    private final LoginDataSource mLoginDataSource;
+    private final StockDataSource mStockDataSource;
 
     @Inject
-    public MainPresenter(@NonNull LoginDataSource repository) {
-        mLoginRepository = requireNonNull(repository);
+    public MainPresenter(@NonNull LoginDataSource loginDataSource, @NonNull StockDataSource stockDataSource) {
+        mLoginDataSource = requireNonNull(loginDataSource);
+        mStockDataSource = requireNonNull(stockDataSource);
     }
 
     @Override
-    public void isUserAvailable() {
+    public void start() {
         getView().showProgress();
-        mLoginRepository.getLoggedInUser(new LoginDataSource.GetLoggedInUserCallback() {
+        mLoginDataSource.getLoggedInUser(new LoginDataSource.GetLoggedInUserCallback() {
             @Override
             public void notFound() {
                 getView().showEntranceDialog();
@@ -47,6 +50,22 @@ public class MainPresenter extends BasePresenter<MainContract.View>
 
     @Override
     public void logout() {
-        mLoginRepository.clearLoginInfo(__ -> getView().returnToLoginPage());
+        mLoginDataSource.clearLoginInfo(__ -> getView().returnToLoginPage());
+    }
+
+    @Override
+    public void checkForStocks() {
+        mStockDataSource.isThereAnyStock(AppConstants.sActiveUserId,
+            new StockDataSource.IsAnyCallback() {
+            @Override
+            public void no() {
+                getView().showInsertStock();
+            }
+
+            @Override
+            public void onSuccess(Void result) {
+                getView().showCostFragment();
+            }
+        });
     }
 }

@@ -14,17 +14,14 @@ public interface LoginDataSource {
     default void getLoggedInUser(@Nonnull GetLoggedInUserCallback callback) {
         throw new NotImplementedException();
     }
-    default void insertLogin(@NonNull Login login, @NonNull BaseCallback<Void> callback) {
-        throw new NotImplementedException();
-    }
 
-    default void login(@NonNull String loginPhrase, @NonNull LoginCallback loginCallback) {
+    default void login(@NonNull String email, @NonNull String password, @NonNull String createdAt, @NonNull LoginCallback loginCallback) {
         throw new NotImplementedException();
     }
     void RequestPasswordChange(@NonNull String email, @NonNull BaseCallback<String> callback);
     void sendRecoveryCode(@NonNull String sRecoveryToken, @NonNull String verificationCode,
         @NonNull SendRecoveryCodeCallback callback);
-    void resetPassword(@NonNull String recoveryToken, @NonNull String loginPhrase, @NonNull ResetPasswordCallback callback);
+    void resetPassword(@NonNull String recoveryToken, @NonNull Login login, @NonNull ResetPasswordCallback callback);
     void clearLoginInfo(@NonNull BaseCallback<Void> callback);
 
     interface SendRecoveryCodeCallback extends BaseCallback<BaseResponse<String>> {

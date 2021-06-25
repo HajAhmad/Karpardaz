@@ -6,6 +6,7 @@ import com.s.karpardaz.R;
 import com.s.karpardaz.base.BaseCallback;
 import com.s.karpardaz.base.BasePresenter;
 import com.s.karpardaz.base.model.BaseResponse;
+import com.s.karpardaz.base.model.Login;
 import com.s.karpardaz.base.util.AppUtil;
 import com.s.karpardaz.user.data.LoginDataSource;
 
@@ -143,8 +144,8 @@ public class RecoveryPasswordPresenter extends BasePresenter<RecoveryPasswordCon
             getView().showInvalidPasswordError();
         } else {
             getView().showProgress();
-            final String loginPhrase = AppUtil.composeLoginPhrase(sUserEmail, password);
-            mRepository.resetPassword(sRecoveryToken, loginPhrase,
+            Login login = new Login(sUserEmail, password);
+            mRepository.resetPassword(sRecoveryToken, login,
                 new LoginDataSource.ResetPasswordCallback() {
                     @Override
                     public void notFound() {

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_stock_add_button_root"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:contentPaddingBottom="@dimen/space_vertical"
+    app:contentPaddingLeft="@dimen/space_horizontal"
+    app:contentPaddingRight="@dimen/space_horizontal"
+    app:contentPaddingTop="@dimen/space_vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/stock_add_new"
+        android:textColor="@color/colorHint"
+        android:textSize="16sp"
+        app:drawableBottomCompat="@drawable/ic_add_black_24dp"
+        app:drawableTint="@color/colorHint" />
+
+</com.google.android.material.card.MaterialCardView>

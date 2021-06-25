@@ -9,13 +9,8 @@ import com.s.karpardaz.base.model.User;
 
 import javax.inject.Inject;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.internal.EverythingIsNonNull;
 
-import static com.s.karpardaz.base.di.NetworkUtil.isResponseSuccessful;
-import static com.s.karpardaz.base.util.AppUtil.produceNetworkException;
 import static java.util.Objects.requireNonNull;
 
 @EverythingIsNonNull
@@ -24,15 +19,10 @@ public class UserRepository implements UserDataSource {
     private final UserDao mUserDao;
     private final AppExecutors mExecutor;
 
-    private final UserService mUserService;
-
     @Inject
-    public UserRepository(@NonNull UserDao userDao, @NonNull AppExecutors executors,
-        @NonNull UserService service) {
+    public UserRepository(@NonNull UserDao userDao, @NonNull AppExecutors executors) {
         mUserDao = requireNonNull(userDao);
         mExecutor = requireNonNull(executors);
-
-        mUserService = requireNonNull(service);
     }
 
     @Override
@@ -73,20 +63,14 @@ public class UserRepository implements UserDataSource {
     public void register(@NonNull User user, @NonNull RegisterCallback callback) {
         requireNonNull(user);
         requireNonNull(callback);
-        mUserService.register(user).enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (isResponseSuccessful(response))
-                    callback.onSuccess(response.body());
-                else
-                    callback.onFailure(produceNetworkException(response));
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                callback.onFailure(t);
-            }
+        mExecutor.getDiskIo().execute(() -> {
+            Long returnedId = mUserDao.insert(user);
+            mExecutor.getMainThread().execute(() -> {
+                if (returnedId == -1) callback.onSuccess(user.getUuid());
+                else callback.onFailure(new Throwable());
+            });
         });
+
     }
 
 }

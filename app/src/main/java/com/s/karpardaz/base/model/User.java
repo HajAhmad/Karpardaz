@@ -30,8 +30,8 @@ public class User extends BaseEntity {
     }
 
     @Ignore
-    public User(String name, String email, String password, String createdAt) {
-        this(0, "", name, email, password, createdAt, null);
+    public User(String uuid, String name, String email, String password, String createdAt) {
+        this(0, uuid, name, email, password, createdAt, null);
     }
 
     public String getEmail() {

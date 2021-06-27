@@ -30,22 +30,41 @@ public class StockDetailPresenter extends BasePresenter<StockDetailContract.View
     public void addStock(@NonNull Stock stock, boolean isDefault) {
         getView().showProgress();
         requireNonNull(stock);
-        if (AppUtil.isAnyEmpty(stock.getName()))
-            mRepository.isStockUnique(stock.getName(), new StockDataSource.IsStockUniqueCallback() {
-                @Override
-                public void no() {
-                    getView().hideProgress();
-                    getView().showStockFoundError();
-                }
 
-                @Override
-                public void yes() {
-                    mRepository.addStock(stock, new BaseCallback<Void>() {
-                        @Override
-                        public void onSuccess(Void result) {
-                            mRepository.isDefaultStockTableEmpty(new StockDataSource.IsTableEmptyCallback() {
-                                @Override
-                                public void yes() {
+        mRepository.isStockUnique(stock.getName(), new StockDataSource.IsStockUniqueCallback() {
+            @Override
+            public void no() {
+                getView().hideProgress();
+                getView().showStockFoundError();
+            }
+
+            @Override
+            public void yes() {
+                mRepository.addStock(stock, new BaseCallback<Void>() {
+                    @Override
+                    public void onSuccess(Void result) {
+                        mRepository.isDefaultStockTableEmpty(new StockDataSource.IsTableEmptyCallback() {
+                            @Override
+                            public void yes() {
+                                mRepository.setDefaultStock(stock.getUuid(), getCurrentDateTimeUTC(),
+                                    new BaseCallback<Void>() {
+                                        @Override
+                                        public void onSuccess(Void result1) {
+                                            getView().hideProgress();
+                                            getView().newStockInserted();
+                                        }
+
+                                        @Override
+                                        public void onFailure(Throwable t) {
+                                            getView().hideProgress();
+                                            getView().showSetDefaultStockFailed();
+                                        }
+                                    });
+                            }
+
+                            @Override
+                            public void no() {
+                                if (isDefault) {
                                     mRepository.setDefaultStock(stock.getUuid(), getCurrentDateTimeUTC(),
                                         new BaseCallback<Void>() {
                                             @Override
@@ -60,51 +79,32 @@ public class StockDetailPresenter extends BasePresenter<StockDetailContract.View
                                                 getView().showSetDefaultStockFailed();
                                             }
                                         });
+                                } else {
+                                    getView().hideProgress();
+                                    getView().newStockInserted();
                                 }
+                            }
 
-                                @Override
-                                public void no() {
-                                    if (isDefault) {
-                                        mRepository.setDefaultStock(stock.getUuid(), getCurrentDateTimeUTC(),
-                                            new BaseCallback<Void>() {
-                                                @Override
-                                                public void onSuccess(Void result1) {
-                                                    getView().hideProgress();
-                                                    getView().newStockInserted();
-                                                }
+                            @Override
+                            public void onSuccess(Void result) {
+                                throw new NotImplementedException();
+                            }
+                        });
+                    }
 
-                                                @Override
-                                                public void onFailure(Throwable t) {
-                                                    getView().hideProgress();
-                                                    getView().showSetDefaultStockFailed();
-                                                }
-                                            });
-                                    } else {
-                                        getView().hideProgress();
-                                        getView().newStockInserted();
-                                    }
-                                }
+                    @Override
+                    public void onFailure(Throwable t) {
+                        getView().hideProgress();
+                        getView().insertionFailed();
+                    }
+                });
+            }
 
-                                @Override
-                                public void onSuccess(Void result) {
-                                    throw new NotImplementedException();
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onFailure(Throwable t) {
-                            getView().hideProgress();
-                            getView().insertionFailed();
-                        }
-                    });
-                }
-
-                @Override
-                public void onSuccess(Void result) {
-                    throw new NotImplementedException();
-                }
-            });
+            @Override
+            public void onSuccess(Void result) {
+                throw new NotImplementedException();
+            }
+        });
 
     }
 

@@ -63,8 +63,8 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
 
                                 @Override
                                 public void onSuccess(String result) {
+                                    AppConstants.sActiveUserId = result;
                                     getView().proceed();
-                                    AppConstants.sActiveUserId = userId;
                                     getView().hideProgress();
                                 }
 

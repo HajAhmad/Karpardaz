@@ -13,6 +13,8 @@ import androidx.annotation.StringRes;
 import androidx.fragment.app.DialogFragment;
 import androidx.viewbinding.ViewBinding;
 
+import com.s.karpardaz.R;
+
 import static java.util.Objects.requireNonNull;
 
 public abstract class BaseDialogFragment<L extends BaseInteractionListener, V extends ViewBinding>
@@ -27,6 +29,22 @@ public abstract class BaseDialogFragment<L extends BaseInteractionListener, V ex
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_FullScreenDialog);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (getDialog() != null) {
+            getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+            getDialog().getWindow().setWindowAnimations(R.style.AppTheme_Slide);
+        }
     }
 
     @Nullable

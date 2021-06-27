@@ -22,11 +22,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class StockFragment extends BaseFragment<StockFragment.OnStockFragmentInteractionListener, FragmentStockBinding>
-    implements StockContract.View {
+    implements StockContract.View, StockDetailDialog.StockDetailInteractionListener {
 
     @Inject
     StockContract.Presenter mPresenter;
+
     private StockListAdapter mAdapter;
 
     public static StockFragment newInstance() {
@@ -49,41 +53,59 @@ public class StockFragment extends BaseFragment<StockFragment.OnStockFragmentInt
     @Override
     protected void onViewCreated(@Nullable Bundle savedInstanceState) {
 
-        mPresenter.getAllStocks();
+        mAdapter = new StockListAdapter(this::openEditStockDialog, this::openAddStockDialog);
 
         getBinding().fragmentStockList.setItemAnimator(new DefaultItemAnimator());
         getBinding().fragmentStockList.addItemDecoration(new DividerItemDecoration(getCtx(), DividerItemDecoration.HORIZONTAL));
         getBinding().fragmentStockList.setLayoutManager(new LinearLayoutManager(getCtx()));
+        getBinding().fragmentStockList.setAdapter(mAdapter);
+
+        mPresenter.start();
 
     }
 
     @Override
     public void showNoStock() {
-
+        mAdapter.setItems(new ArrayList<StockListItem>() {{
+            add(new StockListItem(StockListAdapter.TYPE_ADD_BUTTON));
+        }});
     }
 
     @Override
-    public void setStocks(List<Stock> result) {
+    public void setStocks(List<Stock> result, String defaultStockId) {
         List<StockListItem> list = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            StockListItem item = list.get(i);
-            list.add(new StockListItem(item.getId(), (i + 1), item.getName(), item.getCurrency(), item.isDefault()));
+        for (int i = 0; i < result.size(); i++) {
+            Stock item = result.get(i);
+
+            list.add(new StockListItem(
+                item.getUuid(),
+                i + 1,
+                item.getName(),
+                item.getCurrency(),
+                item.getUuid().equals(defaultStockId)
+            ));
         }
 
         list.add(0, new StockListItem(StockListAdapter.TYPE_ADD_BUTTON));
 
-        mAdapter = new StockListAdapter(this::openEditStockDialog, this::openAddStockDialog);
-
-        getBinding().fragmentStockList.setAdapter(mAdapter);
-
+        mAdapter.setItems(list);
     }
 
     private void openAddStockDialog() {
-
+        StockDetailDialog fragment = StockDetailDialog.newInstanceForInsertion();
+        fragment.setInteractionListener(this);
+        fragment.show(getChildFragmentManager(), StockDetailDialog.TAG_NEW);
     }
 
-    private void openEditStockDialog(StockListItem item, int position) {
+    private void openEditStockDialog(StockListItem item, int __) {
+        StockDetailDialog fragment = StockDetailDialog.newInstanceForUpdate(item.getId());
+        fragment.setInteractionListener(this);
+        fragment.show(getChildFragmentManager(), StockDetailDialog.TAG_UPDATE);
+    }
 
+    @Override
+    public void updateStockList() {
+        mPresenter.getAllStocks();
     }
 
     public interface OnStockFragmentInteractionListener extends BaseInteractionListener {

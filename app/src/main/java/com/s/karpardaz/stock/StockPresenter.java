@@ -3,6 +3,7 @@ package com.s.karpardaz.stock;
 import androidx.annotation.NonNull;
 
 import com.s.karpardaz.base.BasePresenter;
+import com.s.karpardaz.base.NotImplementedException;
 import com.s.karpardaz.base.util.AppConstants;
 import com.s.karpardaz.stock.data.StockDataSource;
 
@@ -25,24 +26,31 @@ public class StockPresenter extends BasePresenter<StockContract.View> implements
         mRepository.isThereAnyStock(AppConstants.sActiveUserId, new StockDataSource.IsAnyCallback() {
             @Override
             public void no() {
-                getView().showNoStock();
                 getView().hideProgress();
+                getView().showNoStock();
+            }
+
+            @Override
+            public void yes() {
+                getView().hideProgress();
+                getAllStocks();
             }
 
             @Override
             public void onSuccess(Void result) {
-                getView().hideProgress();
-                getAllStocks();
+                throw new NotImplementedException();
             }
         });
     }
 
     @Override
-    public void getAllStocks(){
+    public void getAllStocks() {
         getView().showProgress();
         mRepository.getAllStocks(AppConstants.sActiveUserId, result -> {
-            getView().setStocks(result);
-            getView().hideProgress();
+            mRepository.getDefaultStockId(defaultStock -> {
+                getView().setStocks(result, defaultStock.getUuid());
+                getView().hideProgress();
+            });
         });
     }
 

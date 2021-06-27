@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:alpha="0.4"
     android:background="@color/colorPrimaryLight">
 
     <ProgressBar
@@ -18,9 +19,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dialog_progress"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/dimen_thirty_two"
         app:fontFamily="@font/iran_sans_medium"
-        android:layout_centerHorizontal="true"
         tools:text="در حال بارگذاری" />
 
 </RelativeLayout>

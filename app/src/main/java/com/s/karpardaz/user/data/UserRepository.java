@@ -66,8 +66,8 @@ public class UserRepository implements UserDataSource {
         mExecutor.getDiskIo().execute(() -> {
             Long returnedId = mUserDao.insert(user);
             mExecutor.getMainThread().execute(() -> {
-                if (returnedId == -1) callback.onSuccess(user.getUuid());
-                else callback.onFailure(new Throwable());
+                if (returnedId == -1) callback.onFailure(new Throwable());
+                else callback.onSuccess(user.getUuid());
             });
         });
 

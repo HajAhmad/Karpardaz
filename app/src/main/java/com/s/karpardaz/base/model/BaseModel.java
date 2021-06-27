@@ -54,6 +54,10 @@ public abstract class BaseModel {
         return TextUtils.equals(updatedAt, updatedAt);
     }
 
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -67,5 +67,18 @@
     <string name="all_stocks_title">تنخواه ها</string>
     <string name="all_default_title">پیشفرض</string>
     <string name="stock_add_new">افزودن تنخواه جدید</string>
+    <string name="name">نام</string>
+    <string name="currency">واحد</string>
+    <string name="set_default">تعیین به عنوان پیشفرض</string>
+    <string name="must_have_a_name">باید یک نام داشته باشد.</string>
+    <string name="must_have_a_currency">واحد پولی را تعیین نمایید.</string>
+    <string name="unknown_error">خطای ناشناخته.</string>
+    <string name="stock_stock_found_error_message">تنخواهی با همین نام یافت شد. لطفاً از نام دیگری استفاده نمایید.</string>
+    <string name="stock_stock_created_message">تنخواه ایجاد شد.</string>
+    <string name="stock_not_found">تنخواه یافت نشد.</string>
+    <string name="set_default_stock_failed">تعیین تنخواه پیشفرض با شکست مواجه شد.</string>
+    <string name="add">افزودن</string>
+    <string name="update">بروزرسانی</string>
+    <string name="stock_updated">تنخواه بروزرسانی شد.</string>
 
 </resources>

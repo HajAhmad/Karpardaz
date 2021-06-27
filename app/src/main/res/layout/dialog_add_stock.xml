@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/space_vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/dialog_add_stock_appbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:contentPaddingBottom="4dp"
+        app:contentPaddingRight="@dimen/space_horizontal"
+        app:contentPaddingTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/dialog_add_stock_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                tools:text="عنوان" />
+
+            <ImageView
+                android:id="@+id/dialog_add_stock_close_action"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                app:srcCompat="@drawable/ic_baseline_close_24" />
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/dialog_add_stock_name_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="@dimen/space_horizontal"
+        android:hint="@string/name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dialog_add_stock_currency_input"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_add_stock_appbar">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dialog_add_stock_name_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <EditText
+        android:id="@+id/dialog_add_stock_currency_input"
+        android:layout_width="119dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/space_horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="@dimen/space_horizontal"
+        android:hint="@string/currency"
+        android:lines="1"
+        android:maxLength="10"
+        android:maxLines="1"
+        android:singleLine="true"
+        app:layout_constraintBottom_toBottomOf="@+id/dialog_add_stock_name_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_add_stock_appbar" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/dialog_add_stock_is_default_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="@dimen/space_horizontal"
+        android:text="@string/set_default"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_add_stock_name_container" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/dialog_add_stock_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/space_horizontal"
+        android:layout_marginBottom="@dimen/space_vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_check_24" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

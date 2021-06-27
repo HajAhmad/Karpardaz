@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.s.karpardaz.base.BasePresenter;
+import com.s.karpardaz.base.NotImplementedException;
 import com.s.karpardaz.base.model.Login;
 import com.s.karpardaz.base.util.AppConstants;
 import com.s.karpardaz.stock.data.StockDataSource;
@@ -57,15 +58,20 @@ public class MainPresenter extends BasePresenter<MainContract.View>
     public void checkForStocks() {
         mStockDataSource.isThereAnyStock(AppConstants.sActiveUserId,
             new StockDataSource.IsAnyCallback() {
-            @Override
-            public void no() {
-                getView().showInsertStock();
-            }
+                @Override
+                public void no() {
+                    getView().showInsertStock();
+                }
 
-            @Override
-            public void onSuccess(Void result) {
-                getView().showCostFragment();
-            }
-        });
+                @Override
+                public void yes() {
+                    getView().showCostFragment();
+                }
+
+                @Override
+                public void onSuccess(Void result) {
+                    throw new NotImplementedException();
+                }
+            });
     }
 }

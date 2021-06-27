@@ -11,10 +11,15 @@ import java.util.List;
 @Dao
 public interface StockDao extends BaseDao<Stock> {
 
-    @Query("select count(*) from Stock limit 1")
-    Integer isAny();
-
+    @Query("select count(*) from Stock")
+    Integer getTableCount();
 
     @Query("select * from Stock")
     List<Stock> getAll();
+
+    @Query("select count(*) from Stock where name = :stockName")
+    Integer getSameNameCount(String stockName);
+
+    @Query("select * from Stock where uuid = :stockId limit 1")
+    Stock get(String stockId);
 }

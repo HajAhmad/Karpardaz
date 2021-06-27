@@ -10,7 +10,7 @@ public interface StockContract {
     interface View extends BaseViewContract<Presenter>{
 
         void showNoStock();
-        void setStocks(List<Stock> result);
+        void setStocks(List<Stock> result, String defaultStockId);
     }
 
     interface Presenter extends BasePresenterContract<View>{

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.s.karpardaz.R;
@@ -53,20 +52,10 @@ public class RecoveryPasswordFragment extends BaseDialogFragment<RecoveryPasswor
         return new RecoveryPasswordFragment();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getDialog() != null) {
-            getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-            getDialog().getWindow().setWindowAnimations(R.style.AppTheme_Slide);
-        }
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_FullScreenDialog);
         mPresenter.takeView(this);
     }
 

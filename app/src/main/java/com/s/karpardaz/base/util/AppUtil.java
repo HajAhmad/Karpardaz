@@ -50,9 +50,9 @@ public final class AppUtil {
     public static boolean isAnyEmpty(String... args) {
         for (String str : args) {
             if (TextUtils.isEmpty(str.trim()))
-                return false;
+                return true;
         }
-        return true;
+        return false;
     }
 
     public static boolean isEmailInvalid(String email) {

@@ -2,6 +2,8 @@ package com.s.karpardaz.stock.di;
 
 import androidx.annotation.NonNull;
 
+import com.s.karpardaz.stock.StockDetailContract;
+import com.s.karpardaz.stock.StockDetailPresenter;
 import com.s.karpardaz.stock.StockContract;
 import com.s.karpardaz.stock.StockPresenter;
 import com.s.karpardaz.stock.data.StockDataSource;
@@ -21,5 +23,8 @@ public abstract class StockModule {
 
     @Binds
     public abstract StockContract.Presenter bindPresenter(@NonNull StockPresenter presenter);
+
+    @Binds
+    public abstract StockDetailContract.Presenter bindAddStockPresenter(@NonNull StockDetailPresenter presenter);
 
 }

@@ -5,7 +5,6 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,12 +12,14 @@ import androidx.core.content.ContextCompat;
 
 import com.s.karpardaz.R;
 import com.s.karpardaz.base.ui.BaseFragment;
-import com.s.karpardaz.base.util.view.AlertUtil;
 import com.s.karpardaz.databinding.FragmentRegisterBinding;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+
+import static com.s.karpardaz.base.util.view.AlertUtil.showLongToast;
+import static com.s.karpardaz.base.util.view.AlertUtil.showToast;
 
 @AndroidEntryPoint
 public class RegisterFragment extends BaseFragment<OnRegisterInteractionListener, FragmentRegisterBinding>
@@ -66,9 +67,8 @@ public class RegisterFragment extends BaseFragment<OnRegisterInteractionListener
                 getBinding().fragmentRegisterEmailInput.getText().toString(),
                 getBinding().fragmentRegisterPasswordInput.getText().toString());
         } else {
-            AlertUtil.showToast(getBinding().getRoot(), R.string.all_check_value_message);
+            showToast(getRoot(), R.string.all_check_value_message);
         }
-
     }
 
     @Override
@@ -80,27 +80,27 @@ public class RegisterFragment extends BaseFragment<OnRegisterInteractionListener
 
     @Override
     public void showInvalidPasswordError() {
-        AlertUtil.showToast(getBinding().getRoot(), R.string.long_invalid_password_message);
+        showToast(getBinding().getRoot(), R.string.long_invalid_password_message);
     }
 
     @Override
     public void showInvalidEmailError() {
-        AlertUtil.showLongToast(getBinding().getRoot(), R.string.entry_invalid_email_message);
+        showLongToast(getBinding().getRoot(), R.string.entry_invalid_email_message);
     }
 
     @Override
     public void emailFound() {
-        AlertUtil.showToast(getBinding().getRoot(), R.string.register_email_found_error_message);
+        showToast(getBinding().getRoot(), R.string.register_email_found_error_message);
     }
 
     @Override
     public void showThrowable(Throwable t) {
-        Toast.makeText(getCtx(), t.getMessage(), Toast.LENGTH_SHORT).show();
+        showToast(getRoot(), t.getMessage());
     }
 
     @Override
     public void networkUnavailable() {
-        AlertUtil.showToast(getBinding().getRoot(), R.string.all_check_network_message);
+        showToast(getBinding().getRoot(), R.string.all_check_network_message);
     }
 
     @Override
@@ -110,7 +110,7 @@ public class RegisterFragment extends BaseFragment<OnRegisterInteractionListener
 
     @Override
     public void notFound() {
-        AlertUtil.showToast(getBinding().getRoot(), R.string.info_not_found);
+        showToast(getBinding().getRoot(), R.string.info_not_found);
     }
 
 }

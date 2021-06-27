@@ -2,6 +2,7 @@ package com.s.karpardaz.stock.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 
 import com.s.karpardaz.base.model.BaseEntity;
 
@@ -23,6 +24,25 @@ public class Stock extends BaseEntity {
         super(id, uuid, createdAt, updatedAt);
         this.name = name;
         this.currency = currency;
+        this.currencyMark = currencyMark;
+    }
+
+    @Ignore
+    public Stock(@NonNull String uuid, String createdAt, @NonNull String name, @NonNull String currency) {
+        super(0, uuid, createdAt, "");
+        this.name = name;
+        this.currency = currency;
+    }
+
+    public void setName(@NonNull String name) {
+        this.name = name;
+    }
+
+    public void setCurrency(@NonNull String currency) {
+        this.currency = currency;
+    }
+
+    public void setCurrencyMark(@NonNull String currencyMark) {
         this.currencyMark = currencyMark;
     }
 

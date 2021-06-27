@@ -29,7 +29,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
     CostFragment.OnCostListFragmentInteractionListener,
     IncomeFragment.OnIncomeFragmentInteractionListener,
     EntryDialogFragment.OnEntryFragmentInteractionListener,
-    ProfileFragment.OnProfileInteractionListener, StockFragment.OnStockFragmentInteractionListener {
+    ProfileFragment.OnProfileInteractionListener,
+    StockFragment.OnStockFragmentInteractionListener {
 
     @Inject
     MainContract.Presenter mPresenter;
@@ -38,6 +39,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPresenter.takeView(this);
+
         setBinding(ActivityMainBinding.inflate(getLayoutInflater()));
         setContentView(getRoot());
 
@@ -139,7 +141,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
 
     @Override
     public void returnToLoginPage() {
-        ProfileFragment fragment = (ProfileFragment) getSupportFragmentManager().findFragmentByTag(ProfileFragment.TAG);
+        ProfileFragment fragment =
+            (ProfileFragment) getSupportFragmentManager().findFragmentByTag(ProfileFragment.TAG);
         if (fragment != null)
             fragment.dismiss();
         showMessage(R.string.logout_message);
@@ -149,7 +152,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
     @Override
     public void showInsertStock() {
         int menuItemCount = getBinding().mainActivityBottombar.getMenu().size();
-        for (int i = 1; i < menuItemCount; i++)
+        for (int i = menuItemCount - 2; i >= 0; i--)
             getBinding().mainActivityBottombar.getMenu().getItem(i).setEnabled(false);
 
         getBinding().mainActivityBottombar.setSelectedItemId(R.id.main_bottombar_stock_item);

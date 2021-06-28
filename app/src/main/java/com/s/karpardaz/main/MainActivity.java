@@ -6,16 +6,17 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import com.s.karpardaz.R;
 import com.s.karpardaz.base.ui.BaseActivity;
-import com.s.karpardaz.base.util.AppConstants;
 import com.s.karpardaz.cost.CostFragment;
 import com.s.karpardaz.databinding.ActivityMainBinding;
-import com.s.karpardaz.income.IncomeFragment;
 import com.s.karpardaz.stock.StockFragment;
 import com.s.karpardaz.user.EntryDialogFragment;
 import com.s.karpardaz.user.ProfileFragment;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -27,7 +28,6 @@ import static com.s.karpardaz.base.util.view.AlertUtil.showToast;
 @AndroidEntryPoint
 public class MainActivity extends BaseActivity<ActivityMainBinding> implements MainContract.View,
     CostFragment.OnCostListFragmentInteractionListener,
-    IncomeFragment.OnIncomeFragmentInteractionListener,
     EntryDialogFragment.OnEntryFragmentInteractionListener,
     ProfileFragment.OnProfileInteractionListener,
     StockFragment.OnStockFragmentInteractionListener {
@@ -52,9 +52,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
 
     @Override
     protected void clearReferences() {
-        super.clearReferences();
         mPresenter.dropView();
         mPresenter = null;
+        super.clearReferences();
     }
 
     @Override
@@ -68,7 +68,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
     }
 
     private void initViews() {
-        showMessage("PROCEEDED. USER ID = " + AppConstants.sActiveUserId);
+
+        removeAllFragmentsIfExist();
 
         getBinding().mainToolbar.setVisibility(View.VISIBLE);
         getBinding().mainActivityBottombar.setSelectedItemId(R.id.main_bottombar_cost_item);
@@ -84,9 +85,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
             } else if (itemId == R.id.main_bottombar_cost_item) {
                 openCostFragment();
                 return true;
-            } else if (itemId == R.id.main_bottombar_income_item) {
-                openIncomeFragment();
-                return true;
             } else if (itemId == R.id.main_bottombar_report_item) {
                 openReportFragment();
                 return true;
@@ -97,37 +95,33 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
         mPresenter.checkForStocks();
     }
 
-    private void openStockFragment() {
+    @Override
+    public void openStockFragment() {
         StockFragment fragment = StockFragment.newInstance();
         fragment.setInteractionListener(this);
         getSupportFragmentManager().beginTransaction()
-            .replace(R.id.main_fragment_container, fragment)
+            .replace(R.id.main_fragment_container, fragment, StockFragment.TAG)
             .commit();
     }
 
-    private void openProfileFragment() {
+    @Override
+    public void openProfileFragment() {
         ProfileFragment profileFragment = ProfileFragment.newInstance();
         profileFragment.setInteractionListener(this);
         profileFragment.show(getSupportFragmentManager(), ProfileFragment.TAG);
     }
 
-    private void openReportFragment() {
+    @Override
+    public void openReportFragment() {
         Toast.makeText(this, "Not Implemented!", Toast.LENGTH_SHORT).show();
     }
 
-    private void openCostFragment() {
+    @Override
+    public void openCostFragment() {
         CostFragment fragment = CostFragment.newInstance();
         fragment.setInteractionListener(this);
-        getSupportFragmentManager().beginTransaction().add(
-            fragment, CostFragment.TAG
-        ).commit();
-    }
-
-    private void openIncomeFragment() {
-        IncomeFragment fragment = IncomeFragment.newInstance();
-        fragment.setInteractionListener(this);
-        getSupportFragmentManager().beginTransaction().add(
-            fragment, IncomeFragment.TAG
+        getSupportFragmentManager().beginTransaction().replace(
+            R.id.main_fragment_container, fragment, CostFragment.TAG
         ).commit();
     }
 
@@ -141,12 +135,20 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
 
     @Override
     public void returnToLoginPage() {
+        removeAllFragmentsIfExist();
+
         ProfileFragment fragment =
             (ProfileFragment) getSupportFragmentManager().findFragmentByTag(ProfileFragment.TAG);
         if (fragment != null)
             fragment.dismiss();
+
         showMessage(R.string.logout_message);
         showEntranceDialog();
+    }
+
+    private void removeAllFragmentsIfExist() {
+        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+        for (Fragment f : fragmentList) getSupportFragmentManager().beginTransaction().remove(f);
     }
 
     @Override
@@ -159,18 +161,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
     }
 
     @Override
-    public void showCostFragment() {
+    public void enableAllMenuOptionsIfDisabled() {
+        if (getBinding().mainActivityBottombar.getMenu().getItem(1).isEnabled()) return;
 
-    }
+        int menuItemCount = getBinding().mainActivityBottombar.getMenu().size();
+        for (int i = menuItemCount - 2; i >= 0; i--)
+            getBinding().mainActivityBottombar.getMenu().getItem(i).setEnabled(true);
 
-    @Override
-    public void openAddCostDialog() {
-
-    }
-
-    @Override
-    public void openAddIncomeDialog() {
-
+        getBinding().mainActivityBottombar.setSelectedItemId(R.id.main_bottombar_cost_item);
     }
 
 
@@ -188,4 +186,5 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
     public void logout() {
         mPresenter.logout();
     }
+
 }

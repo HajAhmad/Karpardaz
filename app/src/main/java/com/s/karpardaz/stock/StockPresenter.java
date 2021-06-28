@@ -6,6 +6,7 @@ import com.s.karpardaz.base.BasePresenter;
 import com.s.karpardaz.base.NotImplementedException;
 import com.s.karpardaz.base.util.AppConstants;
 import com.s.karpardaz.stock.data.StockDataSource;
+import com.s.karpardaz.stock.model.Stock;
 
 import javax.inject.Inject;
 
@@ -48,6 +49,11 @@ public class StockPresenter extends BasePresenter<StockContract.View> implements
         getView().showProgress();
         mRepository.getAllStocks(AppConstants.sActiveUserId, result -> {
             mRepository.getDefaultStockId(defaultStock -> {
+
+                for (Stock s : result)
+                    if (defaultStock.getUuid().equals(s.getUuid()))
+                        AppConstants.setsDefaultStockCurrency(s.getCurrency());
+
                 getView().setStocks(result, defaultStock.getUuid());
                 getView().hideProgress();
             });

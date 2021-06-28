@@ -44,9 +44,9 @@ public abstract class BaseFragment<L extends BaseInteractionListener, V extends 
     protected abstract void onViewCreated(@Nullable Bundle savedInstanceState);
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
         clearReferences();
+        super.onDestroy();
     }
 
     protected Context getCtx() {

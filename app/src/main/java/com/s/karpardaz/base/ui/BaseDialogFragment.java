@@ -62,8 +62,8 @@ public abstract class BaseDialogFragment<L extends BaseInteractionListener, V ex
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         clearReferences();
+        super.onDestroy();
     }
 
     public void setInteractionListener(@NonNull L listener) {

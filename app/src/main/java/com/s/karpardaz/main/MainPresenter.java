@@ -4,11 +4,13 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.s.karpardaz.base.BaseCallback;
 import com.s.karpardaz.base.BasePresenter;
-import com.s.karpardaz.base.NotImplementedException;
 import com.s.karpardaz.base.model.Login;
 import com.s.karpardaz.base.util.AppConstants;
 import com.s.karpardaz.stock.data.StockDataSource;
+import com.s.karpardaz.stock.model.DefaultStock;
+import com.s.karpardaz.stock.model.Stock;
 import com.s.karpardaz.user.data.LoginDataSource;
 
 import javax.inject.Inject;
@@ -56,22 +58,28 @@ public class MainPresenter extends BasePresenter<MainContract.View>
 
     @Override
     public void checkForStocks() {
-        mStockDataSource.isThereAnyStock(AppConstants.sActiveUserId,
-            new StockDataSource.IsAnyCallback() {
-                @Override
-                public void no() {
-                    getView().showInsertStock();
-                }
+        mStockDataSource.getDefaultStockId(new BaseCallback<DefaultStock>() {
+            @Override
+            public void onSuccess(DefaultStock result) {
+                AppConstants.setDefaultStockId(result.getUuid());
+                mStockDataSource.getStock(result.getUuid(), new StockDataSource.GetStockCallback() {
+                    @Override
+                    public void stockNotFound() {
+                        throw new NullPointerException();
+                    }
 
-                @Override
-                public void yes() {
-                    getView().showCostFragment();
-                }
+                    @Override
+                    public void onSuccess(Stock result) {
+                        AppConstants.setsDefaultStockCurrency(result.getCurrency());
+                        getView().openCostFragment();
+                    }
+                });
+            }
 
-                @Override
-                public void onSuccess(Void result) {
-                    throw new NotImplementedException();
-                }
-            });
+            @Override
+            public void onFailure(Throwable t) {
+                getView().showInsertStock();
+            }
+        });
     }
 }

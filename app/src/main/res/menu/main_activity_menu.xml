@@ -10,6 +10,7 @@
     <item
         android:id="@+id/main_bottombar_income_item"
         android:enabled="true"
+        android:visible="false"
         android:icon="@drawable/ic_baseline_vertical_align_bottom_24"
         android:title="@string/main_income_title" />
     <item

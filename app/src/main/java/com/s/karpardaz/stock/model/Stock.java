@@ -1,6 +1,7 @@
 package com.s.karpardaz.stock.model;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 
@@ -15,7 +16,7 @@ public class Stock extends BaseEntity {
     private String name;
     @NonNull
     private String currency;
-    @NonNull
+    @Nullable
     private String currencyMark;
 
     public Stock(long id, @NonNull String uuid, @NonNull String name,
@@ -28,8 +29,15 @@ public class Stock extends BaseEntity {
     }
 
     @Ignore
-    public Stock(@NonNull String uuid, String createdAt, @NonNull String name, @NonNull String currency) {
-        super(0, uuid, createdAt, "");
+    public Stock(@NonNull String uuid, String createdAt, @NonNull String name, @NonNull String currency, String updatedAt) {
+        super(0, uuid, createdAt, updatedAt);
+        this.name = name;
+        this.currency = currency;
+    }
+
+    @Ignore
+    public Stock(@NonNull String uuid, @NonNull String name, @NonNull String currency, String updatedAt) {
+        super(0, uuid, "", updatedAt);
         this.name = name;
         this.currency = currency;
     }

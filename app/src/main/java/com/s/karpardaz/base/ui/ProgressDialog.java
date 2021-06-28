@@ -18,7 +18,7 @@ public class ProgressDialog extends Dialog {
     private String mMessage;
 
     public ProgressDialog(@NonNull Context context) {
-        super(context, R.style.AppTheme_FullScreenDialog);
+        super(context, R.style.AppTheme_Dialog);
         setCancelable(false);
     }
 
@@ -33,8 +33,13 @@ public class ProgressDialog extends Dialog {
     @Override
     public void onStart() {
         super.onStart();
-        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT);
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+    }
+
+    @Override
+    public void dismiss() {
+        mBinding = null;
+        super.dismiss();
     }
 
     public void setMessage(@Nullable String message) {

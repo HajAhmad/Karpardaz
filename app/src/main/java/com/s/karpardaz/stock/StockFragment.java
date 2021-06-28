@@ -28,6 +28,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class StockFragment extends BaseFragment<StockFragment.OnStockFragmentInteractionListener, FragmentStockBinding>
     implements StockContract.View, StockDetailDialog.StockDetailInteractionListener {
 
+    public static final String TAG = StockFragment.class.getSimpleName();
+
     @Inject
     StockContract.Presenter mPresenter;
 
@@ -91,6 +93,13 @@ public class StockFragment extends BaseFragment<StockFragment.OnStockFragmentInt
         mAdapter.setItems(list);
     }
 
+    @Override
+    protected void clearReferences() {
+        mPresenter.dropView();
+        mPresenter = null;
+        super.clearReferences();
+    }
+
     private void openAddStockDialog() {
         StockDetailDialog fragment = StockDetailDialog.newInstanceForInsertion();
         fragment.setInteractionListener(this);
@@ -106,10 +115,12 @@ public class StockFragment extends BaseFragment<StockFragment.OnStockFragmentInt
     @Override
     public void updateStockList() {
         mPresenter.getAllStocks();
+        getListener().enableAllMenuOptionsIfDisabled();
     }
 
     public interface OnStockFragmentInteractionListener extends BaseInteractionListener {
 
+        void enableAllMenuOptionsIfDisabled();
     }
 
 }

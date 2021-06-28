@@ -3,6 +3,7 @@ package com.s.karpardaz.base.model;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -19,6 +20,8 @@ public abstract class BaseModel {
     @SerializedName("CreatedAt")
     @Expose
     private String createdAt;
+
+    @Nullable
     @SerializedName("UpdatedAt")
     @Expose
     private String updatedAt;
@@ -27,7 +30,7 @@ public abstract class BaseModel {
         this.uuid = uuid;
     }
 
-    public BaseModel(@NonNull String uuid, String createdAt, String updatedAt) {
+    public BaseModel(@NonNull String uuid, String createdAt, @Nullable String updatedAt) {
         this(uuid);
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -38,7 +41,7 @@ public abstract class BaseModel {
         return uuid;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(@Nullable String updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -46,6 +49,7 @@ public abstract class BaseModel {
         return createdAt;
     }
 
+    @Nullable
     public String getUpdatedAt() {
         return updatedAt;
     }

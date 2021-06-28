@@ -62,7 +62,7 @@ public class LoginRepository implements LoginDataSource {
 
             mExecutor.getMainThread().execute(() -> {
                 if (user == null)
-                    callback.onFailure(new Throwable("Could not get login Info."));
+                    callback.informationNotFound();
                 else
                     callback.onSuccess(user.getUuid());
             });

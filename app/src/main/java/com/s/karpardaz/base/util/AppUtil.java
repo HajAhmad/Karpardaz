@@ -49,14 +49,14 @@ public final class AppUtil {
 
     public static boolean isAnyEmpty(String... args) {
         for (String str : args) {
-            if (TextUtils.isEmpty(str.trim()))
+            if (str == null || TextUtils.isEmpty(str.trim()))
                 return true;
         }
         return false;
     }
 
     public static boolean isEmailInvalid(String email) {
-        if (TextUtils.isEmpty(email.trim()))
+        if (isAnyEmpty(email.trim()))
             return true;
         return !Pattern.compile(EMAIL_REGEX)
                 .matcher(email)

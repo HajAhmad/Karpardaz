@@ -75,7 +75,6 @@ public class StockDetailDialog extends BaseDialogFragment<StockDetailDialog.Stoc
         if (mStockId == null) initInsertion();
         else initStockUpdate();
 
-
     }
 
     private void initInsertion() {
@@ -91,7 +90,9 @@ public class StockDetailDialog extends BaseDialogFragment<StockDetailDialog.Stoc
     }
 
     private void updateStock() {
-        Stock stock = getObject();
+        String name = getBinding().dialogAddStockNameInput.getText().toString();
+        String currency = getBinding().dialogAddStockCurrencyInput.getText().toString();
+        Stock stock = new Stock(mStockId, name, currency, getCurrentDateTimeUTC());
         if (stock != null) {
             boolean isDefault = getBinding().dialogAddStockIsDefaultCheck.isChecked();
             mPresenter.updateStock(stock, isDefault);
@@ -99,7 +100,7 @@ public class StockDetailDialog extends BaseDialogFragment<StockDetailDialog.Stoc
     }
 
     private void addNewStock() {
-        Stock stock = getObject();
+        Stock stock = getNewObject();
         if (stock != null) {
             boolean isDefault = getBinding().dialogAddStockIsDefaultCheck.isChecked();
             mPresenter.addStock(stock, isDefault);
@@ -108,7 +109,7 @@ public class StockDetailDialog extends BaseDialogFragment<StockDetailDialog.Stoc
 
 
     @Nullable
-    private Stock getObject() {
+    private Stock getNewObject() {
         String currency = getBinding().dialogAddStockCurrencyInput.getText().toString();
         String name = getBinding().dialogAddStockNameInput.getText().toString();
 
@@ -120,13 +121,14 @@ public class StockDetailDialog extends BaseDialogFragment<StockDetailDialog.Stoc
             return null;
         }
 
-        return new Stock(UUID.randomUUID().toString(), getCurrentDateTimeUTC(), name, currency);
+        return new Stock(UUID.randomUUID().toString(), getCurrentDateTimeUTC(), name, currency, getCurrentDateTimeUTC());
     }
 
     @Override
     protected void clearReferences() {
-        super.clearReferences();
+        mPresenter.dropView();
         mPresenter = null;
+        super.clearReferences();
     }
 
 

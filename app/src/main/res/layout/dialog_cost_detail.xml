@@ -41,6 +41,8 @@
             android:gravity="center_horizontal"
             android:hint="@string/all_title"
             android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp" />
 
@@ -91,6 +93,8 @@
                 android:gravity="center_horizontal"
                 android:inputType="number"
                 android:lines="1"
+                android:singleLine="true"
+                android:maxLines="1"
                 android:textSize="20sp" />
         </com.google.android.material.textfield.TextInputLayout>
     </RelativeLayout>
@@ -100,9 +104,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
         android:orientation="horizontal"
         android:paddingTop="@dimen/space_vertical"
         android:paddingBottom="@dimen/space_vertical">
@@ -113,7 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:textSize="20sp"
-            tools:text="۱۳۹۹/۰۵/۰۴    ۱۸:۴۴" />
+            tools:text="۱۳۹۹/۰۵/۰۴" />
 
         <TextView
             android:id="@+id/dialog_cost_detail_purchase_date_title"
@@ -128,7 +129,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space_vertical">
+        android:layout_marginTop="@dimen/space_vertical"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/dialog_cost_detail_stock_title"
@@ -166,6 +168,7 @@
         app:boxBackgroundColor="@android:color/white">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dialog_cost_detail_description_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

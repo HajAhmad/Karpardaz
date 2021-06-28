@@ -22,4 +22,7 @@ public interface StockDao extends BaseDao<Stock> {
 
     @Query("select * from Stock where uuid = :stockId limit 1")
     Stock get(String stockId);
+
+    @Query("update Stock set name = :name, currency = :currency, updatedAt = :updatedAt where uuid = :stockId")
+    Integer update(String stockId, String name, String currency, String updatedAt);
 }

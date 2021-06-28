@@ -13,7 +13,7 @@
     <string name="main_cost_title">هزینه</string>
     <string name="main_income_title">درآمد</string>
     <string name="cost_sum_title_coloned">مجموعه هزینه های امروز:</string>
-    <string name="last_20_costs_title">۲۰ هزینه آخر</string>
+    <string name="today_cost">هزینه های امروز</string>
     <string name="profile_title">پروفایل و تنظیمات</string>
     <string name="all_fund_remaining_title_coloned">باقی مانده تنخواه</string>
     <string name="all_purchased_time_title">کی خریدی؟</string>
@@ -80,5 +80,7 @@
     <string name="add">افزودن</string>
     <string name="update">بروزرسانی</string>
     <string name="stock_updated">تنخواه بروزرسانی شد.</string>
+    <string name="empty_title_error">عنوان نباید خالی باشد.</string>
+    <string name="empty_amount_error">مقدار نباید خالی باشد.</string>
 
 </resources>

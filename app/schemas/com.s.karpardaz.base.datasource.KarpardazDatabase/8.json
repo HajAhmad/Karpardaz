@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 6,
-    "identityHash": "3700624a2a1d1561d5287e068a770ac7",
+    "version": 8,
+    "identityHash": "551a3545e304957bb7acf91b74301e68",
     "entities": [
       {
         "tableName": "Cost",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uuid` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `atDate` TEXT NOT NULL, `subject` TEXT NOT NULL, `amount` TEXT NOT NULL, `stockId` TEXT NOT NULL, `createdAt` TEXT, `updatedAt` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uuid` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `atDate` TEXT NOT NULL, `subject` TEXT NOT NULL, `amount` TEXT NOT NULL, `stockId` TEXT NOT NULL, `description` TEXT, `createdAt` TEXT, `updatedAt` TEXT)",
         "fields": [
           {
             "fieldPath": "uuid",
@@ -43,6 +43,12 @@
             "columnName": "stockId",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "createdAt",
@@ -344,7 +350,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3700624a2a1d1561d5287e068a770ac7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '551a3545e304957bb7acf91b74301e68')"
     ]
   }
 }

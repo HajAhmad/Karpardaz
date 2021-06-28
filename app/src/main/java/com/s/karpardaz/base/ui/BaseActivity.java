@@ -18,8 +18,8 @@ public abstract class BaseActivity<V extends ViewBinding> extends AppCompatActiv
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         clearReferences();
+        super.onDestroy();
     }
 
     @Override
@@ -34,8 +34,7 @@ public abstract class BaseActivity<V extends ViewBinding> extends AppCompatActiv
 
         mProgressDialog.setMessage(message);
 
-        if (!mProgressDialog.isShowing())
-            mProgressDialog.show();
+        mProgressDialog.show();
     }
 
     @Override
@@ -46,8 +45,8 @@ public abstract class BaseActivity<V extends ViewBinding> extends AppCompatActiv
     }
 
     protected void clearReferences() {
+        hideProgress();
         mBinding = null;
-        mProgressDialog = null;
     }
 
     protected void setBinding(@NonNull V binding) {

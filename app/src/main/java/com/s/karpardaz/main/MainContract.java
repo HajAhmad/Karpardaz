@@ -10,7 +10,10 @@ public interface MainContract {
         void showEntranceDialog();
         void returnToLoginPage();
         void showInsertStock();
-        void showCostFragment();
+        void openStockFragment();
+        void openProfileFragment();
+        void openReportFragment();
+        void openCostFragment();
     }
 
     interface Presenter extends BasePresenterContract<View> {

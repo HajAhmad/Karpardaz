@@ -1,5 +1,7 @@
 package com.s.karpardaz.stock.data;
 
+import android.content.res.Resources;
+
 import androidx.annotation.NonNull;
 
 import com.s.karpardaz.base.BaseCallback;
@@ -38,8 +40,10 @@ public class StockRepository implements StockDataSource {
 
         mExecutors.getDiskIo().execute(() -> {
             int count = mDao.getTableCount();
-            if (count > 0) mExecutors.getMainThread().execute(callback::yes);
-            else mExecutors.getMainThread().execute(callback::no);
+            mExecutors.getMainThread().execute(() -> {
+                if (count > 0) callback.yes();
+                else callback.no();
+            });
         });
     }
 
@@ -76,8 +80,8 @@ public class StockRepository implements StockDataSource {
         mExecutors.getDiskIo().execute(() -> {
             int count = mDao.getSameNameCount(stockName);
             mExecutors.getMainThread().execute(() -> {
-                if (count == 0) callback.no();
-                else callback.yes();
+                if (count == 0) callback.yes();
+                else callback.no();
             });
         });
     }
@@ -117,9 +121,9 @@ public class StockRepository implements StockDataSource {
         requireNonNull(callback);
 
         mExecutors.getDiskIo().execute(() -> {
-            int i = mDefaultStockDao.getCount(stockId);
+            int i = mDefaultStockDao.isStockDefault(stockId);
             mExecutors.getMainThread().execute(() -> {
-                if (i == -1) callback.no();
+                if (i == 0) callback.no();
                 else callback.yes();
             });
         });
@@ -131,7 +135,7 @@ public class StockRepository implements StockDataSource {
         requireNonNull(callback);
 
         mExecutors.getDiskIo().execute(() -> {
-            int i = mDao.update(stock);
+            int i = mDao.update(stock.getUuid(), stock.getName(), stock.getCurrency(), stock.getUpdatedAt());
             mExecutors.getMainThread().execute(() -> {
                 if (i == 0) callback.onFailure();
                 else callback.onSuccess();
@@ -145,7 +149,10 @@ public class StockRepository implements StockDataSource {
 
         mExecutors.getDiskIo().execute(() -> {
             DefaultStock defStock = mDefaultStockDao.get();
-            mExecutors.getMainThread().execute(() -> callback.onSuccess(requireNonNull(defStock)));
+            mExecutors.getMainThread().execute(() -> {
+                if (defStock == null) callback.onFailure(new Resources.NotFoundException());
+                else callback.onSuccess(requireNonNull(defStock));
+            });
         });
     }
 
@@ -155,8 +162,10 @@ public class StockRepository implements StockDataSource {
 
         mExecutors.getDiskIo().execute(() -> {
             Integer count = mDefaultStockDao.getTableCount();
-            if (count == 0 || count == -1) callback.yes();
-            else callback.no();
+            mExecutors.getMainThread().execute(() -> {
+                if (count == 0) callback.yes();
+                else callback.no();
+            });
         });
     }
 

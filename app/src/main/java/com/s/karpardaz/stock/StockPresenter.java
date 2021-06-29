@@ -2,10 +2,12 @@ package com.s.karpardaz.stock;
 
 import androidx.annotation.NonNull;
 
+import com.s.karpardaz.base.BaseCallback;
 import com.s.karpardaz.base.BasePresenter;
 import com.s.karpardaz.base.NotImplementedException;
 import com.s.karpardaz.base.util.AppConstants;
 import com.s.karpardaz.stock.data.StockDataSource;
+import com.s.karpardaz.stock.model.DefaultStock;
 import com.s.karpardaz.stock.model.Stock;
 
 import javax.inject.Inject;
@@ -14,7 +16,7 @@ import static java.util.Objects.requireNonNull;
 
 public class StockPresenter extends BasePresenter<StockContract.View> implements StockContract.Presenter {
 
-    private final StockDataSource mRepository;
+    private StockDataSource mRepository;
 
     @Inject
     public StockPresenter(@NonNull StockDataSource repository) {
@@ -47,19 +49,30 @@ public class StockPresenter extends BasePresenter<StockContract.View> implements
     @Override
     public void getAllStocks() {
         getView().showProgress();
-        mRepository.getAllStocks(AppConstants.sActiveUserId, result -> {
-            mRepository.getDefaultStockId(defaultStock -> {
-                for (Stock s : result) {
-                    if (defaultStock.getUuid().equals(s.getUuid())) {
-                        AppConstants.setsDefaultStockCurrency(s.getCurrency());
-                        break;
+        mRepository.getAllStocks(AppConstants.sActiveUserId, result ->
+            mRepository.getDefaultStockId(new BaseCallback<DefaultStock>() {
+                @Override
+                public void onSuccess(DefaultStock defaultStock) {
+                    getView().hideProgress();
+                    for (Stock s : result) {
+                        if (defaultStock.getUuid().equals(s.getUuid())) {
+                            AppConstants.setsDefaultStockCurrency(s.getCurrency());
+                            break;
+                        }
                     }
-                }
+                    getView().setStocks(result, defaultStock.getUuid()); }
 
-                getView().setStocks(result, defaultStock.getUuid());
-                getView().hideProgress();
-            });
-        });
+                @Override
+                public void onFailure(Throwable t) {
+                    getView().hideProgress();
+                    getView().setStocks(result, null);
+                }
+            }));
     }
 
+    @Override
+    public void dropView() {
+        mRepository.cancelAllCalls();
+        super.dropView();
+    }
 }

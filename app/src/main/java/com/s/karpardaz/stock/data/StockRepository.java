@@ -1,7 +1,5 @@
 package com.s.karpardaz.stock.data;
 
-import android.content.res.Resources;
-
 import androidx.annotation.NonNull;
 
 import com.s.karpardaz.base.BaseCallback;
@@ -150,8 +148,8 @@ public class StockRepository implements StockDataSource {
         mExecutors.getDiskIo().execute(() -> {
             DefaultStock defStock = mDefaultStockDao.get();
             mExecutors.getMainThread().execute(() -> {
-                if (defStock == null) callback.onFailure(new Resources.NotFoundException());
-                else callback.onSuccess(requireNonNull(defStock));
+                if (defStock == null) callback.onFailure();
+                else callback.onSuccess(defStock);
             });
         });
     }
@@ -167,6 +165,11 @@ public class StockRepository implements StockDataSource {
                 else callback.no();
             });
         });
+    }
+
+    @Override
+    public void cancelAllCalls() {
+//        mExecutors.cancelAll();
     }
 
 }

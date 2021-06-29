@@ -93,20 +93,17 @@ public class StockDetailDialog extends BaseDialogFragment<StockDetailDialog.Stoc
         String name = getBinding().dialogAddStockNameInput.getText().toString();
         String currency = getBinding().dialogAddStockCurrencyInput.getText().toString();
         Stock stock = new Stock(mStockId, name, currency, getCurrentDateTimeUTC());
-        if (stock != null) {
-            boolean isDefault = getBinding().dialogAddStockIsDefaultCheck.isChecked();
-            mPresenter.updateStock(stock, isDefault);
-        }
+        boolean isDefault = getBinding().dialogAddStockIsDefaultCheck.isChecked();
+        mPresenter.updateStock(stock, isDefault);
     }
 
     private void addNewStock() {
         Stock stock = getNewObject();
         if (stock != null) {
-            boolean isDefault = getBinding().dialogAddStockIsDefaultCheck.isChecked();
+            boolean isDefault = true;
             mPresenter.addStock(stock, isDefault);
         }
     }
-
 
     @Nullable
     private Stock getNewObject() {
@@ -123,14 +120,6 @@ public class StockDetailDialog extends BaseDialogFragment<StockDetailDialog.Stoc
 
         return new Stock(UUID.randomUUID().toString(), getCurrentDateTimeUTC(), name, currency, getCurrentDateTimeUTC());
     }
-
-    @Override
-    protected void clearReferences() {
-        mPresenter.dropView();
-        mPresenter = null;
-        super.clearReferences();
-    }
-
 
     @Override
     public void showStock(@NonNull Stock result) {

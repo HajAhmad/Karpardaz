@@ -159,7 +159,6 @@ public class CostDetailDialog extends BaseDialogFragment<CostDetailDialog.OnCost
         void updateList();
     }
 
-
     static class CostDetailPresenter extends BasePresenter<CostDetailContract.View>
         implements CostDetailContract.Presenter {
 

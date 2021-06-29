@@ -46,6 +46,7 @@ public class CostPresenter extends BasePresenter<CostContract.View>
 
             getView().setTodayTotalCost(sum.toString(), getsDefaultStockCurrency());
             getView().showTodayCostList(viewItemList);
+            getView().hideProgress();
         });
     }
 

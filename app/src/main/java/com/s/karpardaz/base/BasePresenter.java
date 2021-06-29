@@ -81,12 +81,12 @@ public class BasePresenter<V> implements BasePresenterContract<V> {
         Log.e(TAG, "addMaybe: ", t);
     }
 
-    protected boolean isViewAttached() {
-        return mView != null;
+    protected boolean isViewNotAttached() {
+        return mView == null;
     }
 
     protected V getView() {
-        if (!isViewAttached()) throw new ViewNotAttachedException();
+        if (isViewNotAttached()) throw new ViewNotAttachedException();
 
         return mView;
     }

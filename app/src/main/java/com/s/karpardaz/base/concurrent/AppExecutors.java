@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.inject.Singleton;
@@ -13,9 +14,9 @@ public class AppExecutors {
 
     private static final int THREAD_COUNT = 3;
 
-    private final Executor mDiskIo;
-    private final Executor mNetworkIo;
-    private final Executor mMainThread;
+    private final DiskIoThreadExecutor mDiskIo;
+    private final ExecutorService mNetworkIo;
+    private final MainThreadExecutor mMainThread;
 
     public AppExecutors() {
         mDiskIo = new DiskIoThreadExecutor();
@@ -35,6 +36,12 @@ public class AppExecutors {
         return mMainThread;
     }
 
+    public void cancelAll(){
+        mNetworkIo.shutdownNow();
+        mDiskIo.cancel();
+        mMainThread.cancel();
+    }
+
     private static class MainThreadExecutor implements Executor {
         private final Handler mainThreadHandler;
 
@@ -46,16 +53,24 @@ public class AppExecutors {
         public void execute(Runnable command) {
             mainThreadHandler.post(command);
         }
+
+        public void cancel(){
+            mainThreadHandler.removeCallbacksAndMessages(null);
+        }
     }
 
     private static class DiskIoThreadExecutor implements Executor {
-        private final Executor mDiskIo;
+        private final ExecutorService mDiskIo;
 
         private DiskIoThreadExecutor() {mDiskIo = Executors.newSingleThreadExecutor();}
 
         @Override
         public void execute(Runnable command) {
             mDiskIo.execute(command);
+        }
+
+        public void cancel(){
+            mDiskIo.shutdownNow();
         }
     }
 

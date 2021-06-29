@@ -20,6 +20,7 @@ public interface StockDataSource {
     void updateStock(Stock stock, BaseCallback<Void> callback);
     void getDefaultStockId(@NonNull BaseCallback<DefaultStock> callback);
     void isDefaultStockTableEmpty(@NonNull IsTableEmptyCallback callback);
+    void cancelAllCalls();
 
     interface IsTableEmptyCallback extends BaseCallback<Void>{
         void yes();

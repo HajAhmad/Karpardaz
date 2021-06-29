@@ -24,6 +24,8 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+import static com.s.karpardaz.base.util.AppUtil.isAnyEmpty;
+
 @AndroidEntryPoint
 public class StockFragment extends BaseFragment<StockFragment.OnStockFragmentInteractionListener, FragmentStockBinding>
     implements StockContract.View, StockDetailDialog.StockDetailInteractionListener {
@@ -74,18 +76,20 @@ public class StockFragment extends BaseFragment<StockFragment.OnStockFragmentInt
     }
 
     @Override
-    public void setStocks(List<Stock> result, String defaultStockId) {
+    public void setStocks(List<Stock> result, @Nullable String defaultStockId) {
         List<StockListItem> list = new ArrayList<>();
-        for (int i = 0; i < result.size(); i++) {
-            Stock item = result.get(i);
+        if (!isAnyEmpty(defaultStockId)) {
+            for (int i = 0; i < result.size(); i++) {
+                Stock item = result.get(i);
 
-            list.add(new StockListItem(
-                item.getUuid(),
-                i + 1,
-                item.getName(),
-                item.getCurrency(),
-                item.getUuid().equals(defaultStockId)
-            ));
+                list.add(new StockListItem(
+                    item.getUuid(),
+                    i + 1,
+                    item.getName(),
+                    item.getCurrency(),
+                    item.getUuid().equals(defaultStockId)
+                ));
+            }
         }
 
         list.add(0, new StockListItem(StockListAdapter.TYPE_ADD_BUTTON));
@@ -95,8 +99,6 @@ public class StockFragment extends BaseFragment<StockFragment.OnStockFragmentInt
 
     @Override
     protected void clearReferences() {
-        mPresenter.dropView();
-        mPresenter = null;
         super.clearReferences();
     }
 

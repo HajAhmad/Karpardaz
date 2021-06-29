@@ -85,10 +85,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
             } else if (itemId == R.id.main_bottombar_cost_item) {
                 openCostFragment();
                 return true;
-            } else if (itemId == R.id.main_bottombar_report_item) {
-                openReportFragment();
-                return true;
-            }
+            }// else if (itemId == R.id.main_bottombar_report_item) {
+            //                openReportFragment();
+            //                return true;
+            //            }
             return false;
         });
 
@@ -162,15 +162,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
 
     @Override
     public void enableAllMenuOptionsIfDisabled() {
-        if (getBinding().mainActivityBottombar.getMenu().getItem(1).isEnabled()) return;
+        if (getBinding().mainActivityBottombar.getMenu().getItem(0).isEnabled()) return;
 
-        int menuItemCount = getBinding().mainActivityBottombar.getMenu().size();
-        for (int i = menuItemCount - 2; i >= 0; i--)
-            getBinding().mainActivityBottombar.getMenu().getItem(i).setEnabled(true);
-
-        getBinding().mainActivityBottombar.setSelectedItemId(R.id.main_bottombar_cost_item);
+        getBinding().mainActivityBottombar.getMenu().findItem(R.id.main_bottombar_cost_item).setEnabled(true);
+        getBinding().mainActivityBottombar.getMenu().findItem(R.id.main_bottombar_stock_item).setEnabled(true);
     }
-
 
     @Override
     public void showMessage(String message) {

@@ -25,7 +25,6 @@ public class StockDetailPresenter extends BasePresenter<StockDetailContract.View
         this.mRepository = requireNonNull(repository);
     }
 
-
     @Override
     public void addStock(@NonNull Stock stock, boolean isDefault) {
         getView().showProgress();
@@ -40,64 +39,7 @@ public class StockDetailPresenter extends BasePresenter<StockDetailContract.View
 
             @Override
             public void yes() {
-                mRepository.addStock(stock, new BaseCallback<Void>() {
-                    @Override
-                    public void onSuccess(Void result) {
-                        mRepository.isDefaultStockTableEmpty(new StockDataSource.IsTableEmptyCallback() {
-                            @Override
-                            public void yes() {
-                                mRepository.setDefaultStock(stock.getUuid(), getCurrentDateTimeUTC(),
-                                    new BaseCallback<Void>() {
-                                        @Override
-                                        public void onSuccess(Void result1) {
-                                            getView().hideProgress();
-                                            getView().newStockInserted();
-                                        }
-
-                                        @Override
-                                        public void onFailure(Throwable t) {
-                                            getView().hideProgress();
-                                            getView().showSetDefaultStockFailed();
-                                        }
-                                    });
-                            }
-
-                            @Override
-                            public void no() {
-                                if (isDefault) {
-                                    mRepository.setDefaultStock(stock.getUuid(), getCurrentDateTimeUTC(),
-                                        new BaseCallback<Void>() {
-                                            @Override
-                                            public void onSuccess(Void result1) {
-                                                getView().hideProgress();
-                                                getView().newStockInserted();
-                                            }
-
-                                            @Override
-                                            public void onFailure(Throwable t) {
-                                                getView().hideProgress();
-                                                getView().showSetDefaultStockFailed();
-                                            }
-                                        });
-                                } else {
-                                    getView().hideProgress();
-                                    getView().newStockInserted();
-                                }
-                            }
-
-                            @Override
-                            public void onSuccess(Void result) {
-                                throw new NotImplementedException();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onFailure(Throwable t) {
-                        getView().hideProgress();
-                        getView().insertionFailed();
-                    }
-                });
+                insertStock(stock, isDefault);
             }
 
             @Override
@@ -106,6 +48,64 @@ public class StockDetailPresenter extends BasePresenter<StockDetailContract.View
             }
         });
 
+    }
+
+    private void insertStock(@NonNull Stock stock, boolean isDefault) {
+        mRepository.addStock(stock, new BaseCallback<Void>() {
+            @Override
+            public void onSuccess(Void result) {
+                insertDefaultStock(stock, isDefault);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                getView().hideProgress();
+                getView().insertionFailed();
+            }
+        });
+    }
+
+    private void insertDefaultStock(@NonNull Stock stock, boolean isDefault) {
+        mRepository.isDefaultStockTableEmpty(new StockDataSource.IsTableEmptyCallback() {
+            @Override
+            public void yes() {
+                setDefaultStock(stock);
+            }
+
+            @Override
+            public void no() {
+                if (isDefault) {
+                    setDefaultStock(stock);
+                } else {
+                    getView().hideProgress();
+                    getView().newStockInserted();
+                }
+            }
+
+            @Override
+            public void onSuccess(Void result) {
+                throw new NotImplementedException();
+            }
+        });
+    }
+
+    private void setDefaultStock(@NonNull Stock stock) {
+        mRepository.setDefaultStock(stock.getUuid(), getCurrentDateTimeUTC(),
+            new BaseCallback<Void>() {
+                @Override
+                public void onSuccess(Void result1) {
+                    AppConstants.setDefaultStockId(stock.getUuid());
+                    AppConstants.setsDefaultStockCurrency(stock.getCurrency());
+                    getView().hideProgress();
+                    getView().newStockInserted();
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    getView().hideProgress();
+                    getView().showSetDefaultStockFailed();
+                }
+            });
     }
 
     @Override
@@ -153,6 +153,8 @@ public class StockDetailPresenter extends BasePresenter<StockDetailContract.View
         mRepository.updateStock(stock, __ -> {
             if (isDefault) {
                 mRepository.setDefaultStock(stock.getUuid(), getCurrentDateTimeUTC(), ___ -> {
+                    AppConstants.setDefaultStockId(stock.getUuid());
+                    AppConstants.setsDefaultStockCurrency(stock.getCurrency());
                     getView().hideProgress();
                     getView().showStockUpdated();
                 });

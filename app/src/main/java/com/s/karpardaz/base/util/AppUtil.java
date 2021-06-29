@@ -49,8 +49,9 @@ public final class AppUtil {
 
     public static boolean isAnyEmpty(String... args) {
         for (String str : args) {
-            if (str == null || TextUtils.isEmpty(str.trim()))
+            if (str == null || TextUtils.isEmpty(str.trim())) {
                 return true;
+            }
         }
         return false;
     }

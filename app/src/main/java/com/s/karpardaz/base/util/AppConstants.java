@@ -1,7 +1,5 @@
 package com.s.karpardaz.base.util;
 
-import static java.util.Objects.requireNonNull;
-
 public final class AppConstants {
     private AppConstants() {}
 
@@ -19,6 +17,7 @@ public final class AppConstants {
     }
 
     public static void setsDefaultStockCurrency(String sDefaultStockCurrency) {
+        if (AppUtil.isAnyEmpty(sDefaultStockCurrency)) throw new NullPointerException();
         AppConstants.sDefaultStockCurrency = sDefaultStockCurrency;
     }
 
@@ -27,7 +26,8 @@ public final class AppConstants {
     }
 
     public static void setDefaultStockId(String id){
-        sDefaultStockId = requireNonNull(id);
+        if (AppUtil.isAnyEmpty(id)) throw new NullPointerException();
+        sDefaultStockId = id;
     }
 
 }

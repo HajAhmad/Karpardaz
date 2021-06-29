@@ -32,7 +32,9 @@ public class CostRepository implements CostDataSource {
 
     @Override
     public void getByDay(String stockId, @NonNull String date, BaseCallback<List<Cost>> baseCallback) {
-        if (isAnyEmpty(stockId, date)) throw new NullPointerException();
+        if (isAnyEmpty(stockId)) throw new NullPointerException();
+        if (isAnyEmpty(date)) throw new NullPointerException();
+
         requireNonNull(baseCallback);
 
         mExecutors.getDiskIo().execute(() -> {

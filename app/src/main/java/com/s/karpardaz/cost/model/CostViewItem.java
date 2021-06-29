@@ -1,6 +1,7 @@
 package com.s.karpardaz.cost.model;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.s.karpardaz.base.model.BaseViewItem;
 
@@ -16,7 +17,7 @@ public class CostViewItem extends BaseViewItem {
         @NonNull String subject,
         @NonNull String amount,
         @NonNull String createdAt,
-        @NonNull String updatedAt) {
+        @Nullable String updatedAt) {
 
         super(uuid);
         this.createdAt = createdAt;

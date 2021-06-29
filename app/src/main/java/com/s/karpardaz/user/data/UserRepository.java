@@ -9,11 +9,8 @@ import com.s.karpardaz.base.model.User;
 
 import javax.inject.Inject;
 
-import retrofit2.internal.EverythingIsNonNull;
-
 import static java.util.Objects.requireNonNull;
 
-@EverythingIsNonNull
 public class UserRepository implements UserDataSource {
 
     private final UserDao mUserDao;
@@ -44,12 +41,14 @@ public class UserRepository implements UserDataSource {
     public void insertUser(@NonNull User user, @NonNull BaseCallback<String> callback) {
         mExecutor.getDiskIo().execute(() -> {
             long insertedUserId = mUserDao.insert(user);
-            if (insertedUserId > -1) {
-                String uuid = mUserDao.getInsertedId(insertedUserId);
-                callback.onSuccess(uuid);
-                return;
-            }
-            callback.onFailure(new Throwable("Data Not Saved."));
+            mExecutor.getMainThread().execute(() -> {
+                if (insertedUserId > -1) {
+                    String uuid = mUserDao.getInsertedId(insertedUserId);
+                    callback.onSuccess(uuid);
+                    return;
+                }
+                callback.onFailure(new Throwable("Data Not Saved."));
+            });
         });
     }
 

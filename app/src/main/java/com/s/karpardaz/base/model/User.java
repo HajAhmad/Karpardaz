@@ -8,7 +8,8 @@ import androidx.room.Index;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "User", indices = {@Index(value = {"id", "uuid"}, unique = true)})
+@Entity(indices = {@Index(value = {"id", "uuid"},
+    unique = true)})
 public class User extends BaseEntity {
 
     @SerializedName("Name")

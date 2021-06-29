@@ -13,7 +13,8 @@ import javax.inject.Inject;
 
 import static com.s.karpardaz.base.util.AppUtil.getCurrentDateTimeUTC;
 
-public class LoginPresenter extends BasePresenter<LoginContract.View> implements LoginContract.Presenter {
+public class LoginPresenter extends BasePresenter<LoginContract.View>
+    implements LoginContract.Presenter {
 
     private final LoginDataSource mRepository;
 
@@ -30,7 +31,8 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             getView().showInvalidEmailError();
         } else {
             getView().showProgress();
-            mRepository.login(email, password, getCurrentDateTimeUTC(), new LoginDataSource.LoginCallback() {
+            mRepository.login(email, password, getCurrentDateTimeUTC(),
+                new LoginDataSource.LoginCallback() {
                 @Override
                 public void informationNotFound() {
                     getView().showInfoNotFoundError();

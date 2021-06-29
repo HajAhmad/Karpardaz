@@ -2,12 +2,6 @@ package com.s.karpardaz;
 
 import android.app.Application;
 
-import com.s.karpardaz.main.MainContract;
-
-import java.util.Objects;
-
-import javax.inject.Inject;
-
 import dagger.hilt.android.HiltAndroidApp;
 
 
@@ -26,3 +20,4 @@ public final class KarpardazApplication extends Application {
         return sInstance;
     }
 }
+

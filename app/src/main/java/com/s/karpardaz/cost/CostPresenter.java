@@ -28,7 +28,6 @@ public class CostPresenter extends BasePresenter<CostContract.View>
         mCostRepository = requireNonNull(costRepository);
     }
 
-
     @Override
     public void start() {
         String currentDate = getCurrentDateTimeUTC().split("T")[0];

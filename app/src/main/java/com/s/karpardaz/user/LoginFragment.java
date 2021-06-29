@@ -53,9 +53,9 @@ public class LoginFragment extends BaseFragment<OnLoginInteractionListener, Layo
 
     @Override
     protected void clearReferences() {
-        super.clearReferences();
         mPresenter.dropView();
         mPresenter = null;
+        super.clearReferences();
     }
 
     private void login() {

@@ -55,14 +55,14 @@ public class StockFragment extends BaseFragment<StockFragment.OnStockFragmentInt
     @Override
     protected void onViewCreated(@Nullable Bundle savedInstanceState) {
 
+        mPresenter.getAllStocks();
+
         mAdapter = new StockListAdapter(this::openEditStockDialog, this::openAddStockDialog);
 
         getBinding().fragmentStockList.setItemAnimator(new DefaultItemAnimator());
         getBinding().fragmentStockList.addItemDecoration(new DividerItemDecoration(getCtx(), DividerItemDecoration.HORIZONTAL));
         getBinding().fragmentStockList.setLayoutManager(new LinearLayoutManager(getCtx()));
         getBinding().fragmentStockList.setAdapter(mAdapter);
-
-        mPresenter.start();
 
     }
 

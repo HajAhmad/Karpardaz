@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import com.s.karpardaz.base.datasource.KarpardazDatabase;
 import com.s.karpardaz.cost.data.CostDao;
-import com.s.karpardaz.income.data.IncomeDao;
 import com.s.karpardaz.stock.data.DefaultStockDao;
 import com.s.karpardaz.stock.data.StockDao;
 import com.s.karpardaz.user.data.LoginDao;
@@ -39,12 +38,6 @@ public abstract class DbModule {
     @Singleton
     static CostDao provideCostDao(@NonNull KarpardazDatabase database) {
         return requireNonNull(database).costDao();
-    }
-
-    @Provides
-    @Singleton
-    static IncomeDao provideIncomeDao(@NonNull KarpardazDatabase database) {
-        return requireNonNull(database).incomeDao();
     }
 
     @Provides

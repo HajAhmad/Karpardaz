@@ -73,7 +73,6 @@ public final class AppUtil {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-
     public static Throwable produceNetworkException(Response<?> response) {
         if (response.errorBody() != null) {
             try {

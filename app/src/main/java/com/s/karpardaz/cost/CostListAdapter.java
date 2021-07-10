@@ -40,7 +40,7 @@ public class CostListAdapter extends BaseListAdapter<CostListAdapter.ItemViewHol
         }
 
         @Override
-        public void bind(CostViewItem item, int position) {
+        public void bind(@NonNull CostViewItem item, int position) {
             getBinding().getRoot().setOnClickListener(v ->
                 getListener().onItemClicked(item, position));
             getBinding().homeItemSubject.setText(item.getSubject());

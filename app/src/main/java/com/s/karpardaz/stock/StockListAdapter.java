@@ -73,7 +73,7 @@ public class StockListAdapter extends BaseListAdapter<RecyclerView.ViewHolder, S
         }
 
         @Override
-        public void bind(StockListItem item, int position) {
+        public void bind(@NonNull StockListItem item, int position) {
             getBinding().layoutStockDefault.setVisibility(item.isDefault() ? View.VISIBLE : View.GONE);
             getBinding().layoutStockItemCurrency.setText(item.getCurrency());
             getBinding().layoutStockItemTitle.setText(item.getName());

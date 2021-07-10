@@ -113,7 +113,7 @@ public class ProfileFragment extends BaseDialogFragment<ProfileFragment.OnProfil
             }
 
             @Override
-            public void bind(ProfileListItem item, int position) {
+            public void bind(@NonNull ProfileListItem item, int position) {
                 getBinding().layoutProfileListItemTitle.setText(item.getText());
                 getBinding().layoutProfileListItemRoot.setOnClickListener(v ->
                     getListener().onItemClicked(item, position));

@@ -21,7 +21,7 @@ public abstract class BaseViewHolder<V extends ViewBinding, T extends BaseViewIt
         mListener = Objects.requireNonNull(listener);
     }
 
-    public abstract void bind(T item, int position);
+    public abstract void bind(@NonNull T item, int position);
 
     public V getBinding() {
         return mBinding;

@@ -18,7 +18,7 @@ import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
-public abstract class BaseListAdapter<VH extends RecyclerView.ViewHolder, T extends BaseViewItem, Listener>
+public abstract class BaseListAdapter<VH extends RecyclerView.ViewHolder, T extends BaseViewItem, Listener extends BaseItemInteractionListener<T>>
         extends RecyclerView.Adapter<VH> {
 
     private List<T> mList;

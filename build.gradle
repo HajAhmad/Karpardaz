@@ -5,11 +5,15 @@ buildscript {
         jcenter()
         mavenCentral()
     }
-    ext._hilt_version = '2.33-beta'
+    ext {
+        kotlin_version = '1.4.31'
+        _hilt_version = '2.33-beta'
+    }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.1'
         classpath "com.google.dagger:hilt-android-gradle-plugin:$_hilt_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
     }
 }
@@ -32,6 +36,8 @@ ext {
     _version_code              = 1
     _version_name              = "0.1"
 
+    _ktx_core                  = '1.6.0'
+
     _min_sdk_version           = 21
     _build_tool_version        = '29.0.2'
     _target_sdk_version        = 29
@@ -52,5 +58,5 @@ ext {
     _junit_version             = '4.13.2'
     _mockito_version           = '2.19.0'
     _hamcrest_version          = '1.3'
-    _espresso_core_version     = '3.3.0'
+    _espresso_core_version     = '3.4.0'
 }
